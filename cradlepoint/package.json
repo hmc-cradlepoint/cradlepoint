@@ -10,6 +10,12 @@
   },
   "dependencies": {
     "mongodb": "^4.1.3",
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
+    "@mui/material": "^5.0.0",
+    "@mui/x-data-grid": "^4.0.0",
     "next": "11.1.2",
     "next-connect": "^0.11.0",
     "react": "17.0.2",
