@@ -127,6 +127,7 @@ export default function Home() {
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
+          onSelectionModelChange={(id) => console.log(id)}
         />
       </div>
 
