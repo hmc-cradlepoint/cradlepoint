@@ -83,7 +83,7 @@ export default function Home() {
 
   const classes = useStyles();
   return (
-    <div className={styles.container}>
+    <div className="container">
       <Head>
         <title>Cradlepoint POC Web App</title>
         <meta name="description" content="Home Screen of Web App" />
@@ -133,4 +133,20 @@ export default function Home() {
 
     </div>
   )
+}
+
+export async function getServerSideProps(context) {
+
+  let isConnected;
+  try {
+    const client = await clientPromise
+    isConnected = true;
+  } catch(e) {
+    console.log(e);
+    isConnected = false;
+  }
+
+  return {
+    props: { isConnected },
+  }
 }
