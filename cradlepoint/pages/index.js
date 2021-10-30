@@ -7,6 +7,7 @@ import { makeStyles } from '@mui/styles';
 
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
+import CPButton from '../components/button/CPButton';
 
 export default function Home() {
   const columns = [
@@ -88,7 +89,7 @@ export default function Home() {
   return (
     <>
       <PlainScreen>
-        <h1>Test</h1>
+        <CPButton text="I'm at Cradlepoint Button!"/>
       </PlainScreen>
       <SplitScreen
         leftSection={
