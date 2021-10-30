@@ -23,9 +23,6 @@ function PlainTable(props) {
 
 }
 
-// select 1
-function RadioTable(props) {}
-
 // select multiple
 function CheckBoxTable(props) {
     return(
@@ -42,8 +39,6 @@ function CheckBoxTable(props) {
     )
 }
 
-
-
-export {PlainTable, RadioTable, CheckBoxTable}
+export {PlainTable, CheckBoxTable}
 
 
