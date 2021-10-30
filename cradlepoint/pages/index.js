@@ -10,6 +10,7 @@ import Select from 'react-select'
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import CPButton from '../components/button/CPButton';
+import { ButtonTable, CheckBoxTable, PlainTable } from '../components/tables/Table';
 
 export default function Home() {
   const columnWButtons = [
@@ -19,21 +20,24 @@ export default function Home() {
     { field: 'hardware', headerName: 'Physical/Virtual', headerClassName: 'header', width: 200 },
     { 
       field: 'button', 
-      headerName: 'Edit',
+      headerName: 'Actions',
       headerClassName: 'header',
-      width: 110,
+      width: 300,
       align: 'center',
       renderCell: () => (
+        <span>
         <CPButton text="EDIT"/>
+        <CPButton text="DETAILS"/>
+        </span>
       )
     }
   ];
 
   const columns = [
     { field: 'device', headerName: 'Device', headerClassName: 'header', width: 200 },
-    { field: 'qty', headerName: 'Quantity', headerClassName: 'header', width: 150 },
+    { field: 'qty', headerName: 'Quantity', headerClassName: 'header', width: 200 },
     { field: 'reqs', headerName: 'Requirements', headerClassName: 'header', width: 400, sortable:false},
-    { field: 'hardware', headerName: 'Physical/Virtual', headerClassName: 'header', width: 200 },
+    { field: 'hardware', headerName: 'Physical/Virtual', headerClassName: 'header', width: 200 }
   ];
 
   const rows = [
@@ -135,29 +139,15 @@ export default function Home() {
       </Head>
 
       <h1>Example table w/ edit buttons - MUI/Data-Grid</h1>
-      <div style={{ height: 400, width: '100%' }} className={classes.root}>
-        <DataGrid
-          rows={rows}
-          columns={columnWButtons}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          
-        />
-      </div>
+      <PlainTable rows={rows} columns={columnWButtons} className={classes.root}/>
+
 
       <h1>Example table w/ pagination - MUI/Data-Grid</h1>
-      <div style={{ height: 400, width: '100%' }} className={classes.root}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          
-        />
-      </div>
+      <PlainTable rows={rows} columns={columns} className={classes.root}/>
+ 
 
       <h1>Example table w/ checkbox - MUI/Data-Grid</h1>
-      <div style={{ height: 400, width: '100%' }} className={classes.root}>
+      {/* <div style={{ height: 400, width: '100%' }} className={classes.root}>
         <DataGrid
           rows={rows}
           columns={columns}
@@ -166,8 +156,8 @@ export default function Home() {
           checkboxSelection
           onSelectionModelChange={(id) => console.log(id)}
         />
-      </div>
-
+      </div> */}
+      <CheckBoxTable rows={rows} columns={columns} className={classes.root}/>
     </div>
     </>
   )

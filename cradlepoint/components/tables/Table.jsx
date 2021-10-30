@@ -2,19 +2,48 @@
 // Table select 1
 // Table select multiple
 // Table display only
-
+import { DataGrid } from '@mui/x-data-grid';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 
+
+
 // display only
-function PlainTable(props) {}
+function PlainTable(props) {
+    return (
+        <div style={{ height: 400, width: '100%' }} className={props.className}>
+            <DataGrid
+            rows={props.rows}
+            columns={props.columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            />
+        </div>
+    )
+
+}
 
 // select 1
 function RadioTable(props) {}
 
 // select multiple
-function CheckBoxTable(props) {}
+function CheckBoxTable(props) {
+    return(
+      <div style={{ height: 400, width: '100%' }} className={props.className}>
+        <DataGrid
+          rows={props.rows}
+          columns={props.columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          checkboxSelection
+          onSelectionModelChange={(id) => console.log(id)}
+        />
+      </div>
+    )
+}
 
-// button
-function ButtonTable(props) {}
+
+
+export {PlainTable, RadioTable, CheckBoxTable}
 
 
