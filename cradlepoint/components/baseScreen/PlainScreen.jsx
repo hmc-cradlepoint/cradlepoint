@@ -6,7 +6,7 @@ export default function PlainScreen(props) {
     return (
         <div>
             <MenuBar />
-            <div style={{marginLeft: "5%", marginRight: "5%"}}>
+            <div style={{marginLeft: "5%", marginRight: "5%", marginTop: "2%", marginBottom: "2%"}}>
                 {props.children}
             </div>
 
