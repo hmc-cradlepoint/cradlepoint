@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 
+import Select from 'react-select'
+
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import CPButton from '../components/button/CPButton';
@@ -25,6 +27,12 @@ export default function Home() {
     { id: 5, device: 'A120', qty: 1, reqs: "None", hardware: "Virtual" },
     { id: 6, device: 'B330', qty: 1, reqs: "None", hardware: "Virtual" },
   ];
+
+  const options = [
+    { value: 'good', label: 'Good' },
+    { value: 'passing', label: 'Passing' },
+    { value: 'fail', label: 'Fail' },
+  ]
 
   function customCheckbox() {
     return {
@@ -99,6 +107,9 @@ export default function Home() {
           <h1>test2</h1>
         }
       />
+
+    <Select options={options} onChange={(val) => console.log(val)}/>
+
     <div className="container">
       <Head>
         <title>Cradlepoint POC Web App</title>
