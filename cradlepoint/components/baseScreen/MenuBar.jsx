@@ -11,6 +11,7 @@ export default function MenuBar() {
       <Button>Device Library</Button>
       <Button>Notifications</Button>
       <Button>Logout</Button>
+      <Button>Help</Button>
     </Stack>
     )
 }
