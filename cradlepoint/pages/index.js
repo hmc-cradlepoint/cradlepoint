@@ -5,6 +5,9 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 
+import PlainScreen from '../components/baseScreen/PlainScreen';
+import SplitScreen from '../components/baseScreen/SplitScreen';
+
 export default function Home() {
   const columns = [
     { field: 'device', headerName: 'Device', headerClassName: 'header', width: 200 },
@@ -83,6 +86,18 @@ export default function Home() {
 
   const classes = useStyles();
   return (
+    <>
+      <PlainScreen>
+        <h1>Test</h1>
+      </PlainScreen>
+      <SplitScreen
+        leftSection={
+          <h1>test</h1>
+        }
+        rightSection={
+          <h1>test2</h1>
+        }
+      />
     <div className="container">
       <Head>
         <title>Cradlepoint POC Web App</title>
@@ -132,6 +147,7 @@ export default function Home() {
       </div>
 
     </div>
+    </>
   )
 }
 
