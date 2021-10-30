@@ -8,6 +8,7 @@ import { makeStyles } from '@mui/styles';
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import CPButton from '../components/button/CPButton';
+import {SmallTextInput, BigTextInput} from '../components/fields/Text';
 
 export default function Home() {
   const columns = [
@@ -88,8 +89,10 @@ export default function Home() {
   const classes = useStyles();
   return (
     <>
+     
       <PlainScreen>
         <CPButton text="I'm at Cradlepoint Button!"/>
+        
       </PlainScreen>
       <SplitScreen
         leftSection={
@@ -99,7 +102,11 @@ export default function Home() {
           <h1>test2</h1>
         }
       />
+
+    
     <div className="container">
+      <SmallTextInput name="SmallText" />
+      <BigTextInput name="BigText" />
       <Head>
         <title>Cradlepoint POC Web App</title>
         <meta name="description" content="Home Screen of Web App" />
@@ -146,7 +153,7 @@ export default function Home() {
           onSelectionModelChange={(id) => console.log(id)}
         />
       </div>
-
+      
     </div>
     </>
   )
