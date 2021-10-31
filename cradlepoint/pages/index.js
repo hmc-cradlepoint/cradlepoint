@@ -5,12 +5,31 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 
+import Select from 'react-select'
+
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import CPButton from '../components/button/CPButton';
 import {SmallTextInput, BigTextInput} from '../components/fields/Text';
 
 export default function Home() {
+  const columnWButtons = [
+    { field: 'device', headerName: 'Device', headerClassName: 'header', width: 200 },
+    { field: 'qty', headerName: 'Quantity', headerClassName: 'header', width: 150 },
+    { field: 'reqs', headerName: 'Requirements', headerClassName: 'header', width: 400, sortable:false},
+    { field: 'hardware', headerName: 'Physical/Virtual', headerClassName: 'header', width: 200 },
+    { 
+      field: 'button', 
+      headerName: 'Edit',
+      headerClassName: 'header',
+      width: 110,
+      align: 'center',
+      renderCell: () => (
+        <CPButton text="EDIT"/>
+      )
+    }
+  ];
+
   const columns = [
     { field: 'device', headerName: 'Device', headerClassName: 'header', width: 200 },
     { field: 'qty', headerName: 'Quantity', headerClassName: 'header', width: 150 },
@@ -26,6 +45,12 @@ export default function Home() {
     { id: 5, device: 'A120', qty: 1, reqs: "None", hardware: "Virtual" },
     { id: 6, device: 'B330', qty: 1, reqs: "None", hardware: "Virtual" },
   ];
+
+  const options = [
+    { value: 'good', label: 'Good' },
+    { value: 'passing', label: 'Passing' },
+    { value: 'fail', label: 'Fail' },
+  ]
 
   function customCheckbox() {
     return {
@@ -103,7 +128,8 @@ export default function Home() {
         }
       />
 
-    
+    <Select options={options} onChange={(val) => console.log(val)}/>
+
     <div className="container">
       <SmallTextInput name="SmallText" />
       <BigTextInput name="BigText" />
@@ -113,23 +139,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <h1>Example menu bar [WIP]</h1>
-      <Stack direction="row" spacing={4} paddingBottom={1} borderBottom="1px solid">
-        <Button>HOME</Button>
-        <Button>TEST PLAN</Button>
-        <Button>BILL OF MATERIALS</Button>
-        <Button>REVIEW</Button>
-      </Stack>
-
-      <h1>Example buttons - MUI/Buttons</h1>
-      <Stack direction="row" spacing={2}>
-        {/* styles will be cleaned up in actual implementation */}
-        <Button variant="contained" style={{ borderRadius: 5, paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }} >Submit</Button>
-        <Button variant="contained" disabled style={{ borderRadius: 5, paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }} >Submit</Button>
-
-        <Button variant="contained" style={{ borderRadius: 5, paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }} >Edit</Button>
-        <Button variant="contained" disabled style={{ borderRadius: 5, paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20 }} >Edit</Button>
-      </Stack>
+      <h1>Example table w/ edit buttons - MUI/Data-Grid</h1>
+      <div style={{ height: 400, width: '100%' }} className={classes.root}>
+        <DataGrid
+          rows={rows}
+          columns={columnWButtons}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+          
+        />
+      </div>
 
       <h1>Example table w/ pagination - MUI/Data-Grid</h1>
       <div style={{ height: 400, width: '100%' }} className={classes.root}>
