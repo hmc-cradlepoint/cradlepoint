@@ -10,7 +10,8 @@ import Select from 'react-select'
 import PlainScreen from '../components/baseScreen/PlainScreen';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import CPButton from '../components/button/CPButton';
-import { ButtonTable, CheckBoxTable, PlainTable } from '../components/tables/Table';
+import {CheckBoxTable, PlainTable } from '../components/tables/Table';
+import { SmallTextInput, BigTextInput } from '../components/fields/Text';
 
 export default function Home() {
   const columnWButtons = [
@@ -117,8 +118,10 @@ export default function Home() {
   const classes = useStyles();
   return (
     <>
+     
       <PlainScreen>
         <CPButton text="I'm at Cradlepoint Button!"/>
+        
       </PlainScreen>
       <SplitScreen
         leftSection={
@@ -132,6 +135,8 @@ export default function Home() {
     <Select options={options} onChange={(val) => console.log(val)}/>
 
     <div className="container">
+      <SmallTextInput name="SmallText" />
+      <BigTextInput name="BigText" />
       <Head>
         <title>Cradlepoint POC Web App</title>
         <meta name="description" content="Home Screen of Web App" />
@@ -147,16 +152,6 @@ export default function Home() {
  
 
       <h1>Example table w/ checkbox - MUI/Data-Grid</h1>
-      {/* <div style={{ height: 400, width: '100%' }} className={classes.root}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-          onSelectionModelChange={(id) => console.log(id)}
-        />
-      </div> */}
       <CheckBoxTable rows={rows} columns={columns} className={classes.root}/>
     </div>
     </>
