@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 
 export default function CPButton(props) {
     return (
-        <Button style={{borderRadius: 8, backgroundColor: "#FCAC1C"}} variant="contained" size="large">
+        <Button style={{borderRadius: 8, backgroundColor: "#FCAC1C", margin: 10}} variant="contained" size="large">
             <div style={{padding: "10px"}}>
             {props.text}
             </div>
