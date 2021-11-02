@@ -5,7 +5,9 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 
 
+// TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
+    // TODO: have a consistent style for all the pages (delete later)
     const useStyles = makeStyles({
         root: {
           '& .header': {
@@ -46,7 +48,7 @@ export default function HomeScreen(props) {
         }
       ];
 
-
+// TODO: make rows not hard coded (delete later)
     const rows = [
     {id: 1, name: 'Engagement 1', status: 'Pending', details: ' ', sysEng: 'John Rogers',	pocEng: 'Paul Switchport', customer: 'ABC Bus Company', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/01/2021'},
     {id: 2, name: 'Engagement 2', status: 'Assigned', details: ' ', sysEng: 'Michael Smith', pocEng: 'George Packets', customer: 'Big Finance', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/02/2021'},
