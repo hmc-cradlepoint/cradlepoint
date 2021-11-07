@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import NewEngagModal from './modal.js'
+import NewEngagModal from './newEngagModal'
+import NewEngagModalScratch from './newEngagModalScratch'
+import NewEngagModalClone from './newEngagModalClone'
 
 // TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
@@ -58,22 +60,54 @@ export default function HomeScreen(props) {
     {id: 6, name: 'Engagement 6', status: 'Archieved', details: ' ', sysEng: 'Jim Black', pocEng: 'George Packets', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/06/20201'}
     ]
 
-    const [modalOpen, setModalOpen] = React.useState(false);
+    const [selectModalOpen, setSelectModalOpen] = React.useState(false);
+    const [scratchModalOpen, setScratchModalOpen] = React.useState(false);
+    const [cloneModalOpen, setCloneModalOpen] = React.useState(false);
+    // const [modalType, setModalType] = React.useState("none");
+  
     
+    function updateModal(modalType){
+      // console.log(input);
+      // setModalType(input);
+      console.log("modalOpen called with ");
+      console.log(modalType);
+      if (modalType === "select"){
+        setSelectModalOpen(true)
+      } else if (modalType === "scratch"){
+        setScratchModalOpen(true)
+      } else if (modalType === "clone"){
+        setCloneModalOpen(true)
+      } else {
+        setSelectModalOpen(false)
+        setScratchModalOpen(false)
+        setCloneModalOpen(false)
+      }
+    }
+
+
     return(
         <PlainScreen>
             <CPButton 
               text="Create New Engagment"
               onClick={() => 
-                {setModalOpen(!modalOpen);
-                console.log(modalOpen);
+                {updateModal("select");
+                console.log(selectModalOpen);
                 }
               }
             />
             <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
             <NewEngagModal
-              modalOpen={modalOpen} 
-              onClose={(isOpen)=> setModalOpen(isOpen)}></NewEngagModal>
+              modalOpen={selectModalOpen} 
+              onClickNext={updateModal}
+              onClose={()=> setSelectModalOpen(false)}></NewEngagModal>
+
+            <NewEngagModalScratch
+              modalOpen={scratchModalOpen} 
+              onBack={()=> setScratchModalOpen(false)}></NewEngagModalScratch>
+
+            <NewEngagModalClone
+              modalOpen={cloneModalOpen} 
+              onBack={()=> setCloneModalOpen(false)}></NewEngagModalClone>
       </PlainScreen>
     )
 }

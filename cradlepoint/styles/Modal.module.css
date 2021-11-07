@@ -1,5 +1,5 @@
 
-.ModalButtonStack {
+.ModalSelect{
     border-radius: 8; 
     background-color:white;
     width: 50%;
@@ -12,4 +12,18 @@
     justify-content:'center';
   }
 
+
+
+  .ModalEngagInfo {
+    border-radius: 8; 
+    background-color:white;
+    width: 70%;
+    height: 50%;
+    margin-left: 10%;
+    margin-top: 10%;
+    flex-direction: column;
+    display: flex;
+    align-items:center;
+    justify-content:'center';
+  }
 
