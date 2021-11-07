@@ -3,7 +3,7 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-
+import NewEngagModal from './modal.js'
 
 // TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
@@ -56,12 +56,24 @@ export default function HomeScreen(props) {
     {id: 4, name: 'Engagement 4', status: 'POC testing outcome', details: ' ', sysEng: 'Jim Black', pocEng: 'Jason Dumps', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/04/20201'},
     {id: 5, name: 'Engagement 5', status: 'POC approved', details: ' ', sysEng: 'Don Lee', pocEng: 'Paul Switchport', customer: 'SensorCo', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/05/20201'},
     {id: 6, name: 'Engagement 6', status: 'Archieved', details: ' ', sysEng: 'Jim Black', pocEng: 'George Packets', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/06/20201'}
+    ]
+
+    const [modalOpen, setModalOpen] = React.useState(false);
     
-]
     return(
         <PlainScreen>
-            <CPButton text="Create New Engagment"/>
+            <CPButton 
+              text="Create New Engagment"
+              onClick={() => 
+                {setModalOpen(!modalOpen);
+                console.log(modalOpen);
+                }
+              }
+            />
             <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
+            <NewEngagModal
+              modalOpen={modalOpen} 
+              onClose={(isOpen)=> setModalOpen(isOpen)}></NewEngagModal>
       </PlainScreen>
     )
 }

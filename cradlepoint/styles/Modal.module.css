@@ -1,0 +1,15 @@
+
+.ModalButtonStack {
+    border-radius: 8; 
+    background-color:white;
+    width: 50%;
+    height: 35%;
+    margin-left: 25%;
+    margin-top: 10%;
+    flex-direction: column;
+    display: flex;
+    align-items:center;
+    justify-content:'center';
+  }
+
+
