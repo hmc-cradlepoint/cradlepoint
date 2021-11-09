@@ -1,7 +1,7 @@
 
 .ModalSelect{
-    border-radius: 8; 
-    background-color:white;
+    outline: none;
+    background-color:rgb(252, 244, 233);
     width: 50%;
     height: 35%;
     margin-left: 25%;
@@ -15,8 +15,8 @@
 
 
   .ModalEngagInfo {
-    border-radius: 8; 
-    background-color:white;
+    outline:none;
+    background-color:rgb(252, 244, 233);;
     width: 70%;
     height: 50%;
     margin-left: 10%;
