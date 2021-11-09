@@ -8,10 +8,10 @@ function NewEngagModal(props) {
   return (
     <>
       <Modal className={styles.ModalSelect} isOpen={props.modalOpen}>
-        <h2>Create New Engagment</h2>
+        <h2>Create New Engagement</h2>
         <CPButton text='From scratch' className="ModalButton" onClick={()=>{console.log('scratch clicked');
         props.onClickNext("scratch")}}/>
-        <CPButton text='From exisiting engagment (Clone)' onClick={()=>props.onClickNext("clone")}/>
+        <CPButton text='From exisiting engagement (Clone)' onClick={()=>props.onClickNext("clone")}/>
         <CPButton text='Cancel' onClick={()=>props.onClose(false)}/>
       </Modal>
     </>

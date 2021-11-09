@@ -98,7 +98,7 @@ export default function HomeScreen(props) {
     return(
         <PlainScreen>
             <CPButton 
-              text="Create New Engagment"
+              text="Create New Engagement"
               onClick={() => 
                 {updateModal("select");
                 console.log(selectModalOpen);

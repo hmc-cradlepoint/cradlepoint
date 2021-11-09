@@ -59,7 +59,7 @@ const engagementColumns = [
   return (
     <>
       <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
-        <h2>Choose an Existing Engagment to Clone from</h2>
+        <h2>Choose an Existing Engagement to Clone from</h2>
         <PlainTable rows={rows} columns={engagementColumns} className={classes.root} 
         onRowClick={item=>{console.log("row clicked");
                     console.log(item);
