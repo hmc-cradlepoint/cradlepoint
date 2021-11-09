@@ -7,7 +7,8 @@ export default async (req, res) => {
   const query = { statusCode: { $lt: 13 } };
 
   const client = await connectToDb();
-  const cursor = client.collection("engagements").find(query);
+  const cursor = await client.collection("engagements").find(query);
+  
   const results = await cursor.toArray();
   res.json(results);
 };
