@@ -60,11 +60,11 @@ export default function HomeScreen(props) {
     {id: 6, name: 'Engagement 6', status: 'Archieved', details: ' ', sysEng: 'Jim Black', pocEng: 'George Packets', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/06/20201'}
     ]
 
-    const [selectModalOpen, setSelectModalOpen] = React.useState(false);
-    const [scratchModalOpen, setScratchModalOpen] = React.useState(false);
-    const [cloneModalOpen, setCloneModalOpen] = React.useState(false);
+    const [selectModalOpen, setSelectModalOpen] = useState(false);
+    const [scratchModalOpen, setScratchModalOpen] = useState(false);
+    const [cloneModalOpen, setCloneModalOpen] = useState(false);
     const emptyRow = {name: '', details: ' ', sysEng: '',	pocEng: '', customer: '', sfdc: ''};
-    const [selectedRow, setSelectedRow] = React.useState(emptyRow);   
+    const [selectedRow, setSelectedRow] = useState(emptyRow);   
   
     
     function updateModal(modalType,rowId=0){
