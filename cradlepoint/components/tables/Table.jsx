@@ -17,6 +17,7 @@ function PlainTable(props) {
             columns={props.columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
+            onRowClick={props.onRowClick}
             />
         </div>
     )

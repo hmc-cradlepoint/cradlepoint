@@ -63,10 +63,11 @@ export default function HomeScreen(props) {
     const [selectModalOpen, setSelectModalOpen] = React.useState(false);
     const [scratchModalOpen, setScratchModalOpen] = React.useState(false);
     const [cloneModalOpen, setCloneModalOpen] = React.useState(false);
-    // const [modalType, setModalType] = React.useState("none");
+    const emptyRow = {name: '', details: ' ', sysEng: '',	pocEng: '', customer: '', sfdc: ''};
+    const [selectedRow, setSelectedRow] = React.useState(emptyRow);   
   
     
-    function updateModal(modalType){
+    function updateModal(modalType,rowId=0){
       // console.log(input);
       // setModalType(input);
       console.log("modalOpen called with ");
@@ -74,15 +75,24 @@ export default function HomeScreen(props) {
       if (modalType === "select"){
         setSelectModalOpen(true)
       } else if (modalType === "scratch"){
+        setSelectedRow(emptyRow);
         setScratchModalOpen(true)
       } else if (modalType === "clone"){
         setCloneModalOpen(true)
-      } else {
+      } else if (modalType === "clone_selected"){
+        setCloneModalOpen(false)
+        setScratchModalOpen(true)
+        const selectedRowData = (rows.filter((row) => rowId===row.id))[0];
+        setSelectedRow(selectedRowData);
+      }
+      else {
         setSelectModalOpen(false)
         setScratchModalOpen(false)
         setCloneModalOpen(false)
       }
     }
+
+    //  status, details, sysEng, pocEng, customer;
 
 
     return(
@@ -103,11 +113,16 @@ export default function HomeScreen(props) {
 
             <NewEngagModalScratch
               modalOpen={scratchModalOpen} 
-              onBack={()=> setScratchModalOpen(false)}></NewEngagModalScratch>
+              onBack={()=> setScratchModalOpen(false)}
+              selectedRow={selectedRow}
+              ></NewEngagModalScratch>
 
             <NewEngagModalClone
               modalOpen={cloneModalOpen} 
-              onBack={()=> setCloneModalOpen(false)}></NewEngagModalClone>
+              onClickNext={updateModal}
+              onBack={()=> setCloneModalOpen(false)}
+              ></NewEngagModalClone>
+
       </PlainScreen>
     )
 }

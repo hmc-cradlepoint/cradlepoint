@@ -33,17 +33,17 @@ const engagementColumns = [
     { field: 'customer', headerName: 'Customer', headerClassName: 'header', flex: 1},
     { field: 'sfdc', headerName: 'SFDC', headerClassName: 'header', flex: 1},
     { field: 'dateCreated', headerName: 'Date Created', headerClassName: 'header', flex: 1},
-    { 
-      field: 'button', 
-      flex: 1,
-      minWidth: 100,
-      headerName: 'Actions',
-      headerClassName: 'header',
-      align: 'center',
-      renderCell: () => (
-        <CPButton text="clone"/>
-      )
-    }
+    // { 
+    //   field: 'button', 
+    //   flex: 1,
+    //   minWidth: 100,
+    //   headerName: 'Actions',
+    //   headerClassName: 'header',
+    //   align: 'center',
+    //   renderCell: () => (
+    //     <CPButton text="clone" onClick={()=>console.log("cloned")}/>
+    //   )
+    // }
   ];
 
     // TODO: make rows not hard coded (delete later)
@@ -60,7 +60,12 @@ const engagementColumns = [
     <>
       <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
         <h2>Choose an Existing Engagment to Clone from</h2>
-        <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
+        <PlainTable rows={rows} columns={engagementColumns} className={classes.root} 
+        onRowClick={item=>{console.log("row clicked");
+                    console.log(item);
+                    props.onClickNext("clone_selected", item.id)
+                  }
+                    }/>
         <CPButton text='Back' onClick={props.onBack}/>
       </Modal>
     </>
