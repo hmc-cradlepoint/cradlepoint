@@ -9,14 +9,20 @@ export default function SplitScreen(props) {
             <MenuBar />
             <div className={styles.screenContainer}>
                 {/* Add styling to leftSection and rightSection in SplitScreen.css as neccessary */}
-                <div className={styles.leftSection}>{props.leftSection}</div>
-                <div className={styles.rightSection}>{props.rightSection}</div>
+                {props.topChildren}
+                <div className={styles.sectionContainer}>
+                    <div className={styles.leftSection}>{props.leftSection}</div>
+                    <div className={styles.rightSection}>{props.rightSection}</div>
+                </div>
+                {props.bottomChildren}
             </div>
         </div>
     )
 }
 
 SplitScreen.propsTypes = {
+    topChildren: PropTypes.any,
     leftSection: PropTypes.any,
-    rightSection: PropTypes.any
+    rightSection: PropTypes.any,
+    bottomChildren: PropTypes.any,
 }
