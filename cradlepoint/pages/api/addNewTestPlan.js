@@ -9,9 +9,9 @@ export default async function handler(req, res) {
     else {
         const client = await connectToDb();
         try {
-          const testPlan = testPlanSchema.cast({...req.body})
           await testPlanSchema.isValid(req.body).then(async function (valid) {
             if (valid){
+              const testPlan = testPlanSchema.cast({...req.body})
               const result = await client.collection('testPlan').insertOne(testPlan);
               res.status(200).send({message: result});
             }
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
           })
           
         } catch (err) {
+          console.log(err)
           res.status(500).send(err);
         }
     }
