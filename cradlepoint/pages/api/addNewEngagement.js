@@ -8,10 +8,11 @@ export default async function handler(req, res) {
   
     const client = await connectToDb();
     try {
-      const engagement = engagementSchema.cast({...req.body, statusCode: 1, BOM: []})
+      
 
-      await engagementSchema.isValid(engagement).then(async function (valid) {
+      await engagementSchema.isValid(req.body).then(async function (valid) {
         if (valid){
+          const engagement = engagementSchema.cast(req.body)
           const result = await client.collection('engagements').insertOne(engagement);
           res.status(200).send({message: result});
         }

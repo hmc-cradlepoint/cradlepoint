@@ -1,0 +1,28 @@
+
+.ModalSelect{
+    outline: none;
+    background-color:rgb(252, 244, 233);
+    width: 50%;
+    height: 35%;
+    margin-left: 25%;
+    margin-top: 10%;
+    flex-direction: column;
+    display: flex;
+    align-items:center;
+    justify-content:'center';
+  }
+
+
+
+  .ModalEngagInfo {
+    outline:none;
+    background-color:rgb(252, 244, 233);;
+    width: 70%;
+    height: 50%;
+    margin-left: 10%;
+    margin-top: 10%;
+    flex-direction: column;
+    display: flex;
+    align-items:center;
+  }
+

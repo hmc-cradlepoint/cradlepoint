@@ -1,0 +1,11 @@
+.tableContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tableButtonRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

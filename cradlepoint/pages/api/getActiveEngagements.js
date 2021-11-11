@@ -1,4 +1,4 @@
-import connectToDb, { clientPromise } from "../../util/mongodb";
+import connectToDb from "../../util/mongodb";
 /*
  gets all the active engagements from the database
 */
