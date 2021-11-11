@@ -14,8 +14,7 @@ const Login = () => {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    console.log("Read the Email:", e.currentTarget.email.value);
-
+    // console.log("Read the Email:", e.currentTarget.email.value);
     const body = {
       loginEmail: e.currentTarget.email.value,
     }
