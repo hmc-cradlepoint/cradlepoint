@@ -1,13 +1,14 @@
 import React from "react";
 import Modal from 'react-modal';
-import CPButton from "../components/button/CPButton";
-import styles from '../styles/Modal.module.css'
-import { SmallTextInput, BigTextInput } from "../components/fields/Text";
+import {CPButton} from "../../components/button/CPButton";
+import styles from '../../styles/Modal.module.css'
+import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
-function NewEngagModalScratch(props) {
+
+export default function NewEngagModalInfo(props) {
   return (
     <>
-      <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
+      <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Fill in New Engagement Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput name='Engagement Name' value={props.selectedRow.name}/>
@@ -21,5 +22,3 @@ function NewEngagModalScratch(props) {
     </>
   );
 }
-
-export default NewEngagModalScratch;

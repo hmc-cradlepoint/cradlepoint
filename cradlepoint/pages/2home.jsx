@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
-import CPButton from '../components/button/CPButton';
-import NewEngagModal from './newEngagModal'
-import NewEngagModalScratch from './newEngagModalScratch'
-import NewEngagModalClone from './newEngagModalClone'
-
+import { CPButton } from '../components/button/CPButton';
+import NewEngagModal from './engagModals/newEngagModal'
+import NewEngagModalClone from './engagModals/newEngagModalClone'
+import NewEngagModalInfo from './engagModals/newEngagModalInfo'
 // TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
     // TODO: have a consistent style for all the pages (delete later)
@@ -61,7 +60,7 @@ export default function HomeScreen(props) {
     ]
 
     const [selectModalOpen, setSelectModalOpen] = useState(false);
-    const [scratchModalOpen, setScratchModalOpen] = useState(false);
+    const [infoModalOpen, setInfoModalOpen] = useState(false);
     const [cloneModalOpen, setCloneModalOpen] = useState(false);
     const emptyRow = {name: '', details: ' ', sysEng: '',	pocEng: '', customer: '', sfdc: ''};
     const [selectedRow, setSelectedRow] = useState(emptyRow);   
@@ -76,18 +75,18 @@ export default function HomeScreen(props) {
         setSelectModalOpen(true)
       } else if (modalType === "scratch"){
         setSelectedRow(emptyRow);
-        setScratchModalOpen(true)
+        setInfoModalOpen(true)
       } else if (modalType === "clone"){
         setCloneModalOpen(true)
       } else if (modalType === "clone_selected"){
         setCloneModalOpen(false)
-        setScratchModalOpen(true)
+        setInfoModalOpen(true)
         const selectedRowData = (rows.filter((row) => rowId===row.id))[0];
         setSelectedRow(selectedRowData);
       }
       else {
         setSelectModalOpen(false)
-        setScratchModalOpen(false)
+        setInfoModalOpen(false)
         setCloneModalOpen(false)
       }
     }
@@ -111,11 +110,11 @@ export default function HomeScreen(props) {
               onClickNext={updateModal}
               onClose={()=> setSelectModalOpen(false)}></NewEngagModal>
 
-            <NewEngagModalScratch
-              modalOpen={scratchModalOpen} 
-              onBack={()=> setScratchModalOpen(false)}
+            <NewEngagModalInfo
+              modalOpen={infoModalOpen} 
+              onBack={()=> setInfoModalOpen(false)}
               selectedRow={selectedRow}
-              ></NewEngagModalScratch>
+              ></NewEngagModalInfo>
 
             <NewEngagModalClone
               modalOpen={cloneModalOpen} 

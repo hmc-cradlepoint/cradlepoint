@@ -1,9 +1,9 @@
 import React from "react";
 import Modal from 'react-modal';
-import CPButton from "../components/button/CPButton";
-import styles from '../styles/Modal.module.css'
+import {CPButton} from "../../components/button/CPButton";
+import styles from '../../styles/Modal.module.css'
 import { makeStyles } from '@mui/styles';
-import {PlainTable} from "../components/tables/Table"
+import {PlainTable} from "../../components/tables/Table"
 
 function NewEngagModalClone(props) {
   const useStyles = makeStyles({
@@ -58,7 +58,7 @@ const engagementColumns = [
 
   return (
     <>
-      <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
+      <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Choose an Existing Engagement to Clone from</h2>
         <PlainTable rows={rows} columns={engagementColumns} className={classes.root} 
         onRowClick={item=>{console.log("row clicked");
