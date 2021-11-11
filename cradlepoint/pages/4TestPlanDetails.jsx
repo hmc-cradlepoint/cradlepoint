@@ -3,9 +3,10 @@ import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import { CPButton, HorizontalButton } from '../components/button/CPButton';
-import NewTestCaseModalInfo from './testCaseModals/newCaseModalInfo';
-import NewTestCaseModal from './testCaseModals/newCaseModal';
-import NewTestCaseModalClone from './testCaseModals/newCaseModalClone';
+import NewTestCaseModalInfo from './testCaseModals/newTestCaseInfo';
+import NewTestCaseModal from './testCaseModals/newTestCase';
+import NewTestCaseModalClone from './testCaseModals/newTestCaseClone';
+import EditTestCaseModalInfo from './testCaseModals/editTestCaseInfo';
 import styles from '../styles/EngagementDetails.module.css';
 
 export default function TestPlanDetails() {
@@ -55,9 +56,15 @@ export default function TestPlanDetails() {
         headerName: 'Actions',
         headerClassName: 'header',
         align: 'center',
-        renderCell: () => (
+        renderCell: (params) => (
         <p >
-            <HorizontalButton text="Edit"/>
+            <HorizontalButton text="Edit Info"
+                onClick={()=>{
+                    console.log(params.row)
+                    const selectedRowData = params.row;
+                    setSelectedRow(selectedRowData);
+                    updateModal("edit");
+            }}/>
             <HorizontalButton text="View Details"/>
             <HorizontalButton text="Delete"/>
         </p>
@@ -138,6 +145,7 @@ export default function TestPlanDetails() {
     const [selectModalOpen, setSelectModalOpen] = useState(false);
     const [infoModalOpen, setInfoModalOpen] = useState(false);
     const [cloneModalOpen, setCloneModalOpen] = useState(false);
+    const [editModalOpen, setEditModalOpen] = useState(false);
     const emptyRow = {subject: '', description: ''};
     const [selectedRow, setSelectedRow] = useState(emptyRow);   
   
@@ -147,23 +155,30 @@ export default function TestPlanDetails() {
       // setModalType(input);
       console.log("modalOpen called with ");
       console.log(modalType);
-      if (modalType === "select"){
-        setSelectModalOpen(true)
-      } else if (modalType === "scratch"){
-        setSelectedRow(emptyRow);
-        setInfoModalOpen(true)
-      } else if (modalType === "clone"){
-        setCloneModalOpen(true)
-      } else if (modalType === "clone_selected"){
-        setCloneModalOpen(false)
-        setInfoModalOpen(true)
-        const selectedRowData = (testCaseLibraryRows.filter((row) => rowId===row.id))[0];
-        setSelectedRow(selectedRowData);
-      }
-      else {
-        setSelectModalOpen(false)
-        setInfoModalOpen(false)
-        setCloneModalOpen(false)
+      switch(modalType){
+        case "select":
+            setSelectModalOpen(true);
+            break;
+        case "scratch":
+            setSelectedRow(emptyRow);
+            setInfoModalOpen(true)
+            break;
+        case "clone":
+            setCloneModalOpen(true)
+            break;
+        case "clone_selected":
+            setCloneModalOpen(false)
+            setInfoModalOpen(true)
+            const selectedRowData = (testCaseLibraryRows.filter((row) => rowId===row.id))[0];
+            setSelectedRow(selectedRowData);
+            break;
+        case "edit":
+            setEditModalOpen(true)
+            break;
+        default:
+            setSelectModalOpen(false)
+            setInfoModalOpen(false)
+            setCloneModalOpen(false)
       }
     }
 
@@ -202,6 +217,13 @@ export default function TestPlanDetails() {
               onClickNext={updateModal}
               onBack={()=> setCloneModalOpen(false)}
               ></NewTestCaseModalClone>
+
+            <EditTestCaseModalInfo
+              modalOpen={editModalOpen} 
+              onClickNext={updateModal}
+              onBack={()=> setEditModalOpen(false)}
+              selectedRow={selectedRow}
+              ></EditTestCaseModalInfo>
         
         <SplitScreen
             topChildren={<h1>Test Plan Details</h1>}
