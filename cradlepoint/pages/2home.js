@@ -104,18 +104,21 @@ export default function HomeScreen(props) {
             />
             <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
             <CreateNewModal
+              testPlanOrEngagement={"TEST_PLAN"}
               modalOpen={selectModalOpen} 
               onClickNext={updateModal}
               onClose={()=> setSelectModalOpen(false)}
             />
 
             <NewEngagModalScratch
+              testPlanOrEngagement={"TEST_PLAN"}
               modalOpen={scratchModalOpen} 
               onBack={()=> setScratchModalOpen(false)}
               selectedRow={selectedRow}
               ></NewEngagModalScratch>
 
             <NewModalClone
+              testPlanOrEngagement={"TEST_PLAN"}
               modalOpen={cloneModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setCloneModalOpen(false)}
