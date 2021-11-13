@@ -1,5 +1,5 @@
 import connectToDb from "../../util/mongodb";
-import {engagementSchema} from "../../schemas/engagementSchema"
+import {engagementSchema} from "../../schemas/engagementSchema";
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
