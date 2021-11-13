@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
+import {engagementSchema} from "../../schemas/engagementSchema";
 /*
   Gets the requested test plan from the database
 */
@@ -11,13 +12,14 @@ export default async (req, res) => {
     'engagementDetails': 'Test Details 2',
     'SE': '1234',
     'POC_Engineer': '2345',
-    'customer': 'Big Finance',
+    'customer': 'Small Finance',
     'SFDC': '"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380..."',
     'testPlanId': ObjectId("61724e5599915be1b771acb2"),
     'BOM': [""],
     'createdOn': new Date(2021, 10, 20, 7, 0, 0, 0)
   }; 
-
+  const isValid = await engagementSchema.isValid(updates);
+  console.log("isValid:", isValid);
   //const engagement = engagementSchema.cast(updates);
   const db = await connectToDb();
   await db.collection("engagements").replaceOne(query, updates);
