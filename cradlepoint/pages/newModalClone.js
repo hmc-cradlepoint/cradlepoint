@@ -88,7 +88,7 @@ const tempRows = [
   );
 }
 
-NewTestPlanModalClone.propTypes = {
+NewModalClone.propTypes = {
     modalOpen: PropTypes.bool.isRequired,
     onBack: PropTypes.bool.isRequired,
     onClickNext:PropTypes.func.isRequired,
