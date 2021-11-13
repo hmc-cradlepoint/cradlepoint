@@ -2,23 +2,23 @@ import * as yup from 'yup';
 const { ObjectId } = require('bson');
 
 // See: https://github.com/jquense/yup/issues/467
-class ObjectIdSchema extends yup.mixed {
-  constructor() {
-    super({ type: 'objectId' });
+// class ObjectIdSchema extends yup.mixed {
+//   constructor() {
+//     super({ type: 'objectId' });
 
-    this.withMutation(schema => {
-      schema.transform(function(value) {
-        if (this.isType(value)) return value;
-        return new ObjectId(value);
-      });
-    });
-  }
+//     this.withMutation(schema => {
+//       schema.transform(function(value) {
+//         if (this.isType(value)) return value;
+//         return new ObjectId(value);
+//       });
+//     });
+//   }
   
-  _typeCheck(value) {
-    return ObjectId.isValid(value);
-  }
-}
-yup.ObjectId = () => new ObjectIdSchema();
+//   _typeCheck(value) {
+//     return ObjectId.isValid(value);
+//   }
+// }
+// yup.ObjectId = () => new ObjectIdSchema();
 
 export const engagementSchema = yup.object().shape({
   statusCode: yup.number().positive().integer().required(),
