@@ -14,12 +14,13 @@ export default async (req, res) => {
     'POC_Engineer': '2345',
     'customer': 'Small Finance',
     'SFDC': '"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380..."',
-    'testPlanId': ObjectId("61724e5599915be1b771acb2"),
     'BOM': [""],
+    'testPlanId': "61724e5599915be1b771acb2",
     'createdOn': new Date(2021, 10, 20, 7, 0, 0, 0)
   }; 
-  const isValid = await engagementSchema.isValid(updates);
-  console.log("isValid:", isValid);
+  const valid = await engagementSchema.isValid(updates);
+  console.log("Schema is Valid:", valid ); 
+  console.log("Id is Valid:", ObjectId.isValid(updates.testPlanId));
   //const engagement = engagementSchema.cast(updates);
   const db = await connectToDb();
   await db.collection("engagements").replaceOne(query, updates);
