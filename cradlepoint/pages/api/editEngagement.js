@@ -17,22 +17,12 @@ export default async (req, res) => {
     'BOM': [""],
     'createdOn': new Date(2021, 10, 20, 7, 0, 0, 0)
   }; 
-  try {
-    await engagementSchema.isValid(req.body).then(async function (valid) {
-      if (valid){
-        const engagement = engagementSchema.cast(updates);
-        const db = await connectToDb();
-        await db.collection("engagements").replaceOne(query, engagement);
-        const results = await db.collection("engagements").find(query).toArray();
-        res.json(results);
-        //res.status(200).send({message: result});
-      }
-      else {
-        res.status(422).send({message: 'Input not in right format'})
-      }
-    })
-  } catch (err) {
-    res.status(500).send(err);
-  }
+
+  //const engagement = engagementSchema.cast(updates);
+  const db = await connectToDb();
+  await db.collection("engagements").replaceOne(query, updates);
+  const result = await db.collection("engagements").find(query).toArray();
+  console.log("Results:", result);
+  res.json(result);
 
 };
