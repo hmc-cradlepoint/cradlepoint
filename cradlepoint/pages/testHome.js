@@ -1,7 +1,7 @@
 import useUser from '../util/useUser';
 import PlainScreen from '../components/baseScreen/PlainScreen';
 
-const SgProfile = () => {
+const testHome = () => {
   const { user } = useUser({ redirectTo: '/login' })
 
   if (!user || user.isLoggedIn === false) {
@@ -22,4 +22,4 @@ const SgProfile = () => {
   )
 }
 
-export default SgProfile;
+export default testHome;
