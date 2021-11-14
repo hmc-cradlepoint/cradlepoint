@@ -2,14 +2,15 @@ import React, {useState} from 'react';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
-import { CPButton, HorizontalButton } from '../components/button/CPButton';
+import CPButton from '../components/button/CPButton';
 import NewTestCaseModalInfo from './testPlanModals/newTestCaseInfo';
-import NewTestCaseModal from './testPlanModals/newTestCase';
-import NewTestCaseModalClone from './testPlanModals/newTestCaseClone';
 import EditTestPlanInfo from './testPlanModals/editTestPlanInfo';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
+import CreateNewModal from './createNewModal';
+import NewModalClone from './newModalClone';
 import styles from '../styles/EngagementDetails.module.css';
+import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
 
 export default function TestPlanDetails() {
 
@@ -29,84 +30,44 @@ export default function TestPlanDetails() {
     
     const classes = useStyles();
 
-    const testCaseRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", subject: "my test case 1", description: "lorem ipsum dolores et", coverage: "95%"},
-        {id: "2", subject: "my test case 2", description: "lorem ipsum dolores et", coverage: "10%"}
-    ];
-
-    const testCaseLibraryRows = [
-        // TODO: hardcoded data until API ready
-        {id: 1, subject: 'Test case 1', description: 'This is a detail description of the test case'},
-        {id: 2, subject: 'Test case 2', description: 'This is a detail description of the test case'},
-        {id: 3, subject: 'Test case 3', description: 'This is a detail description of the test case'},
-        {id: 4, subject: 'Test case 4', description: 'This is a detail description of the test case'},
-        {id: 5, subject: 'Test case 5', description: 'This is a detail description of the test case'},
-        {id: 6, subject: 'Test case 6', description: 'This is a detail description of the test case'},
-        {id: 7, subject: 'Test case 7', description: 'This is a detail description of the test case'}
-    ];
-
-    const testCaseColumns = [
-    { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
-    { field: 'coverage', headerName: 'Coverage', headerClassName: 'header', flex: 1}, //calculated from tests
-    // { field: 'topology', headerName: 'Coverage', headerClassName: 'header', flex: 1}, 
-    // { field: 'configs', headerName: 'Device Configs', headerClassName: 'header', flex: 2},
+    const testCaseColumnsWithActions = testCaseColumns.concat([
     { 
         field: 'button', 
         headerName: 'Actions',
         headerClassName: 'header',
         align: 'center',
         renderCell: (params) => (
-        <div style={{display: "flex", flexDirection: "column"}}>
-            <CPButton text="View Details"/>
+        <div style={{display: "flex", flexDirection: "row"}}>
+            <CPButton text="View"/>
             <CPButton text="Delete"/>
         </div>
         ),
         flex: 2
     }
-    ];
+    ]);
 
-    const BOMRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "2", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "3", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "4", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "5", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "6", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "7", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "8", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "9", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-    ];
 
-    const BOMColumns = [
-        { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-        { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-        { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
-        { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
-        { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
-        { field: 'codeVer', headerName: 'Code Version', headerClassName: 'header', flex: 1},
-        { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1},
+    const BOMColumnsWithAction = BOMColumns.concat([
         { 
             field: 'button', 
             headerName: 'Actions',
             headerClassName: 'header',
             align: 'center',
-            renderCell: () => (
-            <div style={{display: "flex", flexDirection: "column"}}> 
-                <CPButton text="Edit"/>
-                <CPButton text="Delete"/>
-            </div>
-            ),
+            renderCell: () => {
+                return (
+                    <div style={{display: "flex", flexDirection: "row"}}> 
+                    <CPButton text="View"/>
+                    <CPButton text="Delete"/>
+                    </div>
+                )
+            },
             flex: 1
         }
-    ];
+    ]);
 
 
     function testCases() {
-        // Test plans table component
+        // Test case table component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
@@ -117,7 +78,7 @@ export default function TestPlanDetails() {
                                 }}
                     />
                 </div>
-                <PlainTable rows={testCaseRows} columns={testCaseColumns} className={classes.root}/>
+                <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -133,7 +94,7 @@ export default function TestPlanDetails() {
                     }}
                     />
                 </div>
-                <PlainTable rows={BOMRows} columns={BOMColumns} className={classes.root}/>
+                <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
             </div>
         )
     }
@@ -168,7 +129,7 @@ export default function TestPlanDetails() {
         case "clone_selected":
             setCloneModalOpen(false)
             setInfoModalOpen(true)
-            const selectedRowData = (testCaseLibraryRows.filter((row) => rowId===row.id))[0];
+            const selectedRowData = (testCaseRows.filter((row) => rowId===row.id))[0];
             setSelectedRow(selectedRowData);
             break;
         case "edit":
@@ -217,10 +178,11 @@ export default function TestPlanDetails() {
 
     return (
         <div>
-            <NewTestCaseModal
+            <CreateNewModal
+              type={'Test Case'}
               modalOpen={selectModalOpen} 
               onClickNext={updateModal}
-              onClose={()=> setSelectModalOpen(false)}></NewTestCaseModal>
+              onClose={()=> setSelectModalOpen(false)}/>
 
             <NewTestCaseModalInfo
               modalOpen={infoModalOpen} 
@@ -228,11 +190,12 @@ export default function TestPlanDetails() {
               selectedRow={selectedRow}
               ></NewTestCaseModalInfo>
 
-            <NewTestCaseModalClone
+            <NewModalClone
+              type={'Test Case'}
               modalOpen={cloneModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setCloneModalOpen(false)}
-              ></NewTestCaseModalClone>
+              />
 
             <EditTestPlanInfo
               modalOpen={editModalOpen} 

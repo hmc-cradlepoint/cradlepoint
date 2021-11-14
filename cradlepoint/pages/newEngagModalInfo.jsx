@@ -25,6 +25,5 @@ export default function NewEngagModalInfo(props) {
 NewEngagModalInfo.propTypes = {
   modalOpen: PropTypes.bool.isRequired,
   onBack: PropTypes.bool.isRequired,
-  onClickNext:PropTypes.func.isRequired,
-  testPlanOrEngagement: PropTypes.string.isRequired,
+  onClickNext:PropTypes.func.isRequired
 }

@@ -3,7 +3,7 @@ import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-
+import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
 
 export default function EngagementDetails() {
@@ -24,31 +24,9 @@ export default function EngagementDetails() {
     
     const classes = useStyles();
 
-    const testPlanRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    ];
 
-    const testPlanColumns = [
-    { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
-    { field: 'coverage', headerName: 'Coverage', headerClassName: 'header', flex: 1},
-    { field: 'customerFeedback', headerName: 'Customer Feedback', headerClassName: 'header', flex: 2},
-    { field: 'authors', headerName: 'Authors', headerClassName: 'header', flex: 1},
-    { field: 'version', headerName: 'Version', headerClassName: 'header', flex: 1},
-    { field: 'dateCreated', headerName: 'Date Created', headerClassName: 'header', flex: 1},
-    { field: 'deviceConfigs', headerName: 'Device Configs', headerClassName: 'header', flex: 2},
+
+    const testPlanColWithButton = testPlanColumns.concat([
     { 
         field: 'button', 
         headerName: 'Actions',
@@ -61,29 +39,9 @@ export default function EngagementDetails() {
         ),
         flex: 1
     }
-    ];
+    ]);
 
-    const BOMRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "2", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "3", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "4", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "5", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "6", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "7", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "8", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "9", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-    ];
-
-    const BOMColumns = [
-        { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-        { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-        { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
-        { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
-        { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
-        { field: 'codeVer', headerName: 'Code Version', headerClassName: 'header', flex: 1},
-        { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1},
+    const BOMColumnsWithButton = BOMColumns.concat([
         { 
             field: 'button', 
             headerName: 'Actions',
@@ -96,7 +54,7 @@ export default function EngagementDetails() {
             ),
             flex: 1
         }
-    ];
+    ]);
 
     function testPlans() {
         // Test plans table component
@@ -106,7 +64,7 @@ export default function EngagementDetails() {
                     <h2>Test Plans</h2>
                     <CPButton text="Add New"/>
                 </div>
-                <PlainTable rows={testPlanRows} columns={testPlanColumns} className={classes.root}/>
+                <PlainTable rows={testPlanRows} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -116,7 +74,7 @@ export default function EngagementDetails() {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements</h2>
-                <PlainTable rows={BOMRows} columns={BOMColumns} className={classes.root}/>
+                <PlainTable rows={BOMRows} columns={BOMColumnsWithButton} className={classes.root}/>
             </div>
         )
     }
