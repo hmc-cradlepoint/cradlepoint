@@ -4,8 +4,8 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import CreateNewModal from './createNewModal';
-import NewEngagModalScratch from './newEngagModalScratch';
-import NewModalClone from './NewModalClone';
+import NewEngagModalInfo from './newEngagModalInfo';
+import NewModalClone from './newModalClone';
 
 // TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
@@ -104,21 +104,22 @@ export default function HomeScreen(props) {
             />
             <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
             <CreateNewModal
-              testPlanOrEngagement={"TEST_PLAN"}
+              testPlanOrEngagement={"ENGAGEMENT"}
               modalOpen={selectModalOpen} 
               onClickNext={updateModal}
               onClose={()=> setSelectModalOpen(false)}
             />
 
-            <NewEngagModalScratch
-              testPlanOrEngagement={"TEST_PLAN"}
-              modalOpen={scratchModalOpen} 
-              onBack={()=> setScratchModalOpen(false)}
+            <NewEngagModalInfo
+              testPlanOrEngagement={"ENGAGEMENT"}
+              modalOpen={infoModalOpen} 
+              onBack={()=> setInfoModalOpen(false)}
               selectedRow={selectedRow}
+              
               />
 
             <NewModalClone
-              testPlanOrEngagement={"TEST_PLAN"}
+              testPlanOrEngagement={"ENGAGEMENT"}
               modalOpen={cloneModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setCloneModalOpen(false)}

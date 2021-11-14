@@ -59,10 +59,10 @@ export default function TestPlanDetails() {
         headerClassName: 'header',
         align: 'center',
         renderCell: (params) => (
-        <p >
-            <HorizontalButton text="View Details"/>
-            <HorizontalButton text="Delete"/>
-        </p>
+        <div style={{display: "flex", flexDirection: "column"}}>
+            <CPButton text="View Details"/>
+            <CPButton text="Delete"/>
+        </div>
         ),
         flex: 2
     }
@@ -95,10 +95,10 @@ export default function TestPlanDetails() {
             headerClassName: 'header',
             align: 'center',
             renderCell: () => (
-            <p >
-                <HorizontalButton text="Edit"/>
-                <HorizontalButton text="Delete"/>
-            </p>
+            <div style={{display: "flex", flexDirection: "column"}}> 
+                <CPButton text="Edit"/>
+                <CPButton text="Delete"/>
+            </div>
             ),
             flex: 1
         }

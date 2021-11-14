@@ -2,7 +2,7 @@ import React from 'react';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
-import {CPButton} from '../components/button/CPButton';
+import CPButton from '../components/button/CPButton';
 
 import styles from '../styles/EngagementDetails.module.css';
 

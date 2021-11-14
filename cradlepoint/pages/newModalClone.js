@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import {CPButton} from "../../components/button/CPButton";
-import styles from '../../styles/Modal.module.css'
+import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
-import {PlainTable} from "../components/tables/Table";
+import styles from '../styles/Modal.module.css'
+import CPButton from '../components/button/CPButton';
 import PropTypes from 'prop-types';
+
 
 export default function NewModalClone(props) {
   const useStyles = makeStyles({
@@ -80,9 +81,11 @@ const tempRows = [
     ];  
 
   return (
-    <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
-        <h2>Choose an Existing {props.testPlanOrEngagement === 'TEST_PLAN' ? "Test Plan" : "Engagement"} to Clone From</h2>
-        <PlainTable rows={tempRows} columns={props.testPlanOrEngagement === 'TEST_PLAN' ? testPlanColumns : engagementColumns} className={classes.root}/>
+    <Modal className={styles.Modal} isOpen={props.modalOpen}>
+        <h2>Choose an Existing {props.testPlanOrEngagement === 'TEST_PLAN' ? "Test Plan" : "Engagement"} to Clone</h2>
+        <PlainTable rows={tempRows} 
+            columns={props.testPlanOrEngagement === 'TEST_PLAN' ? testPlanColumns : engagementColumns} 
+            className={classes.root}/> 
         <CPButton text='Back' onClick={props.onBack}/>
     </Modal>
   );

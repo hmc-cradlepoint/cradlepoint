@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 
 export default function CreateNewModal(props) {
   return (
-      <Modal className={styles.ModalSelect} isOpen={props.modalOpen}>
+      <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Create New {props.isEngagementOrTestPlan === "TEST_PLAN" ? "Test Plan" : "Engagement"}</h2>
         <CPButton text='From scratch' className="ModalButton" onClick={()=>{console.log('scratch clicked');
         props.onClickNext("scratch")}}/> 
         <CPButton text='From exisiting engagement (Clone)' onClick={()=>props.onClickNext("clone")}/>
-        <CPButton text='Cancel' onClick={()=>props.onClose(false)}/>
+        <CPButton text='Cancel' onClick={props.onClose}/>
       </Modal>
   );
 }

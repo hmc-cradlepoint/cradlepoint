@@ -1,11 +1,11 @@
 import React from "react";
 import Modal from 'react-modal';
-import {CPButton} from "../../components/button/CPButton";
+import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css'
 import { makeStyles } from '@mui/styles';
 import {PlainTable} from "../../components/tables/Table"
 
-function NewEngagModalClone(props) {
+function NewTestCaseClone(props) {
   const useStyles = makeStyles({
     root: {
       '& .header': {
@@ -56,4 +56,4 @@ const rows = [
   );
 }
 
-export default NewEngagModalClone;
+export default NewTestCaseClone;

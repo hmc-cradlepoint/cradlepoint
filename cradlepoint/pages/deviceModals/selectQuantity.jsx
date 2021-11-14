@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from 'react-modal';
-import {CPButton} from "../../components/button/CPButton";
+import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css'
 import { makeStyles } from '@mui/styles';
 import {PlainTable, CheckBoxTable} from "../../components/tables/Table"
