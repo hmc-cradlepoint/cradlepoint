@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
-import { CPButton } from '../components/button/CPButton';
-import NewEngagModal from './engagModals/newEngagModal'
-import NewEngagModalClone from './engagModals/newEngagModalClone'
-import NewEngagModalInfo from './engagModals/newEngagModalInfo'
+import CPButton from '../components/button/CPButton';
+import CreateNewModal from './createNewModal';
+import NewEngagModalScratch from './newEngagModalScratch';
+import NewModalClone from './NewModalClone';
+
 // TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
     // TODO: have a consistent style for all the pages (delete later)
@@ -91,9 +92,6 @@ export default function HomeScreen(props) {
       }
     }
 
-    //  status, details, sysEng, pocEng, customer;
-
-
     return(
         <PlainScreen>
             <CPButton 
@@ -105,22 +103,26 @@ export default function HomeScreen(props) {
               }
             />
             <PlainTable rows={rows} columns={engagementColumns} className={classes.root}/>
-            <NewEngagModal
+            <CreateNewModal
+              testPlanOrEngagement={"TEST_PLAN"}
               modalOpen={selectModalOpen} 
               onClickNext={updateModal}
-              onClose={()=> setSelectModalOpen(false)}></NewEngagModal>
+              onClose={()=> setSelectModalOpen(false)}
+            />
 
-            <NewEngagModalInfo
-              modalOpen={infoModalOpen} 
-              onBack={()=> setInfoModalOpen(false)}
+            <NewEngagModalScratch
+              testPlanOrEngagement={"TEST_PLAN"}
+              modalOpen={scratchModalOpen} 
+              onBack={()=> setScratchModalOpen(false)}
               selectedRow={selectedRow}
-              ></NewEngagModalInfo>
+              />
 
-            <NewEngagModalClone
+            <NewModalClone
+              testPlanOrEngagement={"TEST_PLAN"}
               modalOpen={cloneModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setCloneModalOpen(false)}
-              ></NewEngagModalClone>
+            />
 
       </PlainScreen>
     )

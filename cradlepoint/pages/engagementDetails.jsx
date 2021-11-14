@@ -26,23 +26,22 @@ export default function EngagementDetails() {
 
     const testPlanRows = [
         // TODO: hardcoded data until API ready
-        {id: "1", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "2", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "3", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "4", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "5", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "6", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "7", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "8", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "9", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "10", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+        {id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
     ];
 
     const testPlanColumns = [
     { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
     { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
     { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'coverage', headerName: 'Coverage', headerClassName: 'header', flex: 1},
     { field: 'customerFeedback', headerName: 'Customer Feedback', headerClassName: 'header', flex: 2},
@@ -99,22 +98,6 @@ export default function EngagementDetails() {
         }
     ];
 
-    const TestPlanTimeEstimatesRows = [
-        {id: 1, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 2, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 3, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 4, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 5, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 6, name: "Router testing", status: "good", timeEst: "1 hour"},
-    ]
-
-    const TestPlanTimeEstimatesColumns = [
-        { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-        { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 2},
-        { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1.5},
-        { field: 'timeEst', headerName: 'Time Est.', headerClassName: 'header', flex: 2},
-    ];
-
     function testPlans() {
         // Test plans table component
         return (
@@ -132,21 +115,8 @@ export default function EngagementDetails() {
         // Summary of BOM Elements component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
-                <div className={styles.tableButtonRow}>
-                    <h2>Summary of Bill of Materials Elements</h2>
-                    <CPButton text="Add New"/>
-                </div>
+                <h2>Summary of Bill of Materials Elements</h2>
                 <PlainTable rows={BOMRows} columns={BOMColumns} className={classes.root}/>
-            </div>
-        )
-    }
-
-    function testPlanTimeEstimates() {
-        // Test plan time estimates table
-        return (
-            <div className={styles.tableContainer}>
-                <h2>Test Plan Time Estimates</h2>
-                <PlainTable rows={TestPlanTimeEstimatesRows} columns={TestPlanTimeEstimatesColumns} className={classes.root}/>
             </div>
         )
     }
@@ -160,11 +130,26 @@ export default function EngagementDetails() {
         )
     }
 
+    function details() {
+        return(
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <h2>Details</h2>
+                {/* TODO: populate this data with actual data */}
+                <p><b>ID:</b> 1923718<br/><b>Client:</b> Harvey Mudd<br/> <b>SFDC:</b> https://www.salesforce.com<br/><b>Status:</b> In Progress<br/><b>System Engineer:</b> Matt Tran<br/><b>POC Engineer:</b> Jessica Kwok</p>
+            </div>
+        )
+    }
+
     return (
         <SplitScreen
-            topChildren={<h1>Engagement Details</h1>}
-            leftSection={description()}
-            rightSection={testPlanTimeEstimates()}
+            topChildren={
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <h1>Engagement Details</h1>
+                <CPButton text="Edit Descriptions"/>
+            </div>
+            }
+            leftSection={details()}
+            rightSection={description()}
             bottomChildren={
                 <div>
                 {testPlans()}
