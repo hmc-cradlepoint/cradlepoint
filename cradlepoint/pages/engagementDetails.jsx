@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
@@ -23,6 +23,12 @@ export default function EngagementDetails() {
       });
     
     const classes = useStyles();
+
+    const [modal, setModal] = useState("");
+
+    const modalType = {
+        DESCRIPTION: 'DESCRIPTION',
+    }
 
 
     //   TODO: style the active test plan
@@ -127,7 +133,7 @@ export default function EngagementDetails() {
             topChildren={
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Engagement Details</h1>
-                <CPButton text="Edit Descriptions"/>
+                <CPButton text="Edit Descriptions" onClick={() => setModal(modalType.DESCRIPTION)}/>
             </div>
             }
             leftSection={details()}
