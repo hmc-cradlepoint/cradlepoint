@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
 import {engagementSchema} from "../../schemas/engagementSchema";
 /*
-  Gets the requested test plan from the database
+  Edits the requested engagement from the database
 */
 // const query = { '_id': ObjectId("617249b199915be1b771aca1") };
 // const data = {
@@ -20,9 +20,9 @@ import {engagementSchema} from "../../schemas/engagementSchema";
 // }; 
 
 export default async (req, res) => {
-  // if (req.method !== 'POST') {
-  //   res.status(405).send({ message: 'Only POST requests allowed' })
-  // }
+  if (req.method !== 'POST') {
+    res.status(405).send({ message: 'Only POST requests allowed' })
+  }
   try{
     const data = req.body;
     const valid = await engagementSchema.isValid(data);
@@ -35,7 +35,6 @@ export default async (req, res) => {
       delete result._id;
       delete result.testPlanId;
       const engagement = {_id: newId, testPlanId:newTestPlanId, ...result };
-      console.log(engagement);
       // Update the Database w/ new Engagement
       const db = await connectToDb();
       await db.collection("engagements").replaceOne(query, engagement);
