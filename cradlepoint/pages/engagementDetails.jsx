@@ -25,7 +25,7 @@ export default function EngagementDetails() {
     const classes = useStyles();
 
 
-
+    //   TODO: style the active test plan
     const testPlanColWithButton = testPlanColumns.concat([
     { 
         field: 'button', 
@@ -33,9 +33,29 @@ export default function EngagementDetails() {
         headerClassName: 'header',
         align: 'center',
         renderCell: () => (
-        <span>
+        <>
             <CPButton text="EDIT"/>
-        </span>
+            <CPButton text="SET ACTIVE"/>
+        </>
+        ),
+        flex: 1.5
+    }
+    ]);
+
+    const activeTestPlan = [
+        {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    ]
+
+    const activeTestPlanCol = testPlanColumns.concat([
+    { 
+        field: 'button', 
+        headerName: 'Actions',
+        headerClassName: 'header',
+        align: 'center',
+        renderCell: () => (
+        <>
+            <CPButton text="EDIT"/>
+        </>
         ),
         flex: 1
     }
@@ -64,6 +84,10 @@ export default function EngagementDetails() {
                     <h2>Test Plans</h2>
                     <CPButton text="Add New"/>
                 </div>
+                <h3>Active test plan: </h3>
+                <PlainTable rows={activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <br />
+                <h3>Archived test plans: </h3>
                 <PlainTable rows={testPlanRows} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
@@ -73,7 +97,7 @@ export default function EngagementDetails() {
         // Summary of BOM Elements component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
-                <h2>Summary of Bill of Materials Elements</h2>
+                <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
                 <PlainTable rows={BOMRows} columns={BOMColumnsWithButton} className={classes.root}/>
             </div>
         )
