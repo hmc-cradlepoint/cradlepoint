@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-import CPButton from "../components/button/CPButton";
-import styles from '../styles/Modal.module.css'
+import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
-import {PlainTable} from "../components/tables/Table";
+import styles from '../styles/Modal.module.css'
+import CPButton from '../components/button/CPButton';
 import PropTypes from 'prop-types';
+import {engagementColumns, testPlanColumns, testCaseColumns, engagementRows, testPlanRows, testCaseRows} from '../util/tableColumns'
+
 
 export default function NewModalClone(props) {
   const useStyles = makeStyles({
@@ -24,65 +26,72 @@ export default function NewModalClone(props) {
 
 const classes = useStyles();
 
-const engagementColumns = [
-    { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
-    { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
-    { field: 'sysEng', headerName: 'SEng', headerClassName: 'header', flex: 1},
-    { field: 'pocEng', headerName: 'POC Eng', headerClassName: 'header', flex: 1},
-    { field: 'customer', headerName: 'Customer', headerClassName: 'header', flex: 1},
-    { field: 'sfdc', headerName: 'SFDC', headerClassName: 'header', flex: 1},
-    { field: 'dateCreated', headerName: 'Date Created', headerClassName: 'header', flex: 1},
-    { 
-      field: 'button', 
-      flex: 1,
-      minWidth: 100,
-      headerName: 'Actions',
-      headerClassName: 'header',
-      align: 'center',
-      renderCell: () => (
-        <CPButton text="clone" onClick={()=>console.log("cloned")}/>
-      )
+  function renderColumns(type){
+    switch (type){
+      case "Engagement":
+        return engagementColumns.concat([{ 
+          field: 'button', 
+          flex: 1,
+          minWidth: 100,
+          headerName: 'Actions',
+          headerClassName: 'header',
+          align: 'center',
+          renderCell: () => (
+            <CPButton text="clone" onClick={()=>console.log("clone_selected")}/>
+          )
+        }]); 
+      case "Test Plan":
+        return testPlanColumns.concat([
+        { 
+          field: 'button', 
+          flex: 1,
+          minWidth: 100,
+          headerName: 'Actions',
+          headerClassName: 'header',
+          align: 'center',
+          // TODO: figure out how to get row ID from render cell function
+          renderCell: () => (
+            <CPButton text="clone" onClick={() => {props.onClickNext("clone_selected")}}/>
+          )
+        }
+        ]);
+        
+      case "Test Case":
+        return testCaseColumns.concat([
+          { 
+            field: 'button', 
+            flex: 1,
+            minWidth: 100,
+            headerName: 'Actions',
+            headerClassName: 'header',
+            align: 'center',
+            // TODO: figure out how to get row ID from render cell function
+            renderCell: () => (
+              <CPButton text="clone" onClick={() => {props.onClickNext("clone_selected")}}/>
+            )
+          }
+          ]);
     }
-  ];
+  }
 
-const testPlanColumns = [
-    { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
-    { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'currentTPEs', headerName: 'Current TPEs', headerClassName: 'header', flex: 1},
-    { 
-      field: 'button', 
-      flex: 1,
-      minWidth: 100,
-      headerName: 'Actions',
-      headerClassName: 'header',
-      align: 'center',
-      // TODO: figure out how to get row ID from render cell function
-      renderCell: () => (
-        <CPButton text="clone" onClick={() => {props.onClickNext("clone_selected")}}/>
-      )
+  // TODO: delete later when integrated
+  function renderRows(type){
+    switch (type){
+      case "Engagement":
+        return engagementRows;
+      case "Test Plan":
+        return testPlanRows;
+      case "Test Case":
+        return testCaseRows;
     }
-  ];
-
-    // TODO: make rows not hard coded (delete later)
-const tempRows = [
-    {id: 1, name: 'Engagement 1', status: 'Pending', details: ' ', sysEng: 'John Rogers',	pocEng: 'Paul Switchport', customer: 'ABC Bus Company', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/01/2021'},
-    {id: 2, name: 'Engagement 2', status: 'Assigned', details: ' ', sysEng: 'Michael Smith', pocEng: 'George Packets', customer: 'Big Finance', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/02/2021'},
-    {id: 3, name: 'Engagement 3', status: 'POC testing complete', details: ' ', sysEng: 'Don Lee', pocEng: 'Ron State', customer: 'SensorCo', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/03/2021'},
-    {id: 4, name: 'Engagement 4', status: 'POC testing outcome', details: ' ', sysEng: 'Jim Black', pocEng: 'Jason Dumps', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/04/20201'},
-    {id: 5, name: 'Engagement 5', status: 'POC approved', details: ' ', sysEng: 'Don Lee', pocEng: 'Paul Switchport', customer: 'SensorCo', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/05/20201'},
-    {id: 6, name: 'Engagement 6', status: 'Archieved', details: ' ', sysEng: 'Jim Black', pocEng: 'George Packets', customer: 'Burgerz-R-us', sfdc: 'https://cradlepoint.lightning.force.com/lightning/r/Opportunity/0063800000qtILXAA2/view', dateCreated: '10/06/20201'}
-    ];  
-
+  }
   return (
-    <Modal className={styles.ModalEngagInfo} isOpen={props.modalOpen}>
-        <h2>Choose an Existing {props.testPlanOrEngagement === 'TEST_PLAN' ? "Test Plan" : "Engagement"} to Clone From</h2>
-        <PlainTable rows={tempRows} columns={props.testPlanOrEngagement === 'TEST_PLAN' ? testPlanColumns : engagementColumns} className={classes.root}/>
+    <Modal className={styles.Modal} isOpen={props.modalOpen}>
+        <h2>Choose an Existing {props.type} to Clone</h2>
+        <PlainTable 
+            rows={renderRows(props.type)} 
+            columns={renderColumns(props.type)} 
+            className={classes.root}/> 
         <CPButton text='Back' onClick={props.onBack}/>
     </Modal>
   );
@@ -92,5 +101,5 @@ NewModalClone.propTypes = {
     modalOpen: PropTypes.bool.isRequired,
     onBack: PropTypes.bool.isRequired,
     onClickNext:PropTypes.func.isRequired,
-    testPlanOrEngagement: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
 }

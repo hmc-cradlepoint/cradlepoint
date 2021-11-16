@@ -17,6 +17,7 @@ export default function CPButton(props) {
     )
 }
 
-Button.propTypes = {
+
+CPButton.propTypes = {
     text: PropTypes.any
 }
