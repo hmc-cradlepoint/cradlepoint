@@ -4,18 +4,10 @@ import {resultSchema} from "../../schemas/resultSchema";
 /*
   Edits the requested result from the database
 */
-// const data = {
-//   "_id": "61930925b09972144203dd2c", 
-//   "details": "test detail",
-//   "POCApproval": "0",
-//   "SEApproval": "1",
-//   "evidence": "test evidence",
-//   "testId": "619007a699912cea5510f098",
-// }; 
 
 export default async (req, res) => {
-  if (req.method !== 'POST') {
-    res.status(405).send({ message: 'Only POST requests allowed' })
+  if (req.method !== 'PUT') {
+    res.status(405).send({ message: 'Only PUT requests allowed' })
   }
   try{
     const data = req.body;
@@ -33,14 +25,12 @@ export default async (req, res) => {
       // Update the Database w/ new Result
       const db = await connectToDb();
       await db.collection("result").replaceOne(query, newResult);
-      //res.json(newResult);
       res.status(200).send({message: "Success!"});
     } else {
       res.status(422).send({message: 'Input not in right format'})
     }
 
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 };
