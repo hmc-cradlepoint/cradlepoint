@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-
+import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
 
 export default function EngagementDetails() {
@@ -24,67 +24,50 @@ export default function EngagementDetails() {
     
     const classes = useStyles();
 
-    const testPlanRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "2", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "3", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "4", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "5", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "6", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "7", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "8", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "9", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-        {id: "10", subject: "subject", topology: "topology", status: "pass", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    ];
+    const [modal, setModal] = useState("");
 
-    const testPlanColumns = [
-    { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
-    { field: 'coverage', headerName: 'Coverage', headerClassName: 'header', flex: 1},
-    { field: 'customerFeedback', headerName: 'Customer Feedback', headerClassName: 'header', flex: 2},
-    { field: 'authors', headerName: 'Authors', headerClassName: 'header', flex: 1},
-    { field: 'version', headerName: 'Version', headerClassName: 'header', flex: 1},
-    { field: 'dateCreated', headerName: 'Date Created', headerClassName: 'header', flex: 1},
-    { field: 'deviceConfigs', headerName: 'Device Configs', headerClassName: 'header', flex: 2},
+    const modalType = {
+        DESCRIPTION: 'DESCRIPTION',
+    }
+
+
+    //   TODO: style the active test plan
+    const testPlanColWithButton = testPlanColumns.concat([
     { 
         field: 'button', 
         headerName: 'Actions',
         headerClassName: 'header',
         align: 'center',
         renderCell: () => (
-        <span>
+        <>
             <CPButton text="EDIT"/>
-        </span>
+            <CPButton text="SET ACTIVE"/>
+        </>
+        ),
+        flex: 1.5
+    }
+    ]);
+
+    const activeTestPlan = [
+        {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    ]
+
+    const activeTestPlanCol = testPlanColumns.concat([
+    { 
+        field: 'button', 
+        headerName: 'Actions',
+        headerClassName: 'header',
+        align: 'center',
+        renderCell: () => (
+        <>
+            <CPButton text="EDIT"/>
+        </>
         ),
         flex: 1
     }
-    ];
+    ]);
 
-    const BOMRows = [
-        // TODO: hardcoded data until API ready
-        {id: "1", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "2", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "3", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "4", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "5", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "6", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "7", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "8", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-        {id: "9", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
-    ];
-
-    const BOMColumns = [
-        { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-        { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-        { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
-        { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
-        { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
-        { field: 'codeVer', headerName: 'Code Version', headerClassName: 'header', flex: 1},
-        { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1},
+    const BOMColumnsWithButton = BOMColumns.concat([
         { 
             field: 'button', 
             headerName: 'Actions',
@@ -97,23 +80,7 @@ export default function EngagementDetails() {
             ),
             flex: 1
         }
-    ];
-
-    const TestPlanTimeEstimatesRows = [
-        {id: 1, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 2, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 3, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 4, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 5, name: "Router testing", status: "good", timeEst: "1 hour"},
-        {id: 6, name: "Router testing", status: "good", timeEst: "1 hour"},
-    ]
-
-    const TestPlanTimeEstimatesColumns = [
-        { field: 'id', headerName: 'ID', headerClassName: 'header', flex: 1},
-        { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 2},
-        { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1.5},
-        { field: 'timeEst', headerName: 'Time Est.', headerClassName: 'header', flex: 2},
-    ];
+    ]);
 
     function testPlans() {
         // Test plans table component
@@ -123,7 +90,11 @@ export default function EngagementDetails() {
                     <h2>Test Plans</h2>
                     <CPButton text="Add New"/>
                 </div>
-                <PlainTable rows={testPlanRows} columns={testPlanColumns} className={classes.root}/>
+                <h3>Active test plan: </h3>
+                <PlainTable rows={activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <br />
+                <h3>Archived test plans: </h3>
+                <PlainTable rows={testPlanRows} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -132,21 +103,8 @@ export default function EngagementDetails() {
         // Summary of BOM Elements component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
-                <div className={styles.tableButtonRow}>
-                    <h2>Summary of Bill of Materials Elements</h2>
-                    <CPButton text="Add New"/>
-                </div>
-                <PlainTable rows={BOMRows} columns={BOMColumns} className={classes.root}/>
-            </div>
-        )
-    }
-
-    function testPlanTimeEstimates() {
-        // Test plan time estimates table
-        return (
-            <div className={styles.tableContainer}>
-                <h2>Test Plan Time Estimates</h2>
-                <PlainTable rows={TestPlanTimeEstimatesRows} columns={TestPlanTimeEstimatesColumns} className={classes.root}/>
+                <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
+                <PlainTable rows={BOMRows} columns={BOMColumnsWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -160,11 +118,26 @@ export default function EngagementDetails() {
         )
     }
 
+    function details() {
+        return(
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <h2>Details</h2>
+                {/* TODO: populate this data with actual data */}
+                <p><b>ID:</b> 1923718<br/><b>Client:</b> Harvey Mudd<br/> <b>SFDC:</b> https://www.salesforce.com<br/><b>Status:</b> In Progress<br/><b>System Engineer:</b> Matt Tran<br/><b>POC Engineer:</b> Jessica Kwok</p>
+            </div>
+        )
+    }
+
     return (
         <SplitScreen
-            topChildren={<h1>Engagement Details</h1>}
-            leftSection={description()}
-            rightSection={testPlanTimeEstimates()}
+            topChildren={
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <h1>Engagement Details</h1>
+                <CPButton text="Edit Descriptions" onClick={() => setModal(modalType.DESCRIPTION)}/>
+            </div>
+            }
+            leftSection={details()}
+            rightSection={description()}
             bottomChildren={
                 <div>
                 {testPlans()}
