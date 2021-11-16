@@ -11,13 +11,13 @@ import React from 'react';
 // display only
 function PlainTable(props) {
     return (
-        <div style={{ height: 400, width: '100%' }} className={props.className}>
+        <div style={{ height: props.height ? props.height : 400, width: '100%' }} className={props.className}>
             <DataGrid
             rows={props.rows}
             columns={props.columns}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            onRowClick={props.onRowClick}
+            // onRowClick={props.onRowClick}
             />
         </div>
     )
