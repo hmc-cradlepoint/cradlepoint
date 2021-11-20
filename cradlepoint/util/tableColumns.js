@@ -52,7 +52,12 @@ const LibraryBOMColumns = [
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 
-
+const resultColumns = [
+    { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
+    { field: 'evidence', headerName: 'Evidence', headerClassName: 'header', flex: 1},
+];
 
 
 //   TODO: delete later (hardcoded rows)
@@ -108,7 +113,11 @@ const BOMRows = [
     {id: "9", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
 ];
 
+const resultRows = [
+    {id: 1, subject: 'Result 1', description: 'This is a detail description of the result', resultStatus: "Pass", evidence: ""},
+    {id: 2, subject: 'Result 2', description: 'This is a detail description of the result', resultStatus: "Unknown", evidence: ""},
+    {id: 3, subject: 'Result 3', description: 'This is a detail description of the result', resultStatus: "Fail", evidence: ""},
+];
 
-
-export {engagementColumns, testPlanColumns, testCaseColumns, testColumns, BOMColumns, LibraryBOMColumns, 
-    engagementRows, testPlanRows, testCaseRows, testRows, BOMRows}
+export {engagementColumns, testPlanColumns, testCaseColumns, testColumns, BOMColumns, LibraryBOMColumns, resultColumns, 
+    engagementRows, testPlanRows, testCaseRows, testRows, BOMRows, resultRows}

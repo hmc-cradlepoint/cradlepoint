@@ -4,14 +4,12 @@ import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import TestInfoModal from './testInfoModal';
-import TestCaseInfoModal from './testCaseInfoModal';
-import SelectDeviceModal from './deviceModals/selectDevice';
-import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModal from './createNewModal';
 import styles from '../styles/EngagementDetails.module.css';
-import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
+import { BOMColumns, BOMRows, testRows, testColumns, resultColumns, resultRows} from '../util/tableColumns';
+import ResultModal from './resultModal';
 
-export default function TestCaseDetails() {
+export default function TestDetails() {
 
     const useStyles = makeStyles({
         root: {
@@ -29,7 +27,7 @@ export default function TestCaseDetails() {
     
     const classes = useStyles();
 
-    const testColumnsWithActions = testColumns.concat([
+    const resultWithActions = resultColumns.concat([
     { 
         field: 'button', 
         headerName: 'Actions',
@@ -46,85 +44,42 @@ export default function TestCaseDetails() {
     ]);
 
 
-    const BOMColumnsWithAction = BOMColumns.concat([
-        { 
-            field: 'button', 
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => {
-                return (
-                    <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="Edit"/>
-                    <CPButton text="Delete"/>
-                    </div>
-                )
-            },
-            flex: 1
-        }
-    ]);
 
-
-    function tests() {
+    function results() {
         // Test table component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
-                    <h2>Tests</h2>
+                    <h2>Results</h2>
                     <CPButton text="Add New"
-                            onClick={() => {updateModal("scratch");
+                            onClick={() => {updateModal("result");
                                 }}
                     />
                 </div>
-                <PlainTable rows={testRows} columns={testColumnsWithActions} className={classes.root}/>
-            </div>
-        )
-    }
-
-    function BOM() {
-        // BOM Elements component
-        return (
-            <div className={styles.tableContainer} style={{paddingTop: 50}}>
-                <div className={styles.tableButtonRow}>
-                    <h2>Bill of Materials</h2>
-                    <CPButton text="Add New"
-                        onClick={() => {updateModal("select_device");
-                    }}
-                    />
-                </div>
-                <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
+                <PlainTable rows={resultRows} columns={resultWithActions} className={classes.root}/>
             </div>
         )
     }
 
 
 
-    const [infoModalOpen, setInfoModalOpen] = useState(false);
+
+    const [resultModalOpen, setResultModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false); 
-    const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
-    const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
     const emptyRow = {subject: '', description: ''};
     const [selectedRow, setSelectedRow] = useState(emptyRow); 
 
     function updateModal(modalType){
       switch(modalType){
-        case "scratch":
-            setInfoModalOpen(true)
+        case "result":
+            setResultModalOpen(true)
             break;
         case "edit":
             setEditModalOpen(true)
             break;
-        case "select_device":
-            setSelectDeviceModalOpen(true)
-            break;
-        case "select_quantity":
-            setSelectQuantityModalOpen(true)
-            break;
         default:
-            setInfoModalOpen(false)
+            setResultModalOpen(false)
             setEditModalOpen(false)
-            setSelectDeviceModalOpen(false)
-            setSelectQuantityModalOpen(false)
       }
     }
 
@@ -149,46 +104,32 @@ export default function TestCaseDetails() {
     return (
         <div>
             <TestInfoModal
-              modalOpen={infoModalOpen} 
-              onBack={()=> setInfoModalOpen(false)}
-              selectedRow={selectedRow}
-              ></TestInfoModal>
-
-
-            <TestCaseInfoModal
               modalOpen={editModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setEditModalOpen(false)}
               selectedRow={selectedRow}
-              ></TestCaseInfoModal>
+              ></TestInfoModal>
 
-            <SelectDeviceModal
-              modalOpen={selectDeviceModalOpen} 
+            <ResultModal
+              modalOpen={resultModalOpen} 
               onClickNext={updateModal}
-              onBack={()=> setSelectDeviceModalOpen(false)}
-              ></SelectDeviceModal>
-            
-            <SelectQuantityModal
-              modalOpen={selectQuantityModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal>
-        
+              onBack={()=> setResultModalOpen(false)}
+              selectedRow={selectedRow}
+              ></ResultModal>
+
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Case Details</h1>
+                <h1>Test Details</h1>
                 <CPButton text="Edit"
                 onClick={()=>{
-                    console.log("clicked")
                     updateModal("edit");}}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}
             bottomChildren={
                 <div>
-                {tests()}
-                {BOM()}
+                {results()}
                 </div>
             }
         />
