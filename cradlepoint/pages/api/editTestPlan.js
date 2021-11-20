@@ -17,8 +17,8 @@ export default async (req, res) => {
       // Set ID strings to Mongo ObjectId's
       const newId = ObjectId(result._id);
       const query = {_id: newId};
-      delete result._id;
-      const testPlan = {_id: newId, ...result };
+      const testPlan = {...result, _id: newId };
+      console.log(testPlan);
       // Update the Database w/ new TestPlan
       const db = await connectToDb();
       await db.collection("testPlan").replaceOne(query, testPlan);
