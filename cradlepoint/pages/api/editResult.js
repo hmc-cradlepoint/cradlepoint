@@ -18,10 +18,7 @@ export default async (req, res) => {
       const newId = ObjectId(result._id);
       const newTestId = ObjectId(result.testId);
       const query = {_id: newId};
-      delete result._id;
-      delete result.testId;
-      const newResult = {_id: newId, testId:newTestId, ...result };
-      console.log(newResult);
+      const newResult = {...result, _id: newId, testId:newTestId };
       // Update the Database w/ new Result
       const db = await connectToDb();
       await db.collection("result").replaceOne(query, newResult);
