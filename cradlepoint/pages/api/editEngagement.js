@@ -18,9 +18,7 @@ export default async (req, res) => {
       const newId = ObjectId(result._id);
       const newTestPlanId = ObjectId(result.testPlanId);
       const query = {_id: newId};
-      delete result._id;
-      delete result.testPlanId;
-      const engagement = {_id: newId, testPlanId:newTestPlanId, ...result };
+      const engagement = {...result , _id: newId, testPlanId:newTestPlanId};
       // Update the Database w/ new Engagement
       const db = await connectToDb();
       await db.collection("engagements").replaceOne(query, engagement);
@@ -28,7 +26,6 @@ export default async (req, res) => {
     } else {
       res.status(422).send({message: 'Input not in right format'})
     }
-
   } catch (err) {
     res.status(500).send(err);
   }
