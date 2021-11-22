@@ -1,11 +1,11 @@
 import React from "react";
 import Modal from 'react-modal';
-import CPButton from "../../components/button/CPButton";
-import styles from '../../styles/Modal.module.css'
+import CPButton from "../components/button/CPButton";
+import styles from '../styles/Modal.module.css'
 import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 
-export default function editTestPlanInfo(props) {
+export default function TestPlanInfoModal(props) {
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>

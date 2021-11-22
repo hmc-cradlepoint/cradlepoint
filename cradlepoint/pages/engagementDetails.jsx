@@ -133,7 +133,7 @@ export default function EngagementDetails() {
             topChildren={
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Engagement Details</h1>
-                <CPButton text="Edit Descriptions" onClick={() => setModal(modalType.DESCRIPTION)}/>
+                <CPButton text="Edit" onClick={() => setModal(modalType.DESCRIPTION)}/>
             </div>
             }
             leftSection={details()}

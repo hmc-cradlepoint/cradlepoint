@@ -3,16 +3,15 @@ import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import NewTestCaseModalInfo from './testCaseInfoModal';
-import EditTestPlanInfo from './testPlanModals/editTestPlanInfo';
+import TestInfoModal from './testInfoModal';
+import TestCaseInfoModal from './testCaseInfoModal';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModal from './createNewModal';
-import NewModalClone from './newModalClone';
 import styles from '../styles/EngagementDetails.module.css';
-import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
+import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
 
-export default function TestPlanDetails() {
+export default function TestCaseDetails() {
 
     const useStyles = makeStyles({
         root: {
@@ -30,7 +29,7 @@ export default function TestPlanDetails() {
     
     const classes = useStyles();
 
-    const testCaseColumnsWithActions = testCaseColumns.concat([
+    const testColumnsWithActions = testColumns.concat([
     { 
         field: 'button', 
         headerName: 'Actions',
@@ -38,7 +37,7 @@ export default function TestPlanDetails() {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="View"/>
+            <CPButton text="Details"/>
             <CPButton text="Delete"/>
         </div>
         ),
@@ -56,7 +55,7 @@ export default function TestPlanDetails() {
             renderCell: () => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
+                    <CPButton text="Edit"/>
                     <CPButton text="Delete"/>
                     </div>
                 )
@@ -66,29 +65,28 @@ export default function TestPlanDetails() {
     ]);
 
 
-    function testCases() {
-        // Test case table component
+    function tests() {
+        // Test table component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
-                    <h2>Test Cases of Current Plan</h2>
+                    <h2>Tests</h2>
                     <CPButton text="Add New"
-                            onClick={() => {updateModal("select");
-                                    console.log(selectModalOpen);
+                            onClick={() => {updateModal("scratch");
                                 }}
                     />
                 </div>
-                <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
+                <PlainTable rows={testRows} columns={testColumnsWithActions} className={classes.root}/>
             </div>
         )
     }
 
-    function BOMSummary() {
-        // Summary of BOM Elements component
+    function BOM() {
+        // BOM Elements component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
-                    <h2>Summary of Bill of Materials</h2>
+                    <h2>Bill of Materials</h2>
                     <CPButton text="Add New"
                         onClick={() => {updateModal("select_device");
                     }}
@@ -101,36 +99,17 @@ export default function TestPlanDetails() {
 
 
 
-    const [selectModalOpen, setSelectModalOpen] = useState(false);
     const [infoModalOpen, setInfoModalOpen] = useState(false);
-    const [cloneModalOpen, setCloneModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const emptyRow = {subject: '', description: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow);   
+    const [editModalOpen, setEditModalOpen] = useState(false); 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    
-    function updateModal(modalType,rowId=0){
-      // console.log(input);
-      // setModalType(input);
-      console.log("modalOpen called with ");
-      console.log(modalType);
+    const emptyRow = {subject: '', description: ''};
+    const [selectedRow, setSelectedRow] = useState(emptyRow); 
+
+    function updateModal(modalType){
       switch(modalType){
-        case "select":
-            setSelectModalOpen(true);
-            break;
         case "scratch":
-            setSelectedRow(emptyRow);
             setInfoModalOpen(true)
-            break;
-        case "clone":
-            setCloneModalOpen(true)
-            break;
-        case "clone_selected":
-            setCloneModalOpen(false)
-            setInfoModalOpen(true)
-            const selectedRowData = (testCaseRows.filter((row) => rowId===row.id))[0];
-            setSelectedRow(selectedRowData);
             break;
         case "edit":
             setEditModalOpen(true)
@@ -142,9 +121,7 @@ export default function TestPlanDetails() {
             setSelectQuantityModalOpen(true)
             break;
         default:
-            setSelectModalOpen(false)
             setInfoModalOpen(false)
-            setCloneModalOpen(false)
             setEditModalOpen(false)
             setSelectDeviceModalOpen(false)
             setSelectQuantityModalOpen(false)
@@ -155,15 +132,8 @@ export default function TestPlanDetails() {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <h2>Details</h2>
                 <p>Subject: </p>
-                <p>Active: (Boolean)</p>
-                <p>Device Config: </p>
-                <p>Coverage: </p>
-                <p>Version: </p>
-                <p>Date Created: </p>
-                <p>Authors: </p>
-                <p>Customer feedback</p>
+                <p>Percent of Tests Passed: </p>
             </div>
         )
     }
@@ -178,31 +148,19 @@ export default function TestPlanDetails() {
 
     return (
         <div>
-            <CreateNewModal
-              type={'Test Case'}
-              modalOpen={selectModalOpen} 
-              onClickNext={updateModal}
-              onClose={()=> setSelectModalOpen(false)}/>
-
-            <NewTestCaseModalInfo
+            <TestInfoModal
               modalOpen={infoModalOpen} 
               onBack={()=> setInfoModalOpen(false)}
               selectedRow={selectedRow}
-              ></NewTestCaseModalInfo>
+              ></TestInfoModal>
 
-            <NewModalClone
-              type={'Test Case'}
-              modalOpen={cloneModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setCloneModalOpen(false)}
-              />
 
-            <EditTestPlanInfo
+            <TestCaseInfoModal
               modalOpen={editModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setEditModalOpen(false)}
               selectedRow={selectedRow}
-              ></EditTestPlanInfo>
+              ></TestCaseInfoModal>
 
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
@@ -219,7 +177,7 @@ export default function TestPlanDetails() {
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Plan Details</h1>
+                <h1>Test Case Details</h1>
                 <CPButton text="Edit"
                 onClick={()=>{
                     console.log("clicked")
@@ -229,8 +187,8 @@ export default function TestPlanDetails() {
             rightSection={description()}
             bottomChildren={
                 <div>
-                {testCases()}
-                {BOMSummary()}
+                {tests()}
+                {BOM()}
                 </div>
             }
         />

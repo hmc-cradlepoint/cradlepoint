@@ -24,9 +24,16 @@ const testCaseColumns = [
     { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1},
     { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
-    { field: 'coverage', headerName: 'Coverage', headerClassName: 'header', flex: 1},
+    { field: 'percentPassed', headerName: 'Percent Passed', headerClassName: 'header', flex: 1},
     { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
     { field: 'configs', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
+];
+
+const testColumns = [
+    { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1},
+    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
 ];
 
 const BOMColumns = [
@@ -45,7 +52,12 @@ const LibraryBOMColumns = [
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 
-
+const resultColumns = [
+    { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
+    { field: 'evidence', headerName: 'Evidence', headerClassName: 'header', flex: 1},
+];
 
 
 //   TODO: delete later (hardcoded rows)
@@ -60,27 +72,33 @@ const engagementRows = [
   ];
 
 const testPlanRows = [
-    {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
 ]; 
 
 const testCaseRows = [
-    {id: 1, subject: 'Test case 1', description: 'This is a detail description of the test case'},
-    {id: 2, subject: 'Test case 2', description: 'This is a detail description of the test case'},
-    {id: 3, subject: 'Test case 3', description: 'This is a detail description of the test case'},
-    {id: 4, subject: 'Test case 4', description: 'This is a detail description of the test case'},
-    {id: 5, subject: 'Test case 5', description: 'This is a detail description of the test case'},
-    {id: 6, subject: 'Test case 6', description: 'This is a detail description of the test case'},
-    {id: 7, subject: 'Test case 7', description: 'This is a detail description of the test case'}
+    {id: 1, subject: 'Test case 1', description: 'This is a detail description of the test case', percentPassed:"10%"},
+    {id: 2, subject: 'Test case 2', description: 'This is a detail description of the test case', percentPassed:"20%"},
+    {id: 3, subject: 'Test case 3', description: 'This is a detail description of the test case', percentPassed:"30%"},
+    {id: 4, subject: 'Test case 4', description: 'This is a detail description of the test case', percentPassed:"40%"},
+    {id: 5, subject: 'Test case 5', description: 'This is a detail description of the test case', percentPassed:"50%"},
+    {id: 6, subject: 'Test case 6', description: 'This is a detail description of the test case', percentPassed:"60%"},
+    {id: 7, subject: 'Test case 7', description: 'This is a detail description of the test case', percentPassed:"70%"}
 ]; 
+
+const testRows = [
+    {id: 1, subject: 'Test 1', description: 'This is a detail description of the test', resultStatus: "Pass"},
+    {id: 2, subject: 'Test 2', description: 'This is a detail description of the test', resultStatus: "Unknown"},
+    {id: 3, subject: 'Test 3', description: 'This is a detail description of the test', resultStatus: "Fail"},
+];
 
 const BOMRows = [
     // TODO: hardcoded data until API ready
@@ -95,6 +113,11 @@ const BOMRows = [
     {id: "9", deviceName: "Router", optional: "False", quantity: "50", physicalOrSoftware: "Physical", codeVer: "none", SKU: "323123"},
 ];
 
+const resultRows = [
+    {id: 1, subject: 'Result 1', description: 'This is a detail description of the result', resultStatus: "Pass", evidence: ""},
+    {id: 2, subject: 'Result 2', description: 'This is a detail description of the result', resultStatus: "Unknown", evidence: ""},
+    {id: 3, subject: 'Result 3', description: 'This is a detail description of the result', resultStatus: "Fail", evidence: ""},
+];
 
-
-export {engagementColumns, testPlanColumns, testCaseColumns, BOMColumns, LibraryBOMColumns, engagementRows, testPlanRows, testCaseRows, BOMRows}
+export {engagementColumns, testPlanColumns, testCaseColumns, testColumns, BOMColumns, LibraryBOMColumns, resultColumns, 
+    engagementRows, testPlanRows, testCaseRows, testRows, BOMRows, resultRows}
