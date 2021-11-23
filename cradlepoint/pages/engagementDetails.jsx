@@ -5,6 +5,8 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
+import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
+import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 
 export default function EngagementDetails() {
 
@@ -24,12 +26,8 @@ export default function EngagementDetails() {
     
     const classes = useStyles();
 
-    const [modal, setModal] = useState("");
-
-    const modalType = {
-        DESCRIPTION: 'DESCRIPTION',
-    }
-
+    const [editDescriptionModal, setEditDescriptionModal] = useState(false);
+    const [createNewFlow, setCreateNewFlow] = useState(false);
 
     //   TODO: style the active test plan
     const testPlanColWithButton = testPlanColumns.concat([
@@ -88,7 +86,7 @@ export default function EngagementDetails() {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Test Plans</h2>
-                    <CPButton text="Add New"/>
+                    <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <h3>Active test plan: </h3>
                 <PlainTable rows={activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
@@ -129,11 +127,16 @@ export default function EngagementDetails() {
     }
 
     return (
+        <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+        <CreateNewModalFlow type="Engagement" modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <EditEDDescription modalOpen={editDescriptionModal} onBack={() => setEditDescriptionModal(false)} />
         <SplitScreen
             topChildren={
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Engagement Details</h1>
-                <CPButton text="Edit" onClick={() => setModal(modalType.DESCRIPTION)}/>
+            <div>
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                    <h1>Engagement Details</h1>
+                    <CPButton text="Edit Descriptions" onClick={() => setEditDescriptionModal(true)}/>
+                </div>
             </div>
             }
             leftSection={details()}
@@ -145,5 +148,6 @@ export default function EngagementDetails() {
                 </div>
             }
         />
+        </div>
     )
 }

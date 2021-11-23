@@ -1,18 +1,14 @@
 
-.Modal{
+.Modal {
     outline: none;
     background-color:rgb(252, 244, 233);
-    width: 1500px;
-    height: 800px;
-    margin-left: 25%;
-    margin-top: 10%;
     flex-direction: column;
     display: flex;
     align-items:center;
-    justify-content:'center';
+    justify-content: center;
+    margin: 5% 10% 5% 10%;
+    padding: 30px;
   }
-
-
 
   /* .ModalEngagInfo {
     outline:none;
