@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
 import {testCaseSchema} from "../../schemas/testCaseSchema";
 /*
-  Edits the requested engagement from the database
+  Edits the requested TestCase from the database
 */
 
 export default async (req, res) => {
@@ -12,8 +12,6 @@ export default async (req, res) => {
   try{
     const data = req.body;
     const valid = await testCaseSchema.isValid(data);
-    // console.log("TP-Id:", ObjectId.isValid(data.testPlanId));
-    // console.log("Validity:", valid);
     if (valid && ObjectId.isValid(data.testPlanId)){
         const result = testCaseSchema.cast(data);
         // Set ID strings to Mongo ObjectId's
@@ -21,7 +19,7 @@ export default async (req, res) => {
         const newTestPlanId = ObjectId(result.testPlanId);
         const query = {_id: newId};
         const engagement = {...result , _id: newId, testPlanId:newTestPlanId};
-        // Update the Database w/ new Engagement
+        // Update the Database w/ new TestCase
         const db = await connectToDb();
         await db.collection("testCases").replaceOne(query, engagement);
         res.status(200).send({message: "Success!"});
