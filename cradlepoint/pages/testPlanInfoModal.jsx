@@ -2,7 +2,7 @@ import React from "react";
 import Modal from 'react-modal';
 import CPButton from "../components/button/CPButton";
 import styles from '../styles/Modal.module.css'
-import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
+import { SmallTextInput, BigTextInput } from '../components/fields/Text';
 import { borderLeft } from "@mui/system";
 
 export default function TestPlanInfoModal(props) {
@@ -24,8 +24,10 @@ export default function TestPlanInfoModal(props) {
         <BigTextInput name='Device Config'/>
         </div>
         </div>
-        <CPButton text='Cancel' onClick={props.onBack}/>
-        <CPButton text='Save'/>
+        <div style={{display: "flex", flexDirection: "row"}}>
+          <CPButton text='Cancel' onClick={props.onBack}/>
+          <CPButton text='Create'/>
+        </div>
       </Modal>
     </>
   );

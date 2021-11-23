@@ -9,7 +9,7 @@ function SmallTextInput(props) {
         <div  style={{padding: "25px"}}>
         <span>{props.name}: </span>
         <Formik>
-            <Field name={props.name} placeholder="Placeholder" value={props.value}/>
+            <Field name={props.name} placeholder={props.name} value={props.value}/>
         </Formik>
         </div>
     )
@@ -19,7 +19,7 @@ function SmallTextInput(props) {
 function BigTextInput(props) {
     return(
         <div  style={{padding: "25px"}}>
-        <span>{props.name}: </span>
+        <div>{props.name}: </div>
         <Formik>
             <Field name={props.name} placeholder="Placeholder" as="textarea" rows={10} value={props.value}/>
         </Formik>
