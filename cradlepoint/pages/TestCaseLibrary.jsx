@@ -9,19 +9,19 @@ import { testCaseColumns, testCaseRows } from '../util/tableColumns';
 export default function TestCaseLibrary(props) {
     // TODO: have a consistent style for all the pages (delete later)
     const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-
+      root: {
+        '& .header': {
+          backgroundColor: '#FCAC1C',
         },
-      });
+        '& .MuiDataGrid-iconSeparator': {
+          display: 'None'
+        },
+        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+          borderRight: `2px solid #f0f0f0`,
+        },
+
+      },
+    });
     
     const classes = useStyles();
 

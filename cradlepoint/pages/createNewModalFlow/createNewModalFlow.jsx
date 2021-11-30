@@ -11,8 +11,9 @@ import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
 import NewTestPlanModalScratch from "../engagementDetailsModals/newTestPlanModalScratch";
-import NewTestCaseModalInfo from '../testCaseInfoModal';
-import TestInfoModal from "../testInfoModal";
+import NewTestCaseModalInfo from '../TestCaseModalForm';
+import TestInfoModal from "../TestInfoModalForm";
+import EngagModalInfo from "../EngagementModalForm";
 
 
 export default function CreateNewModalFlow(props) {
@@ -122,17 +123,17 @@ export default function CreateNewModalFlow(props) {
   function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return
+        return <EngagModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_PLAN:
-        return <NewTestPlanModalScratch isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestPlanModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_CASE:
-        return <NewTestCaseModalInfo isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestCaseModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST:
-        return <TestInfoModal isOpen={true} onBack={() => setModalType(modalType.START)} />
+        return <TestModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
       case flowType.RESULT:
-        return <ResultModal isOpen={true} onBack={() => setModalType(modalType.START)} />
+        return <ResultModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
       case flowType.DEVICE:
-        return 
+        return <DeviceModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
     }
   }
 
