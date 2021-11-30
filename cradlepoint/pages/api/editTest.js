@@ -15,10 +15,10 @@ export default async (req, res) => {
     if (valid && ObjectId.isValid(data.testCaseId)){
       const result = testSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
-      const newId = ObjectId(result._id);
-      const newTestCaseId = ObjectId(result.testCaseId);
-      const query = {_id: newId};
-      const newTest = {...result, _id: newId, testCaseId:newTestCaseId };
+      const id = ObjectId(result._id);
+      const testCaseId = ObjectId(result.testCaseId);
+      const query = {_id: id};
+      const newTest = {...result, _id: id, testCaseId:testCaseId };
       // Update the Database w/ new test
       const db = await connectToDb();
       await db.collection("tests").replaceOne(query, newTest);
