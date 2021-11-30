@@ -4,15 +4,15 @@ import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns } from '../../util/tableColumns';
+import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns } from '../../util/tableColumns';
 
-import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
 import EngagementModalForm from '../EngagementModalForm';
 import TestPlanModalForm from '../TestPlanModalForm';
 import TestCaseModalForm from '../TestCaseModalForm';
+import TestModalForm from '../TestModalForm';
 import ResultModalForm from '../ResultModalForm';
 // import DeviceModalForm from '../DeviceModalForm';
 
@@ -94,6 +94,12 @@ export default function CreateNewModalFlow(props) {
         case "Test Plan":
           return testPlanRows;
         case "Test Case":
+          return testCaseRows;
+        case "Test":
+          return testCaseRows;
+        case "Result":
+          return testCaseRows;
+        case "Device":
           return testCaseRows;
       }
     }

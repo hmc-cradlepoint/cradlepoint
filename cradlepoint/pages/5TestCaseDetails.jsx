@@ -3,13 +3,12 @@ import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import TestInfoModal from './testInfoModal';
-import TestCaseInfoModal from './testCaseInfoModal';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-// import CreateNewModal from './createNewModal';
+import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
+import { flowType } from './createNewModalFlow/utils';
 
 export default function TestCaseDetails() {
 
@@ -28,6 +27,9 @@ export default function TestCaseDetails() {
       });
     
     const classes = useStyles();
+    
+    const [newFlowType, setNewFlowType] = useState("");
+    const [createNewFlow, setCreateNewFlow] = useState(false);
 
     const testColumnsWithActions = testColumns.concat([
     { 
@@ -71,10 +73,9 @@ export default function TestCaseDetails() {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Tests</h2>
-                    <CPButton text="Add New"
-                            onClick={() => {updateModal("scratch");
-                                }}
-                    />
+                    <CPButton text="Add New" onClick={() => {
+                        setNewFlowType(flowType.TEST);
+                        setCreateNewFlow(true)}} />
                 </div>
                 <PlainTable rows={testRows} columns={testColumnsWithActions} className={classes.root}/>
             </div>
@@ -88,8 +89,9 @@ export default function TestCaseDetails() {
                 <div className={styles.tableButtonRow}>
                     <h2>Bill of Materials</h2>
                     <CPButton text="Add New"
-                        onClick={() => {updateModal("select_device");
-                    }}
+                        onClick={() => {
+                        setNewFlowType(flowType.DEVICE);
+                        setCreateNewFlow(true)}}
                     />
                 </div>
                 <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
@@ -99,34 +101,34 @@ export default function TestCaseDetails() {
 
 
 
-    const [infoModalOpen, setInfoModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false); 
-    const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
-    const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    const emptyRow = {subject: '', description: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow); 
+    // const [infoModalOpen, setInfoModalOpen] = useState(false);
+    // const [editModalOpen, setEditModalOpen] = useState(false); 
+    // const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
+    // const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
+    // const emptyRow = {subject: '', description: ''};
+    // const [selectedRow, setSelectedRow] = useState(emptyRow); 
 
-    function updateModal(modalType){
-      switch(modalType){
-        case "scratch":
-            setInfoModalOpen(true)
-            break;
-        case "edit":
-            setEditModalOpen(true)
-            break;
-        case "select_device":
-            setSelectDeviceModalOpen(true)
-            break;
-        case "select_quantity":
-            setSelectQuantityModalOpen(true)
-            break;
-        default:
-            setInfoModalOpen(false)
-            setEditModalOpen(false)
-            setSelectDeviceModalOpen(false)
-            setSelectQuantityModalOpen(false)
-      }
-    }
+    // function updateModal(modalType){
+    //   switch(modalType){
+    //     case "scratch":
+    //         setInfoModalOpen(true)
+    //         break;
+    //     case "edit":
+    //         setEditModalOpen(true)
+    //         break;
+    //     case "select_device":
+    //         setSelectDeviceModalOpen(true)
+    //         break;
+    //     case "select_quantity":
+    //         setSelectQuantityModalOpen(true)
+    //         break;
+    //     default:
+    //         setInfoModalOpen(false)
+    //         setEditModalOpen(false)
+    //         setSelectDeviceModalOpen(false)
+    //         setSelectQuantityModalOpen(false)
+    //   }
+    // }
 
     
     function details() {
@@ -148,21 +150,10 @@ export default function TestCaseDetails() {
 
     return (
         <div>
-            <TestInfoModal
-              modalOpen={infoModalOpen} 
-              onBack={()=> setInfoModalOpen(false)}
-              selectedRow={selectedRow}
-              ></TestInfoModal>
+            <CreateNewModalFlow type={newFlowType} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
 
 
-            <TestCaseInfoModal
-              modalOpen={editModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setEditModalOpen(false)}
-              selectedRow={selectedRow}
-              ></TestCaseInfoModal>
-
-            <SelectDeviceModal
+            {/* <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectDeviceModalOpen(false)}
@@ -172,7 +163,7 @@ export default function TestCaseDetails() {
               modalOpen={selectQuantityModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal>
+              ></SelectQuantityModal>  */}
         
         <SplitScreen
             topChildren={

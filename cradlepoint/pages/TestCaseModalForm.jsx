@@ -8,11 +8,11 @@ import { borderLeft } from "@mui/system";
 export default function TestCaseModalForm(props) {
   return (
     <>
-      <Modal className={styles.Modal} isOpen={props.modalOpen}>
+      <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in New Test Case Info</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput name='Subject' value={props.selectedRow.subject}/>
-        <BigTextInput name='Description' value={props.selectedRow.description}/>
+        <SmallTextInput name='Subject' />
+        <BigTextInput name='Description' />
         </div>
         <CPButton text='Back' onClick={props.onBack}/>
         <CPButton text='Create'/>
