@@ -81,7 +81,7 @@ export default function HomeScreen(props) {
               }
             />
             {/* TODO: get rows from database */}
-            <PlainTable rows={engagementRows} columns={engagementColumnsWithActions} className={classes.root}/>
+            <PlainTable rows={props.data} columns={engagementColumnsWithActions} className={classes.root}/>
             <CreateNewModal
               type={"Engagement"}
               modalOpen={selectModalOpen} 
@@ -107,3 +107,17 @@ export default function HomeScreen(props) {
       </PlainScreen>
     )
 }
+
+export async function getServerSideProps(context) {
+    const res = await fetch(`${process.env.HOST}/getActiveEngagements`)//`http://localhost:3000/api/getActiveEngagements`)
+    const data = await res.json()
+  
+    if (!data) {
+      return {
+        notFound: true,
+      }
+    }
+    return {
+      props: {data}, // will be passed to the page component as props
+    }
+  }
