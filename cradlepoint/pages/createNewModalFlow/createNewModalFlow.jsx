@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
+
 import {PlainTable} from '../../components/tables/Table';
 import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns } from '../../util/tableColumns';
 
