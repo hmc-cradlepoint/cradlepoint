@@ -4,16 +4,17 @@ import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows } from '../../util/tableColumns';
+import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns } from '../../util/tableColumns';
 
 import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
-import NewTestPlanModalScratch from "../engagementDetailsModals/newTestPlanModalScratch";
-import NewTestCaseModalInfo from '../TestCaseModalForm';
-import TestInfoModal from "../TestInfoModalForm";
-import EngagModalInfo from "../EngagementModalForm";
+import EngagementModalForm from '../EngagementModalForm';
+import TestPlanModalForm from '../TestPlanModalForm';
+import TestCaseModalForm from '../TestCaseModalForm';
+import ResultModalForm from '../ResultModalForm';
+// import DeviceModalForm from '../DeviceModalForm';
 
 
 export default function CreateNewModalFlow(props) {
@@ -123,7 +124,7 @@ export default function CreateNewModalFlow(props) {
   function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return <EngagModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <EngagementModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_PLAN:
         return <TestPlanModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_CASE:
@@ -132,8 +133,8 @@ export default function CreateNewModalFlow(props) {
         return <TestModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
       case flowType.RESULT:
         return <ResultModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-      case flowType.DEVICE:
-        return <DeviceModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
+      // case flowType.DEVICE:
+      //   return <DeviceModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
     }
   }
 

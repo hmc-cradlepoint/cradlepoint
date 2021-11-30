@@ -7,9 +7,8 @@ import { borderLeft } from "@mui/system";
 
 export default function TestPlanModalForm(props) {
   return (
-    <>
-      <Modal className={styles.Modal} isOpen={props.modalOpen}>
-        <h2>Edit Test Plan Info</h2>
+      <Modal className={styles.Modal} isOpen={props.isOpen}>
+        <h2>Test Plan Info</h2>
         <div style={{alignItems:borderLeft}}>
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
@@ -29,6 +28,5 @@ export default function TestPlanModalForm(props) {
           <CPButton text='Create'/>
         </div>
       </Modal>
-    </>
   );
 }
