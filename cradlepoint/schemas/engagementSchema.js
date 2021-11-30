@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-const { ObjectId } = require('bson');
 
 export const engagementSchema = yup.object().shape({
   _id: yup.string().optional(),
