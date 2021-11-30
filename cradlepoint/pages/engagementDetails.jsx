@@ -7,6 +7,7 @@ import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tabl
 import styles from '../styles/EngagementDetails.module.css';
 import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+import { flowType } from './createNewModalFlow/utils';
 
 export default function EngagementDetails() {
 
@@ -128,7 +129,7 @@ export default function EngagementDetails() {
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-        <CreateNewModalFlow type="Engagement" modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <EditEDDescription modalOpen={editDescriptionModal} onBack={() => setEditDescriptionModal(false)} />
         <SplitScreen
             topChildren={
