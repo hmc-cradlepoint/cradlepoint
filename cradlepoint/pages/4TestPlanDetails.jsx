@@ -4,7 +4,7 @@ import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import NewTestCaseModalInfo from './testCaseInfoModal';
-import EditTestPlanInfo from './testPlanModals/editTestPlanInfo';
+// import EditTestPlanInfo from './editTestPlanInfo';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModal from './createNewModal';
@@ -197,12 +197,12 @@ export default function TestPlanDetails() {
               onBack={()=> setCloneModalOpen(false)}
               />
 
-            <EditTestPlanInfo
+            {/* <EditTestPlanInfo
               modalOpen={editModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setEditModalOpen(false)}
               selectedRow={selectedRow}
-              ></EditTestPlanInfo>
+              ></EditTestPlanInfo> */}
 
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 

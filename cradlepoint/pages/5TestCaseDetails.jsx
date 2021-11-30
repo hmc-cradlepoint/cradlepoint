@@ -7,7 +7,7 @@ import TestInfoModal from './testInfoModal';
 import TestCaseInfoModal from './testCaseInfoModal';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-import CreateNewModal from './createNewModal';
+// import CreateNewModal from './createNewModal';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
 

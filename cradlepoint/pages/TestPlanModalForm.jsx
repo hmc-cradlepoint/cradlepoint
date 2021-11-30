@@ -5,7 +5,7 @@ import styles from '../styles/Modal.module.css'
 import { SmallTextInput, BigTextInput } from '../components/fields/Text';
 import { borderLeft } from "@mui/system";
 
-export default function TestPlanInfoModal(props) {
+export default function TestPlanModalForm(props) {
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
