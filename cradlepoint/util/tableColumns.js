@@ -1,13 +1,13 @@
 const engagementColumns = [
     { field: 'id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
-    { field: 'sysEng', headerName: 'SEng', headerClassName: 'header', flex: 1},
-    { field: 'pocEng', headerName: 'POC Eng', headerClassName: 'header', flex: 1},
+    { field: 'statusCode', headerName: 'Status', headerClassName: 'header', flex: 1},
+    { field: 'engagementDetails', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
+    { field: 'SE', headerName: 'SEng', headerClassName: 'header', flex: 1},
+    { field: 'POC_Engineer', headerName: 'POC Eng', headerClassName: 'header', flex: 1},
     { field: 'customer', headerName: 'Customer', headerClassName: 'header', flex: 1},
-    { field: 'sfdc', headerName: 'SFDC', headerClassName: 'header', flex: 1},
-    { field: 'dateCreated', headerName: 'Date Created', headerClassName: 'header', flex: 1}
+    { field: 'SFDC', headerName: 'SFDC', headerClassName: 'header', flex: 1},
+    { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1}
   ];
 
 const testPlanColumns = [
