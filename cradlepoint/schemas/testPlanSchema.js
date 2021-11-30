@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 
 export const testPlanSchema = yup.object().shape({
+  _id: yup.string().optional(),
   name: yup.string().required(),
   detailedDescription: yup.string().required(),
   version: yup.string().required(),
