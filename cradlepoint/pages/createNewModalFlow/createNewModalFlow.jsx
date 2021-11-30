@@ -12,6 +12,7 @@ import {flowType, modalType} from './utils';
 
 import NewTestPlanModalScratch from "../engagementDetailsModals/newTestPlanModalScratch";
 import NewTestCaseModalInfo from '../testCaseInfoModal';
+import TestInfoModal from "../testInfoModal";
 
 
 export default function CreateNewModalFlow(props) {
@@ -121,9 +122,17 @@ export default function CreateNewModalFlow(props) {
   function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return <NewTestPlanModalScratch isOpen={true} onBack={() => setModalType(modalType.START)}/>;
+        return
       case flowType.TEST_PLAN:
-        return <NewTestCaseModalInfo onBack={setModalType(modalType.START)}/>;
+        return <NewTestPlanModalScratch isOpen={true} onBack={() => setModalType(modalType.START)}/>
+      case flowType.TEST_CASE:
+        return <NewTestCaseModalInfo isOpen={true} onBack={() => setModalType(modalType.START)}/>
+      case flowType.TEST:
+        return <TestInfoModal isOpen={true} onBack={() => setModalType(modalType.START)} />
+      case flowType.RESULT:
+        return <ResultModal isOpen={true} onBack={() => setModalType(modalType.START)} />
+      case flowType.DEVICE:
+        return 
     }
   }
 
