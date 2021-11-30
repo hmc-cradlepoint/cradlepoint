@@ -94,6 +94,7 @@ export default function CreateNewModalFlow(props) {
           return testCaseRows;
       }
     }
+
     return (
       <Modal className={styles.Modal} isOpen={true}>
           <h2>Choose an Existing {props.type} to Clone</h2>
@@ -136,11 +137,3 @@ export default function CreateNewModalFlow(props) {
   }
 
 }
-
-CreateNewModalFlow.propTypes = {
-  onClose: PropTypes.bool.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
-  onClickNext:PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired,
-}
-
