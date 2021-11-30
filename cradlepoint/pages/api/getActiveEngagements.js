@@ -8,6 +8,7 @@ export default async (req, res) => {
 
   const client = await connectToDb();
   const cursor = await client.collection("engagements").find(query);
+  
   const results = await cursor.toArray();
   res.json(results);
 };
