@@ -11,7 +11,6 @@ import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns'
 import { flowType } from './createNewModalFlow/utils';
 
 export default function TestCaseDetails() {
-
     const useStyles = makeStyles({
         root: {
           '& .header': {
@@ -89,9 +88,7 @@ export default function TestCaseDetails() {
                 <div className={styles.tableButtonRow}>
                     <h2>Bill of Materials</h2>
                     <CPButton text="Add New"
-                        onClick={() => {
-                        setNewFlowType(flowType.DEVICE);
-                        setCreateNewFlow(true)}}
+                        onClick={() => {updateModal("select_device")}}
                     />
                 </div>
                 <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
@@ -101,36 +98,20 @@ export default function TestCaseDetails() {
 
 
 
-    // const [infoModalOpen, setInfoModalOpen] = useState(false);
-    // const [editModalOpen, setEditModalOpen] = useState(false); 
-    // const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
-    // const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    // const emptyRow = {subject: '', description: ''};
-    // const [selectedRow, setSelectedRow] = useState(emptyRow); 
+    const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
+    const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
 
-    // function updateModal(modalType){
-    //   switch(modalType){
-    //     case "scratch":
-    //         setInfoModalOpen(true)
-    //         break;
-    //     case "edit":
-    //         setEditModalOpen(true)
-    //         break;
-    //     case "select_device":
-    //         setSelectDeviceModalOpen(true)
-    //         break;
-    //     case "select_quantity":
-    //         setSelectQuantityModalOpen(true)
-    //         break;
-    //     default:
-    //         setInfoModalOpen(false)
-    //         setEditModalOpen(false)
-    //         setSelectDeviceModalOpen(false)
-    //         setSelectQuantityModalOpen(false)
-    //   }
-    // }
+    function updateModal(modalType){
+      switch(modalType){
+        case "select_device":
+            setSelectDeviceModalOpen(true)
+            break;
+        case "select_quantity":
+            setSelectQuantityModalOpen(true)
+            break;
+      }
+    }
 
-    
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
@@ -151,9 +132,7 @@ export default function TestCaseDetails() {
     return (
         <div>
             <CreateNewModalFlow type={newFlowType} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-
-
-            {/* <SelectDeviceModal
+            <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectDeviceModalOpen(false)}
@@ -163,7 +142,7 @@ export default function TestCaseDetails() {
               modalOpen={selectQuantityModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal>  */}
+              ></SelectQuantityModal> 
         
         <SplitScreen
             topChildren={

@@ -94,8 +94,6 @@ export default function TestPlanDetails() {
         )
     }
 
-    const emptyRow = {subject: '', description: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow);
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
     

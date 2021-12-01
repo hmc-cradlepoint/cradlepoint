@@ -1,12 +1,9 @@
 import React, {useState} from "react";
 import Modal from 'react-modal';
-
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
-
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns } from '../../util/tableColumns';
-
+import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns, testColumns } from '../../util/tableColumns';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
@@ -71,6 +68,21 @@ export default function CreateNewModalFlow(props) {
           
         case "Test Case":
           return testCaseColumns.concat([
+            { 
+              field: 'button', 
+              flex: 1,
+              minWidth: 100,
+              headerName: 'Actions',
+              headerClassName: 'header',
+              align: 'center',
+              // TODO: figure out how to get row ID from render cell function
+              renderCell: () => (
+                <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
+              )
+            }
+            ]);
+        case "Test":
+          return testColumns.concat([
             { 
               field: 'button', 
               flex: 1,
