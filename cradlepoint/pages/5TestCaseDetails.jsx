@@ -27,7 +27,6 @@ export default function TestCaseDetails() {
     
     const classes = useStyles();
     
-    const [newFlowType, setNewFlowType] = useState("");
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     const testColumnsWithActions = testColumns.concat([
@@ -73,7 +72,6 @@ export default function TestCaseDetails() {
                 <div className={styles.tableButtonRow}>
                     <h2>Tests</h2>
                     <CPButton text="Add New" onClick={() => {
-                        setNewFlowType(flowType.TEST);
                         setCreateNewFlow(true)}} />
                 </div>
                 <PlainTable rows={testRows} columns={testColumnsWithActions} className={classes.root}/>
@@ -95,8 +93,6 @@ export default function TestCaseDetails() {
             </div>
         )
     }
-
-
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
@@ -131,7 +127,7 @@ export default function TestCaseDetails() {
 
     return (
         <div>
-            <CreateNewModalFlow type={newFlowType} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <CreateNewModalFlow type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}

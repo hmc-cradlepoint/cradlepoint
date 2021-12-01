@@ -10,9 +10,9 @@ import { borderLeft } from "@mui/system";
 
 export default function ResultModalForm(props) {
     const options = [ 'passed', 'unknown',  'failed'];
-    
+
   return (
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Add New Result to Test</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display:"flex"}}> 
@@ -29,7 +29,7 @@ export default function ResultModalForm(props) {
 }
 
 ResultModalForm.propTypes = {
-  onClose: PropTypes.bool.isRequired,
+  onBack: PropTypes.bool.isRequired,
   modalOpen: PropTypes.bool.isRequired,
   onClickNext:PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,

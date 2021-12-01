@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns, testColumns } from '../../util/tableColumns';
+import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns, testColumns, testRows } from '../../util/tableColumns';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
@@ -11,9 +11,6 @@ import EngagementModalForm from '../EngagementModalForm';
 import TestPlanModalForm from '../TestPlanModalForm';
 import TestCaseModalForm from '../TestCaseModalForm';
 import TestModalForm from '../TestModalForm';
-import ResultModalForm from '../ResultModalForm';
-// import DeviceModalForm from '../DeviceModalForm';
-
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
@@ -109,11 +106,7 @@ export default function CreateNewModalFlow(props) {
         case "Test Case":
           return testCaseRows;
         case "Test":
-          return testCaseRows;
-        case "Result":
-          return testCaseRows;
-        case "Device":
-          return testCaseRows;
+          return testRows;
       }
     }
 
@@ -150,11 +143,7 @@ export default function CreateNewModalFlow(props) {
         return <TestCaseModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST:
         return <TestModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-      case flowType.RESULT:
-        return <ResultModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-      // case flowType.DEVICE:
-      //   return <DeviceModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-    }
+      }
   }
 
   switch (modal) {
