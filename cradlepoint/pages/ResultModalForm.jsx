@@ -12,7 +12,7 @@ export default function ResultModalForm(props) {
     const options = [ 'passed', 'unknown',  'failed'];
 
   return (
-      <Modal className={styles.Modal} isOpen={props.modalOpen}>
+      <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Add New Result to Test</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display:"flex"}}> 
