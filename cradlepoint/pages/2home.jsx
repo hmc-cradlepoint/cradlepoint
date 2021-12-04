@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PlainScreen from "../components/baseScreen/PlainScreen";
+import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
@@ -8,6 +9,7 @@ import { flowType } from './createNewModalFlow/utils';
 import { engagementColumns, engagementRows } from '../util/tableColumns';
 
 export default function HomeScreen(props) {
+    const router = useRouter();
     // TODO: have a consistent style for all the pages (delete later)
     const useStyles = makeStyles({
         root: {
@@ -23,6 +25,11 @@ export default function HomeScreen(props) {
 
         },
       });
+
+    function handleNavigation(id) {
+      router.push("/3EngagementDetails");
+      console.log("/3EngagementDetails/" + id);
+    }
     
     const classes = useStyles();
 
@@ -34,15 +41,14 @@ export default function HomeScreen(props) {
           headerName: 'Actions',
           headerClassName: 'header',
           align: 'center',
-          renderCell: () => (
-            <CPButton text="DETAILS"/>
+          renderCell: (params) => (
+            <CPButton text="DETAILS" onClick={() => handleNavigation(params.id)}/>
           )
         }
       ]);
 
     const [createNewFlow, setCreateNewFlow] = useState(false);
   
-
     return(
       <div >
         <CreateNewModalFlow type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
