@@ -4,6 +4,8 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, testPlanRows } from '../util/tableColumns';
+import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+import { flowType } from './createNewModalFlow/utils';
 
 // TODO: adjust scaling and font of the page
 export default function TestPlanLibrary(props) {
@@ -39,21 +41,20 @@ export default function TestPlanLibrary(props) {
         }
       ]);
 
-  
+    const [createNewFlow, setCreateNewFlow] = useState(false);
 
     return(
+      <>
+        <CreateNewModalFlow type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
             <CPButton 
               text="Create New Test Plan"
-              onClick={() => 
-                {updateModal("select");
-                console.log(selectModalOpen);
-                }
-              }
+              onClick={() => setCreateNewFlow(true)}
             />
             {/* TODO: get rows from database */}
             <PlainTable rows={testPlanRows} columns={testPlanColumnsWithActions} className={classes.root}/>
 
       </PlainScreen>
+      </>
     )
 }

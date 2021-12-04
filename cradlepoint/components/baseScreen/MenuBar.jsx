@@ -1,16 +1,16 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import LinkedButton from '../../components/button/LinkedButton';
 
 export default function MenuBar() {
     return (
-    // TODO: add navigation
     <Stack direction="row" spacing={4} padding={2} borderBottom="1px solid">
-      <Button >Home</Button>
-      <Button>Test Plan Library</Button>
-      <Button>Test Case Library</Button>
-      <Button>Device Library</Button>
-      <Button>Notifications</Button>
+      <LinkedButton href="/2home" name="Home"/>
+      <LinkedButton href="/TestPlanLibrary" name="Test Plan Library"/>
+      <LinkedButton href="/TestCaseLibrary" name="Test Case Library"/>
+      <LinkedButton href="/DeviceLibrary" name="Device Library"/>
+      <Button>Notification</Button>
       <Button>Logout</Button>
       <Button>Help</Button>
     </Stack>
