@@ -104,7 +104,8 @@ export default function TestCaseDetails() {
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-
+    
+    // let selectedRowData = [];
     function updateModal(modalType){
       switch(modalType){
         case "select_device":
@@ -133,6 +134,8 @@ export default function TestCaseDetails() {
         )
     }
 
+    const [selectedRows, setSelectedRows] = useState({});
+
     return (
         <div>
             <CreateNewModalFlow type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
@@ -140,13 +143,15 @@ export default function TestCaseDetails() {
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectDeviceModalOpen(false)}
-              ></SelectDeviceModal>
+              selectRows={(sRows) => setSelectedRows(sRows)}
+            />
             
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
+              selectedRowData={selectedRows}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal> 
+            />
         
         <SplitScreen
             topChildren={
