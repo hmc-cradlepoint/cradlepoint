@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
@@ -10,6 +11,7 @@ import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
 
 export default function EngagementDetails() {
+    const router = useRouter();
 
     const useStyles = makeStyles({
         root: {
@@ -30,6 +32,11 @@ export default function EngagementDetails() {
     const [editDescriptionModal, setEditDescriptionModal] = useState(false);
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
+    function handleEditNavigation(id) {
+        router.push("/4TestPlanDetails");
+        console.log("/4TestPlanDetails/" + id);
+    }
+
     //   TODO: style the active test plan
     const testPlanColWithButton = testPlanColumns.concat([
     { 
@@ -37,9 +44,9 @@ export default function EngagementDetails() {
         headerName: 'Actions',
         headerClassName: 'header',
         align: 'center',
-        renderCell: () => (
+        renderCell: (params) => (
         <>
-            <CPButton text="EDIT"/>
+            <CPButton text="EDIT" onClick={() => handleEditNavigation(params.id)}/>
             <CPButton text="SET ACTIVE"/>
         </>
         ),
@@ -57,9 +64,9 @@ export default function EngagementDetails() {
         headerName: 'Actions',
         headerClassName: 'header',
         align: 'center',
-        renderCell: () => (
+        renderCell: (params) => (
         <>
-            <CPButton text="EDIT"/>
+            <CPButton text="EDIT" onClick={() => handleEditNavigation(params.id)}/>
         </>
         ),
         flex: 1

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
@@ -11,6 +12,8 @@ import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns'
 import { flowType } from './createNewModalFlow/utils';
 
 export default function TestCaseDetails() {
+    const router = useRouter();
+
     const useStyles = makeStyles({
         root: {
           '& .header': {
@@ -26,6 +29,11 @@ export default function TestCaseDetails() {
       });
     
     const classes = useStyles();
+
+    function handleNavigation(id) {
+        router.push("/6TestDetails");
+        console.log("/6TestDetails/" + id);
+    }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
@@ -37,7 +45,7 @@ export default function TestCaseDetails() {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="Details"/>
+            <CPButton text="Details" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete"/>
         </div>
         ),
