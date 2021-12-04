@@ -7,7 +7,6 @@ import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
-
 import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 
