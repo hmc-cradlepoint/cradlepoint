@@ -110,7 +110,6 @@ export default function HomeScreen(props) {
 
 export async function getServerSideProps(context) {
     const res = await fetch(`${process.env.HOST}/api/getActiveEngagements`)
-    console.log(data)
     if (!data) {
       return {
         notFound: true,
