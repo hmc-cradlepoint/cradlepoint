@@ -11,7 +11,7 @@ import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 
-export default function TestPlanDetails() {
+export default function TestPlanDetails(props) {
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     const useStyles = makeStyles({
@@ -112,23 +112,24 @@ export default function TestPlanDetails() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                <p>Subject: </p>
-                <p>Active: (Boolean)</p>
-                <p>Device Config: </p>
-                <p>Coverage: </p>
-                <p>Version: </p>
-                <p>Date Created: </p>
-                <p>Authors: </p>
-                <p>Customer feedback</p>
+                <p>Subject: ??? No Database Field ???</p>
+                <p>Active: {(props.isActive).toString()}</p>
+                <p>Device Config: {props.deviceConfig}</p>
+                <p>Coverage: Calculate on FrontEnd</p>
+                <p>Version: {props.version}</p>
+                <p>Date Created: {props.createdOn}</p>
+                <p>Authors: {props.authors}</p>
+                <p>Customer feedback: {props.customerFeedback}</p>
             </div>
         )
     }
 
     function description() {
+        console.log();
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p>{props.detailedDescription}</p>
             </div>
         )
     }
@@ -167,3 +168,30 @@ export default function TestPlanDetails() {
         </>
     )
 }
+
+export async function getServerSideProps(context) {
+    // TODO: Refactor - Fetching is bad code, docs say to not do this. 
+    const res = await fetch(`${process.env.HOST}/api/getTestPlan`+ 
+    '?testPlanId=61724e5599915be1b771acb2');
+    const data = await res.json()
+    // Should instead call imported api logic directly
+    // const data2 = getTestPlan('6172500699915be1b771acb3');
+    console.log("\n My Data: ", data[0], "\n");
+    // TODO: Don't have API request return array
+    const testPlanData = data[0];
+    if (!testPlanData) {
+      return {
+        notFound: true,
+      }
+    };
+    (testPlanData.testCases).forEach(async function (caseId, i) {
+        const res = await fetch(`${process.env.HOST}/api/getTestCases`+'?testPlanId='+caseId);
+        console.log(`${process.env.HOST}/api/getTestCases`+'?testPlanId='+caseId);
+        const data = await res.json();
+        console.log("\n Test Case:", caseId);
+        console.log(data);
+    });
+    return {
+      props: {...testPlanData}, // will be passed to the page component as props
+    }
+  }
