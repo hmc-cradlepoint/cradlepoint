@@ -36,6 +36,7 @@ function CheckBoxTable(props) {
           rowsPerPageOptions={[5]}
           checkboxSelection
           onSelectionModelChange={props.onSelectionModelChange}
+          getRowId = {(row) => row._id}
         />
       </div>
     )
