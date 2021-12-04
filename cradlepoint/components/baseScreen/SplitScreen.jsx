@@ -5,7 +5,7 @@ import MenuBar from './MenuBar';
 
 export default function SplitScreen(props) {
     return (
-        <div>
+        <div style={{flexDirection: "column",flex:1}}>
             <MenuBar />
             <div className={styles.screenContainer}>
                 {/* Add styling to leftSection and rightSection in SplitScreen.css as neccessary */}
