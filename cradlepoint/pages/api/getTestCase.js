@@ -1,7 +1,7 @@
 const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
 /*
-  Gets the requested test plan from the database
+  Gets the requested test case from the database
 */
 export default async (req, res) => {
 
