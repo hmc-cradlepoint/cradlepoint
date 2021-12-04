@@ -10,24 +10,12 @@ import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
+import styling from '../styles/tableStyling';
 
 export default function TestCaseDetails() {
     const router = useRouter();
 
-    const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-        },
-      });
-    
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     function handleNavigation(id) {
