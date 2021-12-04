@@ -74,12 +74,13 @@ const BOMColumnsWithFields = LibraryBOMColumns.concat([
     }]);
 
 
-
+  console.log(props.selectedRowData);
   return (
+    
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Add new device(s) to the summary BOM</h2>
-        <PlainTable rows={BOMRows} columns={BOMColumnsWithFields} className={classes.root} 
+        <PlainTable rows={props.selectedRowData} columns={BOMColumnsWithFields} className={classes.root} 
         />
         <CPButton text='Back' onClick={props.onBack}/>
         <CPButton text='Add' />
