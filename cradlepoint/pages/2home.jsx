@@ -61,8 +61,21 @@ export default function HomeScreen(props) {
               onClick={() => setCreateNewFlow(true)}
             />
           </div>
-          <PlainTable rows={engagementRows} columns={engagementColumnsWithActions} className={classes.root}/>
+          <PlainTable rows={props.data} columns={engagementColumnsWithActions} className={classes.root}/>
       </PlainScreen>
       </div>
     )
+}
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`${process.env.HOST}/api/getActiveEngagements`);
+  const data = await res.json();
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+  return {
+    props: {data}, // will be passed to the page component as props
+  }
 }

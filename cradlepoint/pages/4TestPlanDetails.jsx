@@ -11,7 +11,7 @@ import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 
-export default function TestPlanDetails() {
+export default function TestPlanDetails(props) {
     const router = useRouter();
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
