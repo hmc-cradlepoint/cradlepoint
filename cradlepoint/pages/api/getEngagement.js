@@ -9,7 +9,25 @@ export default async (req, res) => {
     const query = { "_id": ObjectId(req.query._id) };
 
     const client = await connectToDb();
-    const cursor = await client.collection("engagements").find(query);
+    const cursor = await client.collection("engagements").aggregate([
+        { $match: { "_id": ObjectId(req.query._id) } },
+        { $lookup:
+            {
+              from: 'user',
+              localField: 'POC_Engineer',
+              foreignField: 'userId',
+              as: 'POC_Eningeer_details'
+            }
+        },
+        { $lookup:
+            {
+              from: 'user',
+              localField: 'SE',
+              foreignField: 'userId',
+              as: 'SEDetails'
+            }
+        }
+    ]);
 
     const results = await cursor.toArray();
     res.json(results);
