@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
@@ -30,6 +31,11 @@ export default function TestPlanDetails(props) {
     
     const classes = useStyles();
 
+    function handleNavigation(id) {
+        router.push("/5TestCaseDetails");
+        console.log("/5TestCaseDetails/" + id);
+    }
+
     const testCaseColumnsWithActions = testCaseColumns.concat([
     { 
         field: 'button', 
@@ -38,7 +44,7 @@ export default function TestPlanDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="View"/>
+            <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete"/>
         </div>
         ),
