@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MenuBar from './MenuBar';
+import styles from '../../styles/SplitScreen.module.css';
 
 export default function PlainScreen(props) {
     return (
-        <div>
+        <div style={{flexDirection: "column",flex:1}}>
             <MenuBar />
-            <div style={{marginLeft: "5%", marginRight: "5%", marginTop: "2%", marginBottom: "2%"}}>
+            <div className={styles.screenContainer}>
                 {props.children}
             </div>
 
