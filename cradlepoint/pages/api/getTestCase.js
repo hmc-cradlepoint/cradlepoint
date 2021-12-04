@@ -5,7 +5,7 @@ import connectToDb from "../../util/mongodb";
 */
 export default async (req, res) => {
 
-  const query = { 'testPlanId': ObjectId(req.query.testPlanId) };
+  const query = { '_id': ObjectId(req.query.testCaseId) };
 
   const client = await connectToDb();
   const cursor = client.collection("testCases").find(query);
