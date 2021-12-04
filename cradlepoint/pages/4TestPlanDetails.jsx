@@ -11,6 +11,7 @@ import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/table
 import { flowType } from './createNewModalFlow/utils';
 
 export default function TestPlanDetails(props) {
+    const router = useRouter();
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     const useStyles = makeStyles({
