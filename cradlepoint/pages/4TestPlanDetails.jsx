@@ -181,6 +181,9 @@ export async function getServerSideProps(context) {
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
     const testCasesData = await res2.json();
     console.log("TestCases:", testCasesData);
+    const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
+    // console.log("BOM:", BOMSummaryData);
+    // TODO: extract BOM's from testCasesData, and display in summary BOM
     return {
       props: {...testPlanData, testCasesData}, // will be passed to the page component as props
     }
