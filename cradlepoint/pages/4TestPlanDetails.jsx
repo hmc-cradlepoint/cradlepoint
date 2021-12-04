@@ -169,28 +169,19 @@ export default function TestPlanDetails(props) {
 }
 
 export async function getServerSideProps(context) {
-    // TODO: Refactor - Fetching is bad code, docs say to not do this. 
-    const res = await fetch(`${process.env.HOST}/api/getTestPlan`+ 
-    '?testPlanId=61724e5599915be1b771acb2');
+    // TODO: Refactor - Fetching is bad code, docs say to not do this.
+    const res = await fetch(`${process.env.HOST}/api/getTestPlan?testPlanId=`+context.query.TestPlanId);
     const data = await res.json()
-    // Should instead call imported api logic directly
-    // const data2 = getTestPlan('6172500699915be1b771acb3');
-    console.log("\n My Data: ", data[0], "\n");
-    // TODO: Don't have API request return array
     const testPlanData = data[0];
     if (!testPlanData) {
       return {
         notFound: true,
       }
     };
-    (testPlanData.testCases).forEach(async function (caseId, i) {
-        const res = await fetch(`${process.env.HOST}/api/getTestCases`+'?testPlanId='+caseId);
-        console.log(`${process.env.HOST}/api/getTestCases`+'?testPlanId='+caseId);
-        const data = await res.json();
-        console.log("\n Test Case:", caseId);
-        console.log(data);
-    });
+    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
+    const testCasesData = await res2.json();
+    console.log("TestCases:", testCasesData);
     return {
-      props: {...testPlanData}, // will be passed to the page component as props
+      props: {...testPlanData, testCasesData}, // will be passed to the page component as props
     }
   }
