@@ -1,18 +1,19 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import NewTestCaseModalInfo from './testCaseInfoModal';
-// import EditTestPlanInfo from './editTestPlanInfo';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-import CreateNewModal from './createNewModal';
-import NewModalClone from './newModalClone';
+import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
+import { flowType } from './createNewModalFlow/utils';
 
-export default function TestPlanDetails() {
+export default function TestPlanDetails(props) {
+    const router = useRouter();
+    const [createNewFlow, setCreateNewFlow] = useState(false);
 
     const useStyles = makeStyles({
         root: {
@@ -30,6 +31,11 @@ export default function TestPlanDetails() {
     
     const classes = useStyles();
 
+    function handleNavigation(id) {
+        router.push("/5TestCaseDetails");
+        console.log("/5TestCaseDetails/" + id);
+    }
+
     const testCaseColumnsWithActions = testCaseColumns.concat([
     { 
         field: 'button', 
@@ -38,7 +44,7 @@ export default function TestPlanDetails() {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="View"/>
+            <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete"/>
         </div>
         ),
@@ -72,11 +78,7 @@ export default function TestPlanDetails() {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Test Cases of Current Plan</h2>
-                    <CPButton text="Add New"
-                            onClick={() => {updateModal("select");
-                                    console.log(selectModalOpen);
-                                }}
-                    />
+                    <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
             </div>
@@ -90,8 +92,7 @@ export default function TestPlanDetails() {
                 <div className={styles.tableButtonRow}>
                     <h2>Summary of Bill of Materials</h2>
                     <CPButton text="Add New"
-                        onClick={() => {updateModal("select_device");
-                    }}
+                        onClick={() => {updateModal("select_device")}}
                     />
                 </div>
                 <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
@@ -99,58 +100,19 @@ export default function TestPlanDetails() {
         )
     }
 
-
-
-    const [selectModalOpen, setSelectModalOpen] = useState(false);
-    const [infoModalOpen, setInfoModalOpen] = useState(false);
-    const [cloneModalOpen, setCloneModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const emptyRow = {subject: '', description: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow);   
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
     
-    function updateModal(modalType,rowId=0){
-      // console.log(input);
-      // setModalType(input);
-      console.log("modalOpen called with ");
-      console.log(modalType);
+    function updateModal(modalType) {
       switch(modalType){
-        case "select":
-            setSelectModalOpen(true);
-            break;
-        case "scratch":
-            setSelectedRow(emptyRow);
-            setInfoModalOpen(true)
-            break;
-        case "clone":
-            setCloneModalOpen(true)
-            break;
-        case "clone_selected":
-            setCloneModalOpen(false)
-            setInfoModalOpen(true)
-            const selectedRowData = (testCaseRows.filter((row) => rowId===row.id))[0];
-            setSelectedRow(selectedRowData);
-            break;
-        case "edit":
-            setEditModalOpen(true)
-            break;
         case "select_device":
             setSelectDeviceModalOpen(true)
             break;
         case "select_quantity":
             setSelectQuantityModalOpen(true)
             break;
-        default:
-            setSelectModalOpen(false)
-            setInfoModalOpen(false)
-            setCloneModalOpen(false)
-            setEditModalOpen(false)
-            setSelectDeviceModalOpen(false)
-            setSelectQuantityModalOpen(false)
       }
     }
-
     
     function details() {
         return (
@@ -167,6 +129,7 @@ export default function TestPlanDetails() {
             </div>
         )
     }
+
     function description() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
@@ -177,45 +140,18 @@ export default function TestPlanDetails() {
     }
 
     return (
-        <div>
-            <CreateNewModal
-              type={'Test Case'}
-              modalOpen={selectModalOpen} 
-              onClickNext={updateModal}
-              onClose={()=> setSelectModalOpen(false)}/>
-
-            <NewTestCaseModalInfo
-              modalOpen={infoModalOpen} 
-              onBack={()=> setInfoModalOpen(false)}
-              selectedRow={selectedRow}
-              ></NewTestCaseModalInfo>
-
-            <NewModalClone
-              type={'Test Case'}
-              modalOpen={cloneModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setCloneModalOpen(false)}
-              />
-
-            {/* <EditTestPlanInfo
-              modalOpen={editModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setEditModalOpen(false)}
-              selectedRow={selectedRow}
-              ></EditTestPlanInfo> */}
-
-            <SelectDeviceModal
-              modalOpen={selectDeviceModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setSelectDeviceModalOpen(false)}
-              ></SelectDeviceModal>
-            
-            <SelectQuantityModal
-              modalOpen={selectQuantityModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal>
-        
+        <>
+        <SelectDeviceModal
+            modalOpen={selectDeviceModalOpen} 
+            onClickNext={updateModal}
+            onBack={()=> setSelectDeviceModalOpen(false)}
+        />
+        <SelectQuantityModal
+            modalOpen={selectQuantityModalOpen} 
+            onClickNext={updateModal}
+            onBack={()=> setSelectQuantityModalOpen(false)}
+        />
+        <CreateNewModalFlow type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
@@ -234,7 +170,6 @@ export default function TestPlanDetails() {
                 </div>
             }
         />
-        </div> 
- 
+        </>
     )
 }

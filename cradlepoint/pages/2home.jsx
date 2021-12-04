@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PlainScreen from "../components/baseScreen/PlainScreen";
+import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import CreateNewModal from './createNewModal';
-import NewEngagModalInfo from './newEngagModalInfo';
-import NewModalClone from './newModalClone';
+import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+import { flowType } from './createNewModalFlow/utils';
 import { engagementColumns, engagementRows } from '../util/tableColumns';
 
-// TODO: adjust scaling and font of the page
 export default function HomeScreen(props) {
+    const router = useRouter();
     // TODO: have a consistent style for all the pages (delete later)
     const useStyles = makeStyles({
         root: {
@@ -25,6 +25,11 @@ export default function HomeScreen(props) {
 
         },
       });
+
+    function handleNavigation(id) {
+      router.push("/3EngagementDetails");
+      console.log("/3EngagementDetails/" + id);
+    }
     
     const classes = useStyles();
 
@@ -36,74 +41,41 @@ export default function HomeScreen(props) {
           headerName: 'Actions',
           headerClassName: 'header',
           align: 'center',
-          renderCell: () => (
-            <CPButton text="DETAILS"/>
+          renderCell: (params) => (
+            <CPButton text="DETAILS" onClick={() => handleNavigation(params.id)}/>
           )
         }
       ]);
 
-    const [selectModalOpen, setSelectModalOpen] = useState(false);
-    const [infoModalOpen, setInfoModalOpen] = useState(false);
-    const [cloneModalOpen, setCloneModalOpen] = useState(false);
-    const emptyRow = {name: '', details: ' ', sysEng: '',	pocEng: '', customer: '', sfdc: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow);   
+    const [createNewFlow, setCreateNewFlow] = useState(false);
   
-    
-    function updateModal(modalType,rowId=0){
-      if (modalType === "select"){
-        setSelectModalOpen(true)
-      } else if (modalType === "scratch"){
-        setSelectedRow(emptyRow);
-        setInfoModalOpen(true)
-      } else if (modalType === "clone"){
-        setCloneModalOpen(true)
-      } else if (modalType === "clone_selected"){
-        setCloneModalOpen(false)
-        setInfoModalOpen(true)
-        const selectedRowData = (rows.filter((row) => rowId===row.id))[0];
-        setSelectedRow(selectedRowData);
-      }
-      else {
-        setSelectModalOpen(false)
-        setInfoModalOpen(false)
-        setCloneModalOpen(false)
-      }
-    }
-
     return(
+      <div >
+        <CreateNewModalFlow type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
-            <CPButton 
+        <h1>Home</h1>
+          <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+              <h2>Engagements</h2>
+              <CPButton 
               text="Create New Engagement"
-              onClick={() => 
-                {updateModal("select");
-                console.log(selectModalOpen);
-                }
-              }
+              onClick={() => setCreateNewFlow(true)}
             />
-            {/* TODO: get rows from database */}
-            <PlainTable rows={engagementRows} columns={engagementColumnsWithActions} className={classes.root}/>
-            <CreateNewModal
-              type={"Engagement"}
-              modalOpen={selectModalOpen} 
-              onClickNext={updateModal}
-              onClose={()=> setSelectModalOpen(false)}
-            />
-
-            <NewEngagModalInfo
-              type={"Engagement"}
-              modalOpen={infoModalOpen} 
-              onBack={()=> setInfoModalOpen(false)}
-              selectedRow={selectedRow}
-              
-              />
-
-            <NewModalClone
-              type={"Engagement"}
-              modalOpen={cloneModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setCloneModalOpen(false)}
-            />
-
+          </div>
+          <PlainTable rows={props.data} columns={engagementColumnsWithActions} className={classes.root}/>
       </PlainScreen>
+      </div>
     )
+}
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`${process.env.HOST}/api/getActiveEngagements`);
+  const data = await res.json();
+  if (!data) {
+    return {
+      notFound: true,
+    }
+  }
+  return {
+    props: {data}, // will be passed to the page component as props
+  }
 }

@@ -4,10 +4,11 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { BOMRows, LibraryBOMColumns } from '../util/tableColumns';
+import SelectDeviceModal from './deviceModals/selectDevice';
+import SelectQuantityModal from './deviceModals/selectQuantity';
 
-// TODO: adjust scaling and font of the page
+
 export default function DeviceLibrary(props) {
-    // TODO: have a consistent style for all the pages (delete later)
     const useStyles = makeStyles({
       root: {
         '& .header': {
@@ -38,14 +39,41 @@ export default function DeviceLibrary(props) {
         }
       ]);
 
-    return(
-        <PlainScreen>
-            <CPButton 
-              text="Add New Device"
-            />
-            <PlainTable rows={BOMRows} columns={LibraryBOMColumnsWithActions} className={classes.root}/>
-   
+      const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
+      const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
+  
+      function updateModal(modalType){
+        switch(modalType){
+          case "select_device":
+              setSelectDeviceModalOpen(true)
+              break;
+          case "select_quantity":
+              setSelectQuantityModalOpen(true)
+              break;
+        }
+      }
 
-      </PlainScreen>
+    return(
+        <div>
+          <SelectDeviceModal
+              modalOpen={selectDeviceModalOpen} 
+              onClickNext={updateModal}
+              onBack={()=> setSelectDeviceModalOpen(false)}
+              ></SelectDeviceModal>
+            
+            <SelectQuantityModal
+              modalOpen={selectQuantityModalOpen} 
+              onClickNext={updateModal}
+              onBack={()=> setSelectQuantityModalOpen(false)}
+              ></SelectQuantityModal> 
+
+            <PlainScreen>
+                <CPButton 
+                  text="Add New Device"
+                  onClick={() => {updateModal("select_device")}}
+                />
+                <PlainTable rows={BOMRows} columns={LibraryBOMColumnsWithActions} className={classes.root}/>
+            </PlainScreen>
+      </div>
     )
 }

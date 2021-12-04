@@ -13,11 +13,12 @@ function PlainTable(props) {
     return (
         <div style={{ height: props.height ? props.height : 400, width: '100%' }} className={props.className}>
             <DataGrid
-            rows={props.rows}
-            columns={props.columns}
-            pageSize={5}
-            rowsPerPageOptions={[5]}
-            // onRowClick={props.onRowClick}
+              rows={props.rows}
+              columns={props.columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              onSelectionModelChange={props.onSelectionModelChange}
+              getRowId = {(row) => row._id}
             />
         </div>
     )
@@ -34,7 +35,7 @@ function CheckBoxTable(props) {
           pageSize={5}
           rowsPerPageOptions={[5]}
           checkboxSelection
-          onSelectionModelChange={(id) => console.log(id)}
+          onSelectionModelChange={props.onSelectionModelChange}
         />
       </div>
     )

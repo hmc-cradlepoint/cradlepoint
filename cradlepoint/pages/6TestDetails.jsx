@@ -3,11 +3,10 @@ import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable, CheckBoxTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import TestInfoModal from './testInfoModal';
-import CreateNewModal from './createNewModal';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, BOMRows, testRows, testColumns, resultColumns, resultRows} from '../util/tableColumns';
-import ResultModal from './resultModal';
+import ResultModalForm from './ResultModalForm';
+import TestModalForm from './TestModalForm';
 
 export default function TestDetails() {
 
@@ -52,8 +51,7 @@ export default function TestDetails() {
                 <div className={styles.tableButtonRow}>
                     <h2>Results</h2>
                     <CPButton text="Add New"
-                            onClick={() => {updateModal("result");
-                                }}
+                            onClick={() => {updateModal("result");}}
                     />
                 </div>
                 <PlainTable rows={resultRows} columns={resultWithActions} className={classes.root}/>
@@ -103,19 +101,19 @@ export default function TestDetails() {
 
     return (
         <div>
-            <TestInfoModal
-              modalOpen={editModalOpen} 
+            <TestModalForm
+              isOpen={editModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setEditModalOpen(false)}
+            //   TODO: should pass in the current test detail to populate the pop-up
               selectedRow={selectedRow}
-              ></TestInfoModal>
+              ></TestModalForm>
 
-            <ResultModal
-              modalOpen={resultModalOpen} 
+            <ResultModalForm
+              isOpen={resultModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setResultModalOpen(false)}
-              selectedRow={selectedRow}
-              ></ResultModal>
+              ></ResultModalForm>
 
         <SplitScreen
             topChildren={

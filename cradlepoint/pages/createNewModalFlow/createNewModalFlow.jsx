@@ -1,21 +1,16 @@
 import React, {useState} from "react";
 import Modal from 'react-modal';
-
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns } from '../../util/tableColumns';
-
-import PropTypes from 'prop-types';
+import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns, testColumns, testRows } from '../../util/tableColumns';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
 import EngagementModalForm from '../EngagementModalForm';
 import TestPlanModalForm from '../TestPlanModalForm';
 import TestCaseModalForm from '../TestCaseModalForm';
-import ResultModalForm from '../ResultModalForm';
-// import DeviceModalForm from '../DeviceModalForm';
-
+import TestModalForm from '../TestModalForm';
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
@@ -83,6 +78,21 @@ export default function CreateNewModalFlow(props) {
               )
             }
             ]);
+        case "Test":
+          return testColumns.concat([
+            { 
+              field: 'button', 
+              flex: 1,
+              minWidth: 100,
+              headerName: 'Actions',
+              headerClassName: 'header',
+              align: 'center',
+              // TODO: figure out how to get row ID from render cell function
+              renderCell: () => (
+                <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
+              )
+            }
+            ]);
       }
     }
 
@@ -95,6 +105,8 @@ export default function CreateNewModalFlow(props) {
           return testPlanRows;
         case "Test Case":
           return testCaseRows;
+        case "Test":
+          return testRows;
       }
     }
 
@@ -131,11 +143,7 @@ export default function CreateNewModalFlow(props) {
         return <TestCaseModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST:
         return <TestModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-      case flowType.RESULT:
-        return <ResultModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-      // case flowType.DEVICE:
-      //   return <DeviceModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
-    }
+      }
   }
 
   switch (modal) {
