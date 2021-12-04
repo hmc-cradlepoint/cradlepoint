@@ -9,7 +9,9 @@ import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
 
-export default function EngagementDetails() {
+//TODO: Error handling for invalid fields
+
+export default function EngagementDetails(props) {
 
     const useStyles = makeStyles({
         root: {
@@ -93,7 +95,7 @@ export default function EngagementDetails() {
                 <PlainTable rows={activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
                 <br />
                 <h3>Archived test plans: </h3>
-                <PlainTable rows={testPlanRows} columns={testPlanColWithButton} className={classes.root}/>
+                <PlainTable rows={props.archivedEngagements} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -112,7 +114,7 @@ export default function EngagementDetails() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p>{props.engagement.engagementDetails}</p>
             </div>
         )
     }
@@ -121,8 +123,12 @@ export default function EngagementDetails() {
         return(
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                {/* TODO: populate this data with actual data */}
-                <p><b>ID:</b> 1923718<br/><b>Client:</b> Harvey Mudd<br/> <b>SFDC:</b> https://www.salesforce.com<br/><b>Status:</b> In Progress<br/><b>System Engineer:</b> Matt Tran<br/><b>POC Engineer:</b> Jessica Kwok</p>
+                <p><b>ID:</b> {props.engagement._id}<br/>
+                <b>Client:</b> {props.engagement.customer}<br/> 
+                <b>SFDC:</b> {props.engagement.SFDC}<br/>
+                <b>Status:</b> {props.engagement.statusCode}<br/>
+                <b>System Engineer:</b> {props.engagement.SEDetails[0].firstName} {props.engagement.SEDetails[0].lastName}<br/>
+                <b>POC Engineer:</b> {props.engagement.POC_Eningeer_details[0].firstName} {props.engagement.POC_Eningeer_details[0].lastName}</p>
             </div>
         )
     }
@@ -152,3 +158,28 @@ export default function EngagementDetails() {
         </div>
     )
 }
+
+export async function getServerSideProps(context) {
+    try {
+        
+        const engagement = await (await fetch(`${process.env.HOST}/api/getEngagement?_id=${context.query.engagementId}`)).json()
+        
+
+        if (engagement.len == 0) {
+            return {
+              notFound: true,
+            }
+          }
+          const archivedEngagements = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query.engagementId}`)).json()
+          const activeEngagement = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json()
+          return {
+            props: {engagement: engagement[0],
+                    activeEngagement: activeEngagement,
+                    archivedEngagements: archivedEngagements }, // will be passed to the page component as props
+          }
+    }
+    catch(err) {
+        throw err;
+    }
+
+  } 
