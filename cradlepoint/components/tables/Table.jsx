@@ -18,6 +18,7 @@ function PlainTable(props) {
               pageSize={5}
               rowsPerPageOptions={[5]}
               onSelectionModelChange={props.onSelectionModelChange}
+              getRowId = {(row) => row._id}
             />
         </div>
     )
