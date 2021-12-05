@@ -189,10 +189,10 @@ export async function getServerSideProps(context) {
     const testCasesData = myData.map((testCase) => {
         return {
             "_id": testCase._id,
-            "name": testCase.name,
-            "description": testCase.description,
+            "name": (testCase.name != "")?testCase.name:"N/A",
+            "description": (testCase.name != "")?testCase.name:"N/A",
             "percentPassed":"__%",
-            "config": testCase.config
+            "config": (testCase.config != "")?testCase.config:"N/A"
         }
     });
     // const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
