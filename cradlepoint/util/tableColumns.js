@@ -22,11 +22,10 @@ const testPlanColumns = [
  
 const testCaseColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
+    { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     { field: 'percentPassed', headerName: 'Percent Passed', headerClassName: 'header', flex: 1},
-    { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'configs', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
+    { field: 'config', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
 ];
 
 const testColumns = [
@@ -39,16 +38,16 @@ const testColumns = [
 const BOMColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-    { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
-    { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
-    { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
+    // { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
+    // { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
+    { field: 'physical', headerName: 'Physical?', headerClassName: 'header', flex: 1},
     { field: 'codeVer', headerName: 'Code Version', headerClassName: 'header', flex: 1},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 const LibraryBOMColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-    { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
+    { field: 'physical', headerName: 'Physical?', headerClassName: 'header', flex: 1},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 

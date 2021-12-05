@@ -80,7 +80,7 @@ export default function TestPlanDetails(props) {
                     <h2>Test Cases of Current Plan</h2>
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
-                <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
+                <PlainTable rows={props.testCasesData} columns={testCaseColumnsWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -131,7 +131,6 @@ export default function TestPlanDetails(props) {
     }
 
     function description() {
-        console.log();
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
@@ -186,10 +185,17 @@ export async function getServerSideProps(context) {
       }
     };
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
-    const testCasesData = await res2.json();
-    console.log("TestCases:", testCasesData);
-    const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
-    // console.log("BOM:", BOMSummaryData);
+    const myData = await res2.json();
+    const testCasesData = myData.map((testCase) => {
+        return {
+            "_id": testCase._id,
+            "name": testCase.name,
+            "description": testCase.description,
+            "percentPassed":"__%",
+            "config": testCase.config
+        }
+    });
+    // const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
     // TODO: extract BOM's from testCasesData, and display in summary BOM
     return {
       props: {...testPlanData, testCasesData}, // will be passed to the page component as props
