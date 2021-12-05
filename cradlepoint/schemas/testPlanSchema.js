@@ -10,6 +10,7 @@ export const testPlanSchema = yup.object().shape({
   testCases: yup.array().required(),
   authors: yup.array().required(),
   isActive: yup.bool().required(),
+  summaryBOM: yup.array().required(),
   createdOn: yup.date().default(function () {
     return new Date();
   }).required(),
