@@ -95,7 +95,7 @@ export default function TestPlanDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
+                <PlainTable rows={props.BOM_entries} columns={BOMColumnsWithAction} className={classes.root}/>
             </div>
         )
     }
@@ -118,10 +118,10 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                <p>Subject: ??? No Database Field ???</p>
+                <p>Name: {props.name}</p>
                 <p>Active: {(props.isActive).toString()}</p>
                 <p>Device Config: {props.deviceConfig}</p>
-                <p>Coverage: Calculate on FrontEnd</p>
+                <p>Coverage:</p>
                 <p>Version: {props.version}</p>
                 <p>Date Created: {props.createdOn}</p>
                 <p>Authors: {props.authors}</p>
@@ -177,14 +177,30 @@ export default function TestPlanDetails(props) {
 export async function getServerSideProps(context) {
     // TODO: Refactor - Fetching is bad code, docs say to not do this.
     const res = await fetch(`${process.env.HOST}/api/getTestPlan?testPlanId=`+context.query.TestPlanId);
-    const data = await res.json()
-    const testPlanData = data[0];
+    const testPlanData = await res.json().then((data) => {
+        return {...data[0], };
+    });
+    // TODO: Error Check the await call in for loop
+    var BOM_entries = [];
+    for(var i = 0; i < testPlanData.summaryBOM.length; i++) {
+        const deviceRes = await fetch(`${process.env.HOST}/api/getDevice?deviceId=`
+        +testPlanData.summaryBOM[i].deviceId);
+        const deviceData = await deviceRes.json();
+        const BOM_entry = { 
+            ...deviceData[0],
+            "isOptional": testPlanData.summaryBOM[i].isOptional,
+            "quantity": testPlanData.summaryBOM[i].quantity,
+        };
+        BOM_entries.push(BOM_entry);
+    }
+    console.log("BOM Entries:", BOM_entries);
     if (!testPlanData) {
       return {
         notFound: true,
       }
     };
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
+    // TODO: Error Check the await call
     const testCasesData = await res2.json().then((data) => data.map((testCase => {
         return {
             "_id": testCase._id,
@@ -192,14 +208,13 @@ export async function getServerSideProps(context) {
             "description": (testCase.name != "")?testCase.name:"N/A",
             "percentPassed":"__%",
             "config": (testCase.config != "")?testCase.config:"N/A",
+            // Other Fields not displayed:
             // "timeEstimate"
             // "testPlanId"
             // "BOM"
         }
-    }) ));
-    // const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
-    // TODO: extract BOM's from testCasesData, and display in summary BOM
+    })));
     return {
-      props: {...testPlanData, testCasesData}, // will be passed to the page component as props
+      props: {...testPlanData, testCasesData, BOM_entries}, // will be passed to the page component as props
     }
   }
