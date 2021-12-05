@@ -185,8 +185,7 @@ export async function getServerSideProps(context) {
       }
     };
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
-    const myData = await res2.json().then();
-    const testCasesData = myData.map((testCase) => {
+    const testCasesData = await res2.json().then((data) => data.map((testCase => {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
@@ -197,7 +196,7 @@ export async function getServerSideProps(context) {
             // "testPlanId"
             // "BOM"
         }
-    });
+    }) ));
     // const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
     // TODO: extract BOM's from testCasesData, and display in summary BOM
     return {
