@@ -16,8 +16,9 @@ export default async (req, res) => {
       const result = testPlanSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
       const id = ObjectId(result._id);
+      const summaryBOM = result.summaryBOM.map((mystr) => ObjectId(mystr))
       const query = {_id: id};
-      const testPlan = {...result, _id: id };
+      const testPlan = {...result, summaryBOM, _id: id };
       // Update the Database w/ new TestPlan
       const db = await connectToDb();
       await db.collection("testPlan").replaceOne(query, testPlan);
