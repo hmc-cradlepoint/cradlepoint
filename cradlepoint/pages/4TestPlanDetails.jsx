@@ -175,12 +175,21 @@ export default function TestPlanDetails(props) {
 }
 
 export async function getServerSideProps(context) {
-    // TODO: Refactor - Fetching is bad code, docs say to not do this.
+    /* 
+       Gets Data for Test Plan Details
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
     const res = await fetch(`${process.env.HOST}/api/getTestPlan?testPlanId=`+context.query.TestPlanId);
     const testPlanData = await res.json().then((data) => {
         return {...data[0], };
     });
-    // TODO: Error Check the await call in for loop
+
+    /* 
+       Gets Data for BOM Table
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
     var BOM_entries = [];
     for(var i = 0; i < testPlanData.summaryBOM.length; i++) {
         const deviceRes = await fetch(`${process.env.HOST}/api/getDevice?deviceId=`
@@ -193,14 +202,13 @@ export async function getServerSideProps(context) {
         };
         BOM_entries.push(BOM_entry);
     }
-    console.log("BOM Entries:", BOM_entries);
-    if (!testPlanData) {
-      return {
-        notFound: true,
-      }
-    };
+
+    /* 
+       Gets Data for Test Cases Table
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
-    // TODO: Error Check the await call
     const testCasesData = await res2.json().then((data) => data.map((testCase => {
         return {
             "_id": testCase._id,
