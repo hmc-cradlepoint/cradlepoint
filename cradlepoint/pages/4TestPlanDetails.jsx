@@ -185,14 +185,17 @@ export async function getServerSideProps(context) {
       }
     };
     const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
-    const myData = await res2.json();
+    const myData = await res2.json().then();
     const testCasesData = myData.map((testCase) => {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
             "description": (testCase.name != "")?testCase.name:"N/A",
             "percentPassed":"__%",
-            "config": (testCase.config != "")?testCase.config:"N/A"
+            "config": (testCase.config != "")?testCase.config:"N/A",
+            // "timeEstimate"
+            // "testPlanId"
+            // "BOM"
         }
     });
     // const BOMSummaryData = testCasesData.map((testCase) => testCase.BOM );
