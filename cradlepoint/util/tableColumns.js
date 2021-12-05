@@ -47,7 +47,7 @@ const BOMColumns = [
 const LibraryBOMColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-    { field: 'physideviceTypecal', headerName: 'Device Type', headerClassName: 'header', flex: 1},
+    { field: 'deviceType', headerName: 'Device Type', headerClassName: 'header', flex: 1},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 
