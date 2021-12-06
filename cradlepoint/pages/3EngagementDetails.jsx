@@ -9,24 +9,12 @@ import styles from '../styles/EngagementDetails.module.css';
 import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
+import styling from '../styles/tableStyling';
 
 export default function EngagementDetails() {
     const router = useRouter();
 
-    const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-        },
-      });
-    
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const [editDescriptionModal, setEditDescriptionModal] = useState(false);
