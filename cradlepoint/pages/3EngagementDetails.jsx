@@ -97,10 +97,10 @@ export default function EngagementDetails(props) {
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <h3>Active test plan: </h3>
-                <PlainTable rows={activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <PlainTable rows={props.activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
                 <br />
                 <h3>Archived test plans: </h3>
-                <PlainTable rows={props.archivedEngagements} columns={testPlanColWithButton} className={classes.root}/>
+                <PlainTable rows={props.archivedTestPlans} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -110,7 +110,7 @@ export default function EngagementDetails(props) {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                <PlainTable rows={BOMRows} columns={BOMColumnsWithButton} className={classes.root}/>
+                <PlainTable rows={props.activeTestPlan[0].summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -175,12 +175,12 @@ export async function getServerSideProps(context) {
               notFound: true,
             }
           }
-          const archivedEngagements = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query.engagementId}`)).json()
-          const activeEngagement = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json()
+          const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query.engagementId}`)).json();
+          const activeTestPlan = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json();
           return {
             props: {engagement: engagement[0],
-                    activeEngagement: activeEngagement,
-                    archivedEngagements: archivedEngagements }, // will be passed to the page component as props
+                    activeTestPlan: activeTestPlan,
+                    archivedTestPlans: archivedTestPlans }, // will be passed to the page component as props
           }
     }
     catch(err) {
