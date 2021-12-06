@@ -6,8 +6,6 @@ const { ObjectId } = require('mongodb');
 */
 export default async (req, res) => {
   if ( ObjectId.isValid(req.query._id) ) {
-    const query = { "_id": ObjectId(req.query._id) };
-
     const client = await connectToDb();
     const cursor = await client.collection("engagements").aggregate([
         { $match: { "_id": ObjectId(req.query._id) } },
