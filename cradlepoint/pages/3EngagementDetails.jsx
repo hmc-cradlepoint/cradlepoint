@@ -41,11 +41,7 @@ export default function EngagementDetails(props) {
         flex: 1.5
     }
     ]);
-
-    const activeTestPlan = [
-        {id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", coverage: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    ]
-
+    
     const activeTestPlanCol = testPlanColumns.concat([
     { 
         field: 'button', 
