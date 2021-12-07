@@ -73,7 +73,6 @@ export default function TestDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
-                <p>Percent of Tests Passed: </p>
             </div>
         )
     }
