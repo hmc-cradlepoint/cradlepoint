@@ -9,7 +9,7 @@ import ResultModalForm from './ResultModalForm';
 import TestModalForm from './TestModalForm';
 import styling from '../styles/tableStyling';
 
-export default function TestDetails() {
+export default function TestDetails(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
@@ -41,7 +41,7 @@ export default function TestDetails() {
                             onClick={() => {updateModal("result");}}
                     />
                 </div>
-                <PlainTable rows={resultRows} columns={resultWithActions} className={classes.root}/>
+                <PlainTable rows={props.resultsData} columns={resultWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -72,8 +72,7 @@ export default function TestDetails() {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Subject: </p>
-                <p>Percent of Tests Passed: </p>
+                <p>Name: {props.testData.name}</p>
             </div>
         )
     }
@@ -81,7 +80,7 @@ export default function TestDetails() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p>{props.testData.details}</p>
             </div>
         )
     }
@@ -122,3 +121,34 @@ export default function TestDetails() {
  
     )
 }
+
+export async function getServerSideProps(context) {
+    /* 
+       Gets Data for Test Details
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
+    const res = await fetch(`${process.env.HOST}/api/getTest?_id=`+context.query._id);
+    const testData = await res.json().then((data) => data[0]);
+
+    /* 
+       Gets Data for Test Results
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
+    const res2 = await fetch(`${process.env.HOST}/api/getResults?testId=`+context.query._id);
+    const resultsData = await res2.json().then((data) => data.map((result => {
+        return {
+            "_id": result._id,
+            "evidence": (result.evidence != "")?result.evidence:"N/A",
+            "details": (result.details != "")?result.details:"N/A",
+            "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
+            "SEApproval": (result.SEApproval != "")?result.SEApproval:"N/A",
+            // Other Fields not displayed:
+            // "testId"
+        }
+    })));
+    return {
+      props: {testData, resultsData}, // will be passed to the page component as props
+    }
+  }
