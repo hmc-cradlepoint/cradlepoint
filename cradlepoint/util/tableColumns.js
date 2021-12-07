@@ -12,12 +12,13 @@ const engagementColumns = [
 
 const testPlanColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
+    { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
+    { field: 'detailedDescription', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
-    { field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'currentTPEs', headerName: 'Current TPEs', headerClassName: 'header', flex: 1},
+    { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1},
+    //{ field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
+    //{ field: 'currentTPEs', headerName: 'Current TPEs', headerClassName: 'header', flex: 1},
   ];
  
 const testCaseColumns = [
@@ -37,13 +38,25 @@ const testColumns = [
 ];
 
 const BOMColumns = [
-    { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
-    { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
-    { field: 'optional', headerName: 'Optional', headerClassName: 'header', flex: 1},
+    //{ field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
+    { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1, 
+      valueGetter: (params) => {
+        return params.row.device.deviceName;
+      }},
+    { field: 'isOptional', headerName: 'Optional', headerClassName: 'header', flex: 1},
     { field: 'quantity', headerName: 'Quantity', headerClassName: 'header', flex: 1},
-    { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
-    { field: 'codeVer', headerName: 'Code Version', headerClassName: 'header', flex: 1},
-    { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
+    { field: 'deviceType', headerName: 'Physical/Software', headerClassName: 'header', flex: 1, 
+      valueGetter: (params) => {
+        return params.row.device.deviceType;
+      }},
+    { field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+      valueGetter: (params) => {
+        return params.row.device.codeVersion;
+      }},
+    { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1, 
+    valueGetter: (params) => {
+      return params.row.device.SKU;
+    }}];
 
 const LibraryBOMColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
