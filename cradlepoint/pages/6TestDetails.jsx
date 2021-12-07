@@ -41,7 +41,7 @@ export default function TestDetails(props) {
                             onClick={() => {updateModal("result");}}
                     />
                 </div>
-                <PlainTable rows={resultRows} columns={resultWithActions} className={classes.root}/>
+                <PlainTable rows={props.resultsData} columns={resultWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -131,6 +131,7 @@ export async function getServerSideProps(context) {
     */
     const res = await fetch(`${process.env.HOST}/api/getTest?_id=`+context.query._id);
     const testData = await res.json().then((data) => data[0]);
+
     /* 
        Gets Data for Test Results
        TODO: Error Check await call
@@ -142,9 +143,9 @@ export async function getServerSideProps(context) {
             "_id": result._id,
             "evidence": (result.evidence != "")?result.evidence:"N/A",
             "details": (result.details != "")?result.details:"N/A",
+            "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
+            "SEApproval": (result.SEApproval != "")?result.SEApproval:"N/A",
             // Other Fields not displayed:
-            // "POCApproval"
-            // "SEApproval"
             // "testId"
         }
     })));
