@@ -5,10 +5,64 @@ import connectToDb from "../../util/mongodb";
 */
 export default async (req, res) => {
 
-  const query = { '_id': ObjectId(req.query.testCaseId) };
-
   const client = await connectToDb();
-  const cursor = client.collection("testCases").find(query);
+  const cursor = client.collection("testCases").aggregate([
+    // Find the test Plan
+    { $match: { "_id": ObjectId(req.query._id) } },
+    // Separate apart the summaryBOMs
+    {
+      $unwind: {
+          path: '$BOM'
+      }
+    },
+    // Lookup the devices in its table
+    {
+        $lookup: {
+            from: 'device',
+            localField: 'BOM.deviceId',
+            foreignField: '_id',
+            as: 'BOM.device'
+        }
+    },
+    // Change the device from an array into just an object
+    {
+        $unwind: {
+            path: '$BOM.device'
+        }
+    },
+    // Put everything back together
+    {
+        $group: {
+            _id: '$_id',
+            devices: {
+                $push: '$BOM'
+            }
+        }
+    },
+    {
+        $lookup: {
+            from: 'testCases',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'testCaseDetails'
+        }
+    },
+    {
+        $unwind: {
+            path: '$testCaseDetails'
+        }
+    },
+    {
+        $addFields: {
+            'testCaseDetails.BOM': '$devices'
+        }
+    },
+    {
+        $replaceRoot: {
+            newRoot: '$testCaseDetails'
+        }
+    }
+  ]);
   const results = await cursor.toArray();
   res.json(results);
 };
