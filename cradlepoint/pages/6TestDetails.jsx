@@ -1,29 +1,16 @@
 import React, {useState} from 'react';
 import SplitScreen from '../components/baseScreen/SplitScreen';
-import { PlainTable, CheckBoxTable} from '../components/tables/Table';
+import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import styles from '../styles/EngagementDetails.module.css';
-import { BOMColumns, BOMRows, testRows, testColumns, resultColumns, resultRows} from '../util/tableColumns';
+import { resultColumns, resultRows } from '../util/tableColumns';
 import ResultModalForm from './ResultModalForm';
 import TestModalForm from './TestModalForm';
+import styling from '../styles/tableStyling';
 
 export default function TestDetails() {
-
-    const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-        },
-      });
-    
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const resultWithActions = resultColumns.concat([

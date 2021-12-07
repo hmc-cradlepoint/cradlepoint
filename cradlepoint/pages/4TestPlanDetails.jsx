@@ -1,34 +1,25 @@
 import React, {useState} from 'react';
 import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
-import { PlainTable, CheckBoxTable} from '../components/tables/Table';
-import { makeStyles } from '@mui/styles';
+import { PlainTable } from '../components/tables/Table';
+
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+
+import { makeStyles } from '@mui/styles';
 import styles from '../styles/EngagementDetails.module.css';
+import styling from '../styles/tableStyling';
+
 import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 
 export default function TestPlanDetails(props) {
     const router = useRouter();
     const [createNewFlow, setCreateNewFlow] = useState(false);
-
-    const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-        },
-      });
     
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     function handleNavigation(id) {

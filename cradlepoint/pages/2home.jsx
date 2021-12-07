@@ -1,37 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { makeStyles } from '@mui/styles';
 import PlainScreen from "../components/baseScreen/PlainScreen";
 import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
-import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
 import { engagementColumns, engagementRows } from '../util/tableColumns';
+import styling from '../styles/tableStyling';
 
 export default function HomeScreen(props) {
     const router = useRouter();
-    // TODO: have a consistent style for all the pages (delete later)
-    const useStyles = makeStyles({
-        root: {
-          '& .header': {
-            backgroundColor: '#FCAC1C',
-          },
-          '& .MuiDataGrid-iconSeparator': {
-            display: 'None'
-          },
-          '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            borderRight: `2px solid #f0f0f0`,
-          },
-
-        },
-      });
+    const useStyles = makeStyles(styling);
+    const classes = useStyles();
 
     function handleNavigation(id) {
       router.push("/3EngagementDetails");
       console.log("/3EngagementDetails/" + id);
     }
-    
-    const classes = useStyles();
 
     const engagementColumnsWithActions = engagementColumns.concat([
         { 

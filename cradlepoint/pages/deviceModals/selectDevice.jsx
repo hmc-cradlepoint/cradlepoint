@@ -29,7 +29,7 @@ export default function SelectDevice(props) {
   function updateSelection(ids){
     const selectedIDs = new Set(ids);
     selectedRowData = BOMRows.filter((row) =>
-        selectedIDs.has(row.id.toString()));
+        selectedIDs.has(row._id.toString()));
     console.log(selectedRowData);
   }
 
