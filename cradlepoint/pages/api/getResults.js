@@ -9,7 +9,6 @@ import connectToDb from "../../util/mongodb";
 */
 export default async (req, res) => {
   const query = { 'testId': ObjectId(req.query.testId) };
-
   const client = await connectToDb();
   const cursor = client.collection("result").find(query);
   const results = await cursor.toArray();
