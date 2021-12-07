@@ -86,7 +86,8 @@ export default function TestPlanDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={props.BOM_entries} columns={BOMColumnsWithAction} className={classes.root}/>
+                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
+                getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -109,14 +110,14 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                <p>Name: {props.name}</p>
-                <p>Active: {(props.isActive).toString()}</p>
-                <p>Device Config: {props.deviceConfig}</p>
+                <p>Name: {props.testPlanData.name}</p>
+                <p>Active: {(props.testPlanData.isActive).toString()}</p>
+                <p>Device Config: {props.testPlanData.deviceConfig}</p>
                 <p>Coverage:</p>
-                <p>Version: {props.version}</p>
-                <p>Date Created: {props.createdOn}</p>
-                <p>Authors: {props.authors}</p>
-                <p>Customer feedback: {props.customerFeedback}</p>
+                <p>Version: {props.testPlanData.version}</p>
+                <p>Date Created: {props.testPlanData.createdOn}</p>
+                <p>Authors: {props.testPlanData.authors}</p>
+                <p>Customer feedback: {props.testPlanData.customerFeedback}</p>
             </div>
         )
     }
@@ -125,7 +126,7 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.detailedDescription}</p>
+                <p>{props.testPlanData.detailedDescription}</p>
             </div>
         )
     }
@@ -171,28 +172,8 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res = await fetch(`${process.env.HOST}/api/getTestPlan?testPlanId=`+context.query.TestPlanId);
-    const testPlanData = await res.json().then((data) => {
-        return {...data[0], };
-    });
-
-    /* 
-       Gets Data for BOM Table
-       TODO: Error Check await call
-       TODO: Refactor out fetch call
-    */
-    var BOM_entries = [];
-    for(var i = 0; i < testPlanData.summaryBOM.length; i++) {
-        const deviceRes = await fetch(`${process.env.HOST}/api/getDevice?deviceId=`
-        +testPlanData.summaryBOM[i].deviceId);
-        const deviceData = await deviceRes.json();
-        const BOM_entry = { 
-            ...deviceData[0],
-            "isOptional": testPlanData.summaryBOM[i].isOptional,
-            "quantity": testPlanData.summaryBOM[i].quantity,
-        };
-        BOM_entries.push(BOM_entry);
-    }
+    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query.TestPlanId);
+    const testPlanData = await res.json().then((data) => data[0]);
 
     /* 
        Gets Data for Test Cases Table
@@ -214,6 +195,6 @@ export async function getServerSideProps(context) {
         }
     })));
     return {
-      props: {...testPlanData, testCasesData, BOM_entries}, // will be passed to the page component as props
+      props: {testPlanData, testCasesData}, // will be passed to the page component as props
     }
   }
