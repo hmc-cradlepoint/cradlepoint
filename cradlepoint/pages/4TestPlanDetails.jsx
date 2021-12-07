@@ -71,7 +71,7 @@ export default function TestPlanDetails(props) {
                     <h2>Test Cases of Current Plan</h2>
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
-                <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
+                <PlainTable rows={props.testCasesData} columns={testCaseColumnsWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -86,7 +86,8 @@ export default function TestPlanDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
+                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
+                getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -109,14 +110,14 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                <p>Subject: </p>
-                <p>Active: (Boolean)</p>
-                <p>Device Config: </p>
-                <p>Coverage: </p>
-                <p>Version: </p>
-                <p>Date Created: </p>
-                <p>Authors: </p>
-                <p>Customer feedback</p>
+                <p>Name: {props.testPlanData.name}</p>
+                <p>Active: {(props.testPlanData.isActive).toString()}</p>
+                <p>Device Config: {props.testPlanData.deviceConfig}</p>
+                <p>Coverage:</p>
+                <p>Version: {props.testPlanData.version}</p>
+                <p>Date Created: {props.testPlanData.createdOn}</p>
+                <p>Authors: {props.testPlanData.authors}</p>
+                <p>Customer feedback: {props.testPlanData.customerFeedback}</p>
             </div>
         )
     }
@@ -125,7 +126,7 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p>{props.testPlanData.detailedDescription}</p>
             </div>
         )
     }
@@ -164,3 +165,36 @@ export default function TestPlanDetails(props) {
         </>
     )
 }
+
+export async function getServerSideProps(context) {
+    /* 
+       Gets Data for Test Plan Details
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
+    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query.TestPlanId);
+    const testPlanData = await res.json().then((data) => data[0]);
+
+    /* 
+       Gets Data for Test Cases Table
+       TODO: Error Check await call
+       TODO: Refactor out fetch call
+    */
+    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
+    const testCasesData = await res2.json().then((data) => data.map((testCase => {
+        return {
+            "_id": testCase._id,
+            "name": (testCase.name != "")?testCase.name:"N/A",
+            "description": (testCase.name != "")?testCase.name:"N/A",
+            "percentPassed":"__%",
+            "config": (testCase.config != "")?testCase.config:"N/A",
+            // Other Fields not displayed:
+            // "timeEstimate"
+            // "testPlanId"
+            // "BOM"
+        }
+    })));
+    return {
+      props: {testPlanData, testCasesData}, // will be passed to the page component as props
+    }
+  }
