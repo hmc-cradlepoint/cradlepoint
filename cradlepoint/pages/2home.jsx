@@ -15,8 +15,7 @@ export default function HomeScreen(props) {
     const classes = useStyles();
 
     function handleNavigation(id) {
-      router.push("/3EngagementDetails");
-      console.log("/3EngagementDetails/" + id);
+      router.push("/3EngagementDetails?_id=" + id);
     }
 
     const engagementColumnsWithActions = engagementColumns.concat([

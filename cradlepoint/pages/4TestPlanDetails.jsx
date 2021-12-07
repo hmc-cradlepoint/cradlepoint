@@ -23,8 +23,7 @@ export default function TestPlanDetails(props) {
     const classes = useStyles();
 
     function handleNavigation(id) {
-        router.push("/5TestCaseDetails");
-        console.log("/5TestCaseDetails/" + id);
+        router.push("/5TestCaseDetails?_id=" + id);
     }
 
     const testCaseColumnsWithActions = testCaseColumns.concat([
@@ -172,7 +171,7 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query.TestPlanId);
+    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query._id);
     const testPlanData = await res.json().then((data) => data[0]);
 
     /* 
@@ -180,7 +179,7 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query.TestPlanId);
+    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query._id);
     const testCasesData = await res2.json().then((data) => data.map((testCase => {
         return {
             "_id": testCase._id,

@@ -21,8 +21,7 @@ export default function EngagementDetails(props) {
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     function handleEditNavigation(id) {
-        router.push("/4TestPlanDetails");
-        console.log("/4TestPlanDetails/" + id);
+        router.push("/4TestPlanDetails?_id=" + id);
     }
 
     //   TODO: style the active test plan
@@ -150,16 +149,13 @@ export default function EngagementDetails(props) {
 
 export async function getServerSideProps(context) {
     try {
-        
-        const engagement = await (await fetch(`${process.env.HOST}/api/getEngagement?_id=${context.query.engagementId}`)).json()
-        
-
+        const engagement = await (await fetch(`${process.env.HOST}/api/getEngagement?_id=${context.query._id}`)).json()
         if (engagement.len == 0) {
             return {
               notFound: true,
             }
           }
-          const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query.engagementId}`)).json();
+          const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query._id}`)).json();
           const activeTestPlan = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json();
           return {
             props: {engagement: engagement[0],

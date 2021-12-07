@@ -19,8 +19,7 @@ export default function TestCaseDetails(props) {
     const classes = useStyles();
 
     function handleNavigation(id) {
-        router.push("/6TestDetails");
-        console.log("/6TestDetails/" + id);
+        router.push("/6TestDetails?_id="+id);
     }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
@@ -167,8 +166,8 @@ export default function TestCaseDetails(props) {
 export async function getServerSideProps(context) {
     try {
         
-        const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query.testCaseId}`)).json()
-        const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query.testCaseId}`)).json()
+        const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query._id}`)).json()
+        const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query._id}`)).json()
         if (testCase.len == 0) {
             return {
               notFound: true,
