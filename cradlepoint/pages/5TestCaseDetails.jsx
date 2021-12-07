@@ -12,7 +12,7 @@ import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns'
 import { flowType } from './createNewModalFlow/utils';
 import styling from '../styles/tableStyling';
 
-export default function TestCaseDetails() {
+export default function TestCaseDetails(props) {
     const router = useRouter();
 
     const useStyles = makeStyles(styling);
@@ -70,7 +70,7 @@ export default function TestCaseDetails() {
                     <CPButton text="Add New" onClick={() => {
                         setCreateNewFlow(true)}} />
                 </div>
-                <PlainTable rows={testRows} columns={testColumnsWithActions} className={classes.root}/>
+                <PlainTable rows={props.tests} columns={testColumnsWithActions} className={classes.root}/>
             </div>
         )
     }
@@ -85,7 +85,7 @@ export default function TestCaseDetails() {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={BOMRows} columns={BOMColumnsWithAction} className={classes.root}/>
+                <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -108,8 +108,8 @@ export default function TestCaseDetails() {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Subject: </p>
-                <p>Percent of Tests Passed: </p>
+                <p>Subject: TBD</p>
+                <p>Percent of Tests Passed: TBD</p>
             </div>
         )
     }
@@ -117,7 +117,7 @@ export default function TestCaseDetails() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+                <p>{props.testCase.description}</p>
             </div>
         )
     }
@@ -163,3 +163,24 @@ export default function TestCaseDetails() {
  
     )
 }
+
+export async function getServerSideProps(context) {
+    try {
+        
+        const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query.testCaseId}`)).json()
+        const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query.testCaseId}`)).json()
+        if (testCase.len == 0) {
+            return {
+              notFound: true,
+            }
+        }
+          return {
+            props: {testCase: testCase[0],
+                    tests: tests }, // will be passed to the page component as props
+        }
+    }
+    catch(err) {
+        throw err;
+    }
+
+} 

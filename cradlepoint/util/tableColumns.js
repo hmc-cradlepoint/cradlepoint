@@ -32,9 +32,9 @@ const testCaseColumns = [
 
 const testColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
-    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
+    { field: 'name', headerName: 'Subject', headerClassName: 'header', flex: 1},
+    { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    //{ field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
 ];
 
 const BOMColumns = [
