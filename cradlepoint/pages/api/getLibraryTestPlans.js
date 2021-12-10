@@ -5,7 +5,7 @@ import connectToDb from "../../util/mongodb";
 export default async (req, res) => {
   try {
     const client = await connectToDb();
-    const cursor = await client.collection("testPlanArchive").find();
+    const cursor = await client.collection("testPlanLibrary").find();
     
     const results = await cursor.toArray();
     res.json(results);
