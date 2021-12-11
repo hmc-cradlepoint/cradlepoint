@@ -13,12 +13,13 @@ export default async (req, res) => {
     const data = req.body;
     const valid = await resultSchema.isValid(data);
     if (valid && ObjectId.isValid(data.testId)){
-      const result = resultSchema.cast(data);
+      const validData = resultSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
-      const id = ObjectId(result._id);
-      const testId = ObjectId(result.testId);
+      const id = ObjectId(validData._id);
+      const testId = ObjectId(validData.testId);
+      // Create the database query and replacement object
       const query = {_id: id};
-      const newResult = {...result, _id: id, testId:testId };
+      const newResult = {...validData, _id: id, testId:testId };
       // Update the Database w/ new Result
       const db = await connectToDb();
       await db.collection("result").replaceOne(query, newResult);
