@@ -13,7 +13,7 @@ const engagementColumns = [
 const testPlanColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
-    { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
+    // { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
     { field: 'detailedDescription', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
     { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1},
@@ -22,23 +22,23 @@ const testPlanColumns = [
   ];
  
 const testCaseColumns = [
-    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1},
-    { field: 'subject', headerName: 'Subject', headerClassName: 'header', flex: 1},
+    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
+    { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     { field: 'percentPassed', headerName: 'Percent Passed', headerClassName: 'header', flex: 1},
     { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'configs', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
+    { field: 'config', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
 ];
 
 const testColumns = [
-    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1},
+    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Subject', headerClassName: 'header', flex: 1},
     { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     //{ field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
 ];
 
 const BOMColumns = [
-    //{ field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
+    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1, 
       valueGetter: (params) => {
         return params.row.device.deviceName;
@@ -59,14 +59,14 @@ const BOMColumns = [
     }}];
 
 const LibraryBOMColumns = [
-    { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1},
+    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1},
     { field: 'physicalOrSoftware', headerName: 'Physical/Software', headerClassName: 'header', flex: 1},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1}];
 
 
 const resultColumns = [
-    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1},
+    { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'details', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     { field: 'POCApproval', headerName: 'POCApproval Status', headerClassName: 'header', flex: 1},
     { field: 'SEApproval', headerName: 'SEApproval Status', headerClassName: 'header', flex: 1},

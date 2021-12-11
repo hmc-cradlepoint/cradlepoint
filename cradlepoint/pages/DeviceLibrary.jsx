@@ -6,23 +6,10 @@ import CPButton from '../components/button/CPButton';
 import { BOMRows, LibraryBOMColumns } from '../util/tableColumns';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-
+import styling from '../styles/tableStyling';
 
 export default function DeviceLibrary(props) {
-    const useStyles = makeStyles({
-      root: {
-        '& .header': {
-          backgroundColor: '#FCAC1C',
-        },
-        '& .MuiDataGrid-iconSeparator': {
-          display: 'None'
-        },
-        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-          borderRight: `2px solid #f0f0f0`,
-        },
-      },
-    });
-      
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const LibraryBOMColumnsWithActions = LibraryBOMColumns.concat([
@@ -72,8 +59,22 @@ export default function DeviceLibrary(props) {
                   text="Add New Device"
                   onClick={() => {updateModal("select_device")}}
                 />
-                <PlainTable rows={BOMRows} columns={LibraryBOMColumnsWithActions} className={classes.root}/>
+                <PlainTable rows={props.devicesData} columns={LibraryBOMColumnsWithActions} className={classes.root}/>
             </PlainScreen>
       </div>
     )
 }
+
+export async function getServerSideProps(context) {
+  try {
+    const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
+    const devicesData = await res.json();
+    return {
+      props: {devicesData}, // will be passed to the page component as props
+    }
+  }
+  catch(err) {
+      throw err;
+  }
+
+} 
