@@ -52,9 +52,24 @@ export default function TestPlanLibrary(props) {
               onClick={() => setCreateNewFlow(true)}
             />
             {/* TODO: get rows from database */}
-            <PlainTable rows={testPlanRows} columns={testPlanColumnsWithActions} className={classes.root}/>
+            <PlainTable rows={props.testPlansData} columns={testPlanColumnsWithActions} className={classes.root}/>
 
       </PlainScreen>
       </>
     )
 }
+
+export async function getServerSideProps(context) {
+  try {
+    const res = await fetch(`${process.env.HOST}/api/getLibraryTestPlans`);
+    const testPlansData = await res.json();
+    console.log(`${testPlansData}`);
+    return {
+      props: {testPlansData}, // will be passed to the page component as props
+    }
+  }
+  catch(err) {
+      throw err;
+  }
+
+} 

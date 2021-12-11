@@ -6,24 +6,11 @@ import CPButton from '../components/button/CPButton';
 import { testCaseColumns, testCaseRows } from '../util/tableColumns';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
+import styling from '../styles/tableStyling';
 
 export default function TestCaseLibrary(props) {
-    // TODO: have a consistent style for all the pages (delete later)
-    const useStyles = makeStyles({
-      root: {
-        '& .header': {
-          backgroundColor: '#FCAC1C',
-        },
-        '& .MuiDataGrid-iconSeparator': {
-          display: 'None'
-        },
-        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-          borderRight: `2px solid #f0f0f0`,
-        },
 
-      },
-    });
-    
+    const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const testCaseColumnsWithActions = testCaseColumns.concat([
@@ -50,8 +37,32 @@ export default function TestCaseLibrary(props) {
               text="Create New Test Case"
               onClick={() => setCreateNewFlow(true)}
             />
-            <PlainTable rows={testCaseRows} columns={testCaseColumnsWithActions} className={classes.root}/>
+            <PlainTable rows={props.testCasesData} columns={testCaseColumnsWithActions} className={classes.root}/>
         </PlainScreen>
       </>
     )
 }
+
+export async function getServerSideProps(context) {
+  try {
+    const res = await fetch(`${process.env.HOST}/api/getLibraryTestCases`);
+    const testCasesData = await res.json().then((data) => data.map((testCase => {
+        return {
+            "_id": testCase._id,
+            "name": (testCase.name != "")?testCase.name:"N/A",
+            "description": (testCase.name != "")?testCase.name:"N/A",
+            "percentPassed":"__%",
+            "config": (testCase.config != "")?testCase.config:"N/A",
+        }
+    })));
+    console.log("test case length");
+    console.log(`${testCasesData.length}`);
+    return {
+      props: {testCasesData}, // will be passed to the page component as props
+    }
+  }
+  catch(err) {
+      throw err;
+  }
+
+} 
