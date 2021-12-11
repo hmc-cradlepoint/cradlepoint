@@ -17,6 +17,7 @@ export default async (req, res) => {
       // Set ID strings to Mongo ObjectId's
       const id = ObjectId(result._id);
       const testCaseId = ObjectId(result.testCaseId);
+      // Create the database query and replacement object
       const query = {_id: id};
       const newTest = {...result, _id: id, testCaseId:testCaseId };
       // Update the Database w/ new test
