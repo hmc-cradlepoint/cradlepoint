@@ -168,7 +168,7 @@ export async function getServerSideProps(context) {
         const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query._id}`)).json()
         const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query._id}`)).json()
         // TODO: getLibraryTests api
-        const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
+        // const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
         
         if (testCase.len == 0) {
             return { notFound: true }
@@ -177,7 +177,7 @@ export async function getServerSideProps(context) {
             props: {
                 testCase: testCase[0],
                 tests,
-                allTests
+                allTests: []
             },
         }
     }

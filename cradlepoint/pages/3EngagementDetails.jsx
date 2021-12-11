@@ -80,7 +80,7 @@ export default function EngagementDetails(props) {
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <h3>Active test plan: </h3>
-                <PlainTable rows={props.activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <PlainTable rows={props.activeTestPlan ? props.activeTestPlan : ""} columns={activeTestPlanCol} className={classes.root} height={175}/>
                 <br />
                 <h3>Archived test plans: </h3>
                 <PlainTable rows={props.archivedTestPlans} columns={testPlanColWithButton} className={classes.root}/>
@@ -154,7 +154,9 @@ export async function getServerSideProps(context) {
             return { notFound: true }
         }
         const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query._id}`)).json();
-        const activeTestPlan = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json();
+        const activeTestPlan = engagement[0]
+        ? await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json()
+        : null
         const allTestPlans = await (await fetch(`${process.env.HOST}/api/getLibraryTestPlans`)).json();
     
         return {
