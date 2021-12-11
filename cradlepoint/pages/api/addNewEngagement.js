@@ -8,8 +8,6 @@ export default async function handler(req, res) {
   
     const client = await connectToDb();
     try {
-      
-
       await engagementSchema.isValid(req.body).then(async function (valid) {
         if (valid){
           const engagement = engagementSchema.cast(req.body)

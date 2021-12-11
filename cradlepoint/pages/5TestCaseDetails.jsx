@@ -125,7 +125,7 @@ export default function TestCaseDetails(props) {
 
     return (
         <div>
-            <CreateNewModalFlow type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
@@ -165,21 +165,23 @@ export default function TestCaseDetails(props) {
 
 export async function getServerSideProps(context) {
     try {
-        
         const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query._id}`)).json()
         const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query._id}`)).json()
+        // TODO: getLibraryTests api
+        const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
+        
         if (testCase.len == 0) {
-            return {
-              notFound: true,
-            }
+            return { notFound: true }
         }
           return {
-            props: {testCase: testCase[0],
-                    tests: tests }, // will be passed to the page component as props
+            props: {
+                testCase: testCase[0],
+                tests,
+                allTests
+            },
         }
     }
     catch(err) {
         throw err;
     }
-
-} 
+}
