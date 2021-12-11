@@ -55,8 +55,6 @@ export async function getServerSideProps(context) {
             "config": (testCase.config != "")?testCase.config:"N/A",
         }
     })));
-    console.log("test case length");
-    console.log(`${testCasesData.length}`);
     return {
       props: {testCasesData}, // will be passed to the page component as props
     }

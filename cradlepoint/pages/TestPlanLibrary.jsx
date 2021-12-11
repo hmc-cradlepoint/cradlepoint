@@ -63,7 +63,6 @@ export async function getServerSideProps(context) {
   try {
     const res = await fetch(`${process.env.HOST}/api/getLibraryTestPlans`);
     const testPlansData = await res.json();
-    console.log(`${testPlansData}`);
     return {
       props: {testPlansData}, // will be passed to the page component as props
     }

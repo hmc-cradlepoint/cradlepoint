@@ -36,7 +36,7 @@ export default function HomeScreen(props) {
   
     return(
       <div >
-        <CreateNewModalFlow type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
         <h1>Home</h1>
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>

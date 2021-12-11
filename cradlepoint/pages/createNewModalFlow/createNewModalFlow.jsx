@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css';
 import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, engagementRows, testPlanRows, testCaseRows, testPlanColumns, testCaseColumns, testColumns, testRows } from '../../util/tableColumns';
+import { engagementColumns, testPlanColumns, testCaseColumns, testColumns } from '../../util/tableColumns';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType} from './utils';
 
@@ -11,27 +11,14 @@ import EngagementModalForm from '../EngagementModalForm';
 import TestPlanModalForm from '../TestPlanModalForm';
 import TestCaseModalForm from '../TestCaseModalForm';
 import TestModalForm from '../TestModalForm';
+import styling from '../../styles/tableStyling';
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
 
   function CloneModal() {
-    const useStyles = makeStyles({
-      root: {
-        '& .header': {
-          backgroundColor: '#FCAC1C',
-        },
-        '& .MuiDataGrid-iconSeparator': {
-          display: 'None'
-        },
-        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-          borderRight: `2px solid #f0f0f0`,
-        },
-
-      },
-    });
-
-  const classes = useStyles();
+    const useStyles = makeStyles(styling);
+    const classes = useStyles();
 
     function renderColumns(type){
       switch (type){
@@ -96,26 +83,12 @@ export default function CreateNewModalFlow(props) {
       }
     }
 
-    // TODO: delete later when integrated
-    function renderRows(type){
-      switch (type){
-        case "Engagement":
-          return engagementRows;
-        case "Test Plan":
-          return testPlanRows;
-        case "Test Case":
-          return testCaseRows;
-        case "Test":
-          return testRows;
-      }
-    }
-
     return (
       <Modal className={styles.Modal} isOpen={true}>
           <h2>Choose an Existing {props.type} to Clone</h2>
           <PlainTable 
-              rows={renderRows(props.type)} 
-              columns={renderColumns(props.type)} 
+              rows={props.modalData}
+              columns={renderColumns(props.type)}
               className={classes.root}/> 
           <CPButton text='Back' onClick={() => setModalType(modalType.START)}/>
       </Modal>
@@ -154,5 +127,4 @@ export default function CreateNewModalFlow(props) {
     case modalType.CLONE:
       return <CloneModal />;
   }
-
 }

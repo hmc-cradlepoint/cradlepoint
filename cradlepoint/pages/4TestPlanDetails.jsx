@@ -93,7 +93,7 @@ export default function TestPlanDetails(props) {
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    
+    const [selectedRows, setSelectedRows] = useState({});
     function updateModal(modalType) {
       switch(modalType){
         case "select_device":
@@ -136,13 +136,16 @@ export default function TestPlanDetails(props) {
             modalOpen={selectDeviceModalOpen} 
             onClickNext={updateModal}
             onBack={()=> setSelectDeviceModalOpen(false)}
+            modalData={props.allDevices}
+            selectRows={(sRows) => setSelectedRows(sRows)}
         />
         <SelectQuantityModal
             modalOpen={selectQuantityModalOpen} 
             onClickNext={updateModal}
+            selectedRowData={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
-        <CreateNewModalFlow type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props.allTestCases} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
@@ -193,7 +196,16 @@ export async function getServerSideProps(context) {
             // "BOM"
         }
     })));
+
+    const allTestCases = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases`)).json();
+    const allDevices = await (await fetch(`${process.env.HOST}/api/getAllDevices`)).json();
+
     return {
-      props: {testPlanData, testCasesData}, // will be passed to the page component as props
+      props: {
+          testPlanData, 
+          testCasesData,
+          allTestCases,
+          allDevices,
+        },
     }
   }
