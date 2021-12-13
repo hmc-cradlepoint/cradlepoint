@@ -6,9 +6,9 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
-import EditModalFlow from './editModalFlow/editModalFlow';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import { flowType } from './createNewModalFlow/utils';
+import EditModalFlow from './editModalFlow';
+import CreateNewModalFlow from './createNewModalFlow';
+import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function EngagementDetails(props) {

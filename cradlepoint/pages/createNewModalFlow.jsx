@@ -1,17 +1,17 @@
 import React, {useState} from "react";
 import Modal from 'react-modal';
-import CPButton from "../../components/button/CPButton";
-import styles from '../../styles/Modal.module.css';
-import {PlainTable} from '../../components/tables/Table';
-import { engagementColumns, testPlanColumns, testCaseColumns, testColumns } from '../../util/tableColumns';
+import CPButton from "../components/button/CPButton";
+import styles from '../styles/Modal.module.css';
+import {PlainTable} from '../components/tables/Table';
+import { engagementColumns, testPlanColumns, testCaseColumns, testColumns } from '../util/tableColumns';
 import { makeStyles } from '@mui/styles';
-import {flowType, modalType} from './utils';
+import {flowType, modalType, modalFormType} from '../util/modalUtils';
 
-import EngagementModalForm from '../EngagementModalForm';
-import TestPlanModalForm from '../TestPlanModalForm';
-import TestCaseModalForm from '../TestCaseModalForm';
-import TestModalForm from '../TestModalForm';
-import styling from '../../styles/tableStyling';
+import EngagementModalForm from './ModalForms/EngagementModalForm';
+import TestPlanModalForm from './ModalForms/TestPlanModalForm';
+import TestCaseModalForm from './ModalForms/TestCaseModalForm';
+import TestModalForm from './ModalForms/TestModalForm';
+import styling from '../styles/tableStyling';
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
@@ -109,13 +109,13 @@ export default function CreateNewModalFlow(props) {
   function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return <EngagementModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <EngagementModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_PLAN:
-        return <TestPlanModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestPlanModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_CASE:
-        return <TestCaseModalForm isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestCaseModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST:
-        return <TestModalForm isOpen={true} onBack={() => setModalType(modalType.START)} />
+        return <TestModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)} />
       }
   }
 

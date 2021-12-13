@@ -4,11 +4,11 @@ import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import styles from '../styles/EngagementDetails.module.css';
-import { resultColumns, resultRows } from '../util/tableColumns';
+import { resultColumns } from '../util/tableColumns';
 import ResultModalForm from './ResultModalForm';
 import styling from '../styles/tableStyling';
-import EditModalFlow from './editModalFlow/editModalFlow';
-import { flowType } from './createNewModalFlow/utils';
+import EditModalFlow from './editModalFlow';
+import { flowType } from '../util/modalUtils';
 
 
 export default function TestDetails(props) {
@@ -85,7 +85,6 @@ export default function TestDetails(props) {
         <div>
             <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
             
-
             <ResultModalForm
               isOpen={resultModalOpen} 
               onClickNext={updateModal}

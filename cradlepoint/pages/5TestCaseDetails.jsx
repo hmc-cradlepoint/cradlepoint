@@ -6,11 +6,11 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import EditModalFlow from './editModalFlow/editModalFlow';
+import EditModalFlow from './editModalFlow';
+import CreateNewModalFlow from './createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, testColumns} from '../util/tableColumns';
-import { flowType } from './createNewModalFlow/utils';
+import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function TestCaseDetails(props) {

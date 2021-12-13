@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import Modal from 'react-modal';
-import CPButton from "../components/button/CPButton";
-import styles from '../styles/Modal.module.css'
-import { SmallTextInput, BigTextInput } from "../components/fields/Text";
+import CPButton from "../../components/button/CPButton";
+import styles from '../../styles/Modal.module.css'
+import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
@@ -32,7 +32,7 @@ export default function TestCaseModalForm(props) {
         <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
         </div>
         <CPButton text='Back' onClick={props.onBack}/>
-        {/* TODO: integrate edit api call for test case*/}
+        {/* TODO: integrate add/edit api call for test case*/}
         <CPButton text='Done'/>
       </Modal>
     </>

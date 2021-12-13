@@ -2,18 +2,17 @@ import React, {useState} from 'react';
 import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
-
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import EditModalFlow from './editModalFlow/editModalFlow';
+import EditModalFlow from './editModalFlow';
+import CreateNewModalFlow from './createNewModalFlow';
 import { makeStyles } from '@mui/styles';
 import styles from '../styles/EngagementDetails.module.css';
 import styling from '../styles/tableStyling';
 
 import { BOMColumns, testCaseColumns} from '../util/tableColumns';
-import { flowType } from './createNewModalFlow/utils';
+import { flowType } from '../util/modalUtils';
 
 export default function TestPlanDetails(props) {
     const router = useRouter();

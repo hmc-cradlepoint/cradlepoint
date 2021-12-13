@@ -4,9 +4,9 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import CPButton from '../components/button/CPButton';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import { flowType } from './createNewModalFlow/utils';
-import { engagementColumns, engagementRows } from '../util/tableColumns';
+import CreateNewModalFlow from './createNewModalFlow';
+import { flowType } from '../util/modalUtils';
+import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
 
 export default function HomeScreen(props) {
