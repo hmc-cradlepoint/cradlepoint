@@ -1,28 +1,15 @@
-import {testPlanSchema} from "../../schemas/testPlanSchema";
-import connectToDb from "../../util/mongodb";
-
+import {addTestPlan} from "../../util/addEntry"
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
       res.status(405).send({ message: 'Only POST requests allowed' })
     }
     else {
-        const client = await connectToDb();
         try {
-          await testPlanSchema.isValid(req.body).then(async function (valid) {
-            if (valid){
-              const testPlan = testPlanSchema.cast({...req.body})
-              const result = await client.collection('testPlan').insertOne(testPlan);
-              res.status(200).send({message: result});
-            }
-            else {
-              res.status(422).send({message: 'Input not in right format'})
-            }
-          })
-          
+          const response = await addTestPlan(req.body)
+          res.status(200).send({message: response});
         } catch (err) {
-          console.log(err)
-          res.status(500).send(err);
+          res.status(500).send(err.message);
         }
     }
 }
