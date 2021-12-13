@@ -1,8 +1,7 @@
 import {testSchema} from "../schemas/testSchema";
+import {testCaseSchema} from "../schemas/testCaseSchema";
 import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
-
-export const testMessage = 'test'
 
 export async function addTest(data) {
     try {
@@ -28,6 +27,43 @@ export async function addTest(data) {
             throw new Error('Data is not in right format')
         }
         
+    } catch (err) {
+        throw err
+    }
+}
+
+export async function addTestCase(data) {
+    try {
+        const client = await connectToDb();
+        const valid = await testCaseSchema.isValid(data)
+        if (valid && ObjectId.isValid(data.testPlanId) ) {
+            const testCase = testCaseSchema.cast(data);
+            for (const i in testCase.tests) {
+                console.log(testCase.tests[i])
+                if (!ObjectId.isValid(testCase.tests[i])) {
+                    
+                    throw new Error('Invalid Test Id')
+                }
+            }
+            const testPlanId = ObjectId(data.testPlanId);
+            const BOM = testCase.BOM.map(device => {
+                return {...device, deviceId: ObjectId(device.deviceId)}
+              });
+            const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
+            
+            // Push the test plan into the test case array as well
+            const testPlanResult = await client.collection('testPlan').updateOne(
+                { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
+                { $push: { testCases: result.insertedId}} // arr will be array of objects
+                );
+            if (testPlanResult.modifiedCount != 1) {
+                throw new Error('Test Plan not updated')
+            }
+            return result
+        }
+        else {
+            throw new Error('Input not in right format')
+        }
     } catch (err) {
         throw err
     }
