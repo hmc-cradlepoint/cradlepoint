@@ -11,13 +11,13 @@ export default function TestPlanModalForm(props) {
   const router = useRouter();
 
   const [data, setData] = useState({
-    _id: new ObjectID(),
-    name: "",
-    active: "",
-    version: "",
-    customerFeedback: "",
-    testPlanDescription: "",
-    DeviceConfig: ""
+    _id: props.data?._id??new ObjectID(),
+    name: props.data?.name??"",
+    isActive: props.data.isActive?props.data.isActive:"",
+    version: props.data.version?props.data.version:"",
+    customerFeedback: props.data.customerFeedback?props.data.customerFeedback:"",
+    detailedDescription: props.data.detailedDescription?props.data.detailedDescription:"",
+    deviceConfig: props.data.deviceConfig?props.data.deviceConfig:""
   })
 
   function handleChange(evt) {
@@ -35,19 +35,20 @@ export default function TestPlanModalForm(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
           <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
-          <SmallTextInput label="Active:" name='active' value={data.active} onChange={handleChange}/>
+          <SmallTextInput label="Active:" name='active' value={data.isActive} onChange={handleChange}/>
           <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange}/>
           </div>
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
         </div>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <BigTextInput label="Test Plan Description:" name='testPlanDescription' value={data.testPlanDescription} onChange={handleChange}/>
+        <BigTextInput label="Test Plan Description:" name='testPlanDescription' value={data.detailedDescription} onChange={handleChange}/>
         <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange}/>
         </div>
         </div>
         <div style={{display: "flex", flexDirection: "row"}}>
           <CPButton text='Cancel' onClick={props.onBack}/>
-          <CPButton text='Create'/>
+          {/* TODO: integrate edit api call for test plan*/}
+          <CPButton text='Done'/>
         </div>
       </Modal>
   );

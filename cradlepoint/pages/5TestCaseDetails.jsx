@@ -7,8 +7,9 @@ import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+import EditModalFlow from './editModalFlow/editModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
-import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
+import { BOMColumns, testColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 import styling from '../styles/tableStyling';
 
@@ -23,7 +24,7 @@ export default function TestCaseDetails(props) {
     }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
-
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const testColumnsWithActions = testColumns.concat([
     { 
         field: 'button', 
@@ -107,8 +108,8 @@ export default function TestCaseDetails(props) {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Subject: TBD</p>
-                <p>Percent of Tests Passed: TBD</p>
+                <p>Subject: {props.testCase.name}</p>
+                {/* <p>Percent of Tests Passed: TBD</p> */}
             </div>
         )
     }
@@ -126,6 +127,7 @@ export default function TestCaseDetails(props) {
     return (
         <div>
             <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
@@ -145,9 +147,8 @@ export default function TestCaseDetails(props) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Test Case Details</h1>
                 <CPButton text="Edit"
-                onClick={()=>{
-                    console.log("clicked")
-                    updateModal("edit");}}/>
+                onClick={()=>
+                    setEditModalFlow(true)}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}

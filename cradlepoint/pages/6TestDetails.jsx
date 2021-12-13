@@ -6,8 +6,10 @@ import CPButton from '../components/button/CPButton';
 import styles from '../styles/EngagementDetails.module.css';
 import { resultColumns, resultRows } from '../util/tableColumns';
 import ResultModalForm from './ResultModalForm';
-import TestModalForm from './TestModalForm';
 import styling from '../styles/tableStyling';
+import EditModalFlow from './editModalFlow/editModalFlow';
+import { flowType } from './createNewModalFlow/utils';
+
 
 export default function TestDetails(props) {
     const useStyles = makeStyles(styling);
@@ -50,7 +52,7 @@ export default function TestDetails(props) {
 
 
     const [resultModalOpen, setResultModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false); 
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const emptyRow = {subject: '', description: ''};
     const [selectedRow, setSelectedRow] = useState(emptyRow); 
 
@@ -59,12 +61,6 @@ export default function TestDetails(props) {
         case "result":
             setResultModalOpen(true)
             break;
-        case "edit":
-            setEditModalOpen(true)
-            break;
-        default:
-            setResultModalOpen(false)
-            setEditModalOpen(false)
       }
     }
 
@@ -87,13 +83,8 @@ export default function TestDetails(props) {
 
     return (
         <div>
-            <TestModalForm
-              isOpen={editModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setEditModalOpen(false)}
-            //   TODO: should pass in the current test detail to populate the pop-up
-              selectedRow={selectedRow}
-              ></TestModalForm>
+            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
+            
 
             <ResultModalForm
               isOpen={resultModalOpen} 
@@ -106,8 +97,7 @@ export default function TestDetails(props) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Test Details</h1>
                 <CPButton text="Edit"
-                onClick={()=>{
-                    updateModal("edit");}}/>
+                onClick={()=>setEditModalFlow(true)}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}

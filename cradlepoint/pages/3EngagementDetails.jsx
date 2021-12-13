@@ -6,7 +6,7 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
-import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
+import EditModalFlow from './editModalFlow/editModalFlow';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
 import { flowType } from './createNewModalFlow/utils';
 import styling from '../styles/tableStyling';
@@ -17,7 +17,7 @@ export default function EngagementDetails(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
-    const [editDescriptionModal, setEditDescriptionModal] = useState(false);
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     function handleEditNavigation(id) {
@@ -124,13 +124,13 @@ export default function EngagementDetails(props) {
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
         <CreateNewModalFlow modalData={props.allTestPlans} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-        <EditEDDescription modalOpen={editDescriptionModal} onBack={() => setEditDescriptionModal(false)} />
+        <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
         <SplitScreen
             topChildren={
             <div>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                     <h1>Engagement Details</h1>
-                    <CPButton text="Edit Descriptions" onClick={() => setEditDescriptionModal(true)}/>
+                    <CPButton text="Edit" onClick={() => setEditModalFlow(true)}/>
                 </div>
             </div>
             }

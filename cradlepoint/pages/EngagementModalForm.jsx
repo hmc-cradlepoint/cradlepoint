@@ -12,11 +12,11 @@ export default function EngagementModalForm(props) {
   const router = useRouter();
 
   const [data, setData] = useState({
-    _id: new ObjectID(),
-    name: "",
-    customer: "",
-    SFDC: "",
-    engagementDetails: "",
+    _id: props.data?._id??new ObjectID(),
+    name: props.data?.name??"",
+    customer: props.data?.customer??"",
+    SFDC: props.data?.SFDC??"",
+    engagementDetails: props.data?.engagementDetails??"",
   })
 
   function handleChange(evt) {
@@ -57,7 +57,7 @@ export default function EngagementModalForm(props) {
 
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
-        <h2>Fill in New Engagement Info</h2>
+        <h2>Fill in Engagement Info</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <SmallTextInput label="Engagement Name:" name='name' value={data.name} onChange={handleChange}/>
@@ -68,7 +68,8 @@ export default function EngagementModalForm(props) {
 
         </div>
         <CPButton text='Back' onClick={props.onBack}/>
-        <CPButton text='Create' onClick={addNew}/>
+        {/* TODO: integrate edit api call for test case*/}
+        <CPButton text='Done' onClick={addNew}/>
       </Modal>
   );
 }

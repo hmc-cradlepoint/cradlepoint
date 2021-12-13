@@ -7,18 +7,18 @@ import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-
+import EditModalFlow from './editModalFlow/editModalFlow';
 import { makeStyles } from '@mui/styles';
 import styles from '../styles/EngagementDetails.module.css';
 import styling from '../styles/tableStyling';
 
-import { BOMColumns, BOMRows, testCaseRows, testCaseColumns} from '../util/tableColumns';
+import { BOMColumns, testCaseColumns} from '../util/tableColumns';
 import { flowType } from './createNewModalFlow/utils';
 
 export default function TestPlanDetails(props) {
     const router = useRouter();
     const [createNewFlow, setCreateNewFlow] = useState(false);
-    
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
@@ -146,14 +146,14 @@ export default function TestPlanDetails(props) {
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
         <CreateNewModalFlow modalData={props.allTestCases} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Test Plan Details</h1>
                 <CPButton text="Edit"
                 onClick={()=>{
-                    console.log("clicked")
-                    updateModal("edit");}}/>
+                    setEditModalFlow(true);}}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}
