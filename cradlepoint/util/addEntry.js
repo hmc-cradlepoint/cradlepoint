@@ -10,6 +10,11 @@ export async function addTest(data) {
         const valid = await testSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testCaseId) ) {
             const test = testSchema.cast(data);
+            for (const result in test.results) {
+                if (!ObjectId.isValid(result)) {
+                    throw new Error('Invalid Result Id')
+                }
+            }
             const testCaseId = ObjectId(data.testCaseId);
             const result = await client.collection('tests').insertOne({...test, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
