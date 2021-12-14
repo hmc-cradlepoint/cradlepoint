@@ -9,6 +9,6 @@ export default async function handler(req, res) {
       const response = await addEngagement(req.body)
       res.status(200).send({message: response});
     } catch (err) {
-      res.status(500).send(err);
+      res.status(500).send(err.message);
     }
   }
