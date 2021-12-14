@@ -24,6 +24,36 @@ export default function TestCaseModalForm(props) {
     });
   }
 
+  async function handleSubmitData() {
+    const clone = JSON.parse(JSON.stringify(props.data));
+    const BOM = clone.BOM.map((d) => {
+      delete d.device;
+      return d;
+    });
+    let newData = {
+      ...props.data, 
+      "_id":data._id, 
+      "name":data.name, 
+      "description":data.description,
+      "BOM": BOM,
+    }
+    console.log("NewData:", newData);
+    try{
+      const res = await fetch('/api/editTestCase', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+      console.log("RES:", res)
+    } catch (err){
+      console.log("Error:",err)
+    }
+
+    props.onBack()
+  }
+
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.isOpen}>
@@ -36,7 +66,7 @@ export default function TestCaseModalForm(props) {
           setData(initialData);
           props.onBack();}}/>
         {/* TODO: integrate add/edit api call for test case*/}
-        <CPButton text='Done'/>
+        <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
     </>
   );

@@ -15,6 +15,9 @@ import styling from '../styles/tableStyling';
 
 export default function TestCaseDetails(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+      })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
@@ -127,7 +130,7 @@ export default function TestCaseDetails(props) {
     return (
         <div>
             <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-            <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
+            <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
