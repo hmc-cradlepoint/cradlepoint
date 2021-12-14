@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
@@ -12,6 +13,11 @@ import { flowType } from '../util/modalUtils';
 
 
 export default function TestDetails(props) {
+    const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+    })
+    
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
@@ -83,7 +89,7 @@ export default function TestDetails(props) {
 
     return (
         <div>
-            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
+            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
             
             <ResultModalForm
               isOpen={resultModalOpen} 
