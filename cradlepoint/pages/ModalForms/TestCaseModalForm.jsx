@@ -9,11 +9,12 @@ import {ObjectID} from 'bson';
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();
-  const [data, setData] = useState({
+  const initialData = {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     description: props.data?.description??"",
-  })
+  }
+  const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -28,10 +29,12 @@ export default function TestCaseModalForm(props) {
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in New Test Case Info</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Subject:" name='subject' value={data.name} onChange={handleChange}/>
+        <SmallTextInput label="Subject:" name='name' value={data.name} onChange={handleChange}/>
         <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
         </div>
-        <CPButton text='Back' onClick={props.onBack}/>
+        <CPButton text='Back' onClick={()=>{
+          setData(initialData);
+          props.onBack();}}/>
         {/* TODO: integrate add/edit api call for test case*/}
         <CPButton text='Done'/>
       </Modal>

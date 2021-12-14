@@ -9,11 +9,12 @@ import {ObjectID} from 'bson';
 
 export default function TestModalForm(props) {
   const router = useRouter();
-  const [data, setData] = useState({
+  const initialData = {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     details: props.data?.details??"",
-  })
+  }
+  const [data, setData] = useState(initialData);
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -28,10 +29,13 @@ export default function TestModalForm(props) {
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in Test Info</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Subject" name='subject' value={data.name} onChange={handleChange}/>
-        <BigTextInput label="Description" name='description' value={data.details} onChange={handleChange} />
+        <SmallTextInput label="Subject" name='name' value={data.name} onChange={handleChange}/>
+        <BigTextInput label="Description" name='details' value={data.details} onChange={handleChange} />
         </div>
-        <CPButton text='Back' onClick={props.onBack}/>
+        <CPButton text='Back' onClick={()=>{
+          setData(initialData);
+          props.onBack()
+        }}/>
         {/* TODO: integrate edit api call for test*/}
         <CPButton text='Done'/>
       </Modal>
