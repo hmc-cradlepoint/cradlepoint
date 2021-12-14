@@ -15,7 +15,7 @@ export default function EngagementDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
-      })
+    })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();

@@ -16,6 +16,10 @@ import { flowType } from '../util/modalUtils';
 
 export default function TestPlanDetails(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+    })
+
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
     const useStyles = makeStyles(styling);
@@ -145,7 +149,7 @@ export default function TestPlanDetails(props) {
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
         <CreateNewModalFlow modalData={props.allTestCases} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-        <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
+        <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
