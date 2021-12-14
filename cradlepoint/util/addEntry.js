@@ -74,15 +74,19 @@ export async function addTestPlan(data) {
     try {
         const client = await connectToDb();
         const valid = await testPlanSchema.isValid(data);
-        console.log(ObjectId.isValid(data.engagementId))
         if (valid && ObjectId.isValid(data.engagementId)){
             const testPlan = testPlanSchema.cast(data);
+            for (const i in testPlan.summaryBOM) {
+                if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
+                    
+                    throw new Error('Invalid Device Id')
+                }
+            }
             const SummaryBOM = testPlan.summaryBOM.map(device => {
                 return {...device, deviceId: ObjectId(device.deviceId)};
             });
 
             const result = await client.collection('testPlan').insertOne({...testPlan, SummaryBOM});
-            console.log(result)
             return result;
         }
         else {
