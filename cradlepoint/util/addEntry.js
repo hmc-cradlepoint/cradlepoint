@@ -39,13 +39,17 @@ export async function addTestCase(data) {
         if (valid && ObjectId.isValid(data.testPlanId) ) {
             const testCase = testCaseSchema.cast(data);
             for (const i in testCase.tests) {
-                console.log(testCase.tests[i])
                 if (!ObjectId.isValid(testCase.tests[i])) {
                     
                     throw new Error('Invalid Test Id')
                 }
             }
             const testPlanId = ObjectId(data.testPlanId);
+            for (const i in testCase.BOM) {
+                if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
+                    throw new Error('Invalid Device Id')
+                }
+            }
             const BOM = testCase.BOM.map(device => {
                 return {...device, deviceId: ObjectId(device.deviceId)}
               });
