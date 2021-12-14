@@ -11,17 +11,27 @@ export default async (req, res) => {
   }
   try{
     const data = req.body;
+    // Check that data is formatted correctly
     const valid = await testCaseSchema.isValid(data);
-    if (valid && ObjectId.isValid(data.testPlanId)){
-        const result = testCaseSchema.cast(data);
+    // Check that all Id strings are Valid Mongo Object Ids
+    const validDevices = !data.BOM.map((dev) =>ObjectId.isValid(dev.deviceId)).includes(false);
+    const validTests = !data.tests.map((str) =>ObjectId.isValid(str)).includes(false);
+    const validObjectIds = validDevices && validTests && ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+    if (valid && validObjectIds){
+        const validData = testCaseSchema.cast(data);
         // Set ID strings to Mongo ObjectId's
-        const id = ObjectId(result._id);
-        const testPlanId = ObjectId(result.testPlanId);
+        const id = ObjectId(validData._id);
+        const testPlanId = ObjectId(validData.testPlanId);
+        const BOM = validData.BOM.map(device => {
+          return {...device, deviceId: ObjectId(device.deviceId)}
+        });
+        const tests = validData.tests.map(testId => ObjectId(testId));
+        // Create the database query and replacement object
         const query = {_id: id};
-        const engagement = {...result , _id: id, testPlanId:testPlanId};
+        const newTestCase = {...validData , _id: id, testPlanId:testPlanId, BOM:BOM, tests:tests};
         // Update the Database w/ new TestCase
         const db = await connectToDb();
-        await db.collection("testCases").replaceOne(query, engagement);
+        await db.collection("testCases").replaceOne(query, newTestCase);
         res.status(200).send({message: "Success!"});
     } else {
         res.status(422).send({message: 'Input not in right format'})
