@@ -24,6 +24,27 @@ export default function TestModalForm(props) {
     });
   }
 
+  async function handleSubmitData() {
+    let newData = {
+      ...props.data, 
+      "_id":data._id, 
+      "name":data.name, 
+      "details":data.details
+    }
+    try{
+      const res = await fetch('/api/editTest', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+    } catch (err){
+      console.log("Error:",err)
+    }
+    props.onBack()
+  }
+
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.isOpen}>
@@ -37,7 +58,7 @@ export default function TestModalForm(props) {
           props.onBack()
         }}/>
         {/* TODO: integrate edit api call for test*/}
-        <CPButton text='Done'/>
+        <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
     </>
   );
