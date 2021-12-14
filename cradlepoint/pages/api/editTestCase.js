@@ -12,7 +12,9 @@ export default async (req, res) => {
   try{
     const data = req.body;
     const valid = await testCaseSchema.isValid(data);
-    if (valid && ObjectId.isValid(data.testPlanId)){
+    // TODO: Does not do a deep ID validation for BOM or tests
+    const validObjectIds = ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+    if (valid && validObjectIds){
         const validData = testCaseSchema.cast(data);
         // Set ID strings to Mongo ObjectId's
         const id = ObjectId(validData._id);
