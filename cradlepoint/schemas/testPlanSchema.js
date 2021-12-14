@@ -7,6 +7,7 @@ export const testPlanSchema = yup.object().shape({
   version: yup.string().required(),
   deviceConfig: yup.string(),
   customerFeedback: yup.string(),
+  engagementId: yup.string().required(),
   testCases: yup.array().of(
     yup.string().required()
   ).required(),
