@@ -11,7 +11,9 @@ export default async (req, res) => {
   }
   try{
     const data = req.body;
+    // Check that data is formatted correctly
     const valid = await testCaseSchema.isValid(data);
+    // Check that all Id strings are Valid Mongo Object Ids
     const validDevices = !data.BOM.map((dev) =>ObjectId.isValid(dev.deviceId)).includes(false);
     const validTests = !data.tests.map((str) =>ObjectId.isValid(str)).includes(false);
     const validObjectIds = validDevices && validTests && ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
