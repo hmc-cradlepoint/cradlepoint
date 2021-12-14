@@ -7,10 +7,19 @@ export const testPlanSchema = yup.object().shape({
   version: yup.string().required(),
   deviceConfig: yup.string(),
   customerFeedback: yup.string(),
-  testCases: yup.array().required(),
+  engagementId: yup.string().required(),
+  testCases: yup.array().of(
+    yup.string().required()
+  ).required(),
   authors: yup.array().required(),
   isActive: yup.bool().required(),
-  summaryBOM: yup.array().required(),
+  summaryBOM: yup.array().of(
+    yup.object().shape({
+      isOptional: yup.boolean().required(),
+      quantity: yup.number().positive().required(),
+      deviceId: yup.string().required(),
+    })
+  ).required(),  
   createdOn: yup.date().default(function () {
     return new Date();
   }).required(),
