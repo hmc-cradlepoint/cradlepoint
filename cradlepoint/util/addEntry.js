@@ -1,6 +1,7 @@
 import {testSchema} from "../schemas/testSchema";
 import {testCaseSchema} from "../schemas/testCaseSchema";
 import {testPlanSchema} from "../schemas/testPlanSchema";
+import {engagementSchema} from "../schemas/engagementSchema";
 import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
 
@@ -88,7 +89,7 @@ export async function addTestPlan(data) {
             }
             const SummaryBOM = testPlan.summaryBOM.map(device => {
                 return {...device, deviceId: ObjectId(device.deviceId)};
-            });
+            }); 
 
             const result = await client.collection('testPlan').insertOne({...testPlan, SummaryBOM});
             return result;
@@ -100,4 +101,22 @@ export async function addTestPlan(data) {
         throw err
     }
 
+}
+
+// TODO: Possibly add Active test plan as we make an engagement
+export async function addEngagement(data) {
+    try {
+        const client = await connectToDb();
+        const valid = await engagementSchema.isValid(data);
+        if (valid && ObjectId.isValid(data.testPlanId)){
+            const engagement = engagementSchema.cast(data);
+            const result = await client.collection('engagements').insertOne(engagement);
+            return result;
+        }
+        else {
+            throw new Error('Data not in right format');
+        }
+    } catch (err) {
+        throw err
+    }
 }
