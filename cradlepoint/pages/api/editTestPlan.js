@@ -11,9 +11,12 @@ export default async (req, res) => {
   }
   try{
     const data = req.body;
+    // Check that data is formatted correctly
     const valid = await testPlanSchema.isValid(data);
-    // TODO: Does not do a deep ID validation for summaryBOM or testCases
-    const validObjectIds = ObjectId.isValid(data.engagementId) && ObjectId.isValid(data._id);
+    // Check that all Id strings are Valid Mongo Object Ids
+    const validDevices = !data.summaryBOM.map((dev) =>ObjectId.isValid(dev.deviceId)).includes(false);
+    const validTestCases = !data.testCases.map((str) =>ObjectId.isValid(str)).includes(false);
+    const validObjectIds = validDevices && validTestCases && ObjectId.isValid(data.engagementId) && ObjectId.isValid(data._id);
     if (valid && validObjectIds){
       const validData = testPlanSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
