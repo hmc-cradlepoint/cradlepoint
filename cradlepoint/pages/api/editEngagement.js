@@ -12,7 +12,8 @@ export default async (req, res) => {
   try{
     const data = req.body;
     const valid = await engagementSchema.isValid(data);
-    if (valid && ObjectId.isValid(data.testPlanId)){
+    const validObjectIds = ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+    if (valid && validObjectIds){
       const validData = engagementSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
       const id = ObjectId(validData._id);
