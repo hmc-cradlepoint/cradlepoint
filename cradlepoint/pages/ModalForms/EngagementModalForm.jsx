@@ -27,6 +27,28 @@ export default function EngagementModalForm(props) {
     });
   }
 
+  async function handleSubmitData() {
+    // console.log(props.data);
+    let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "engagementDetails":data.engagementDetails}
+    delete newData.POC_Eningeer_details;
+    delete newData.SEDetails;
+    try{
+      const res = await fetch('/api/editEngagement', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+      console.log("RES:", res)
+    } catch (err){
+      
+      console.log("Error:",err)
+    }
+
+    props.onBack()
+  }
+
   async function addNew() {
     // console.log("addNew is called with: " + JSON.stringify(data))
     // const res = await fetch(`${process.env.HOST}/api/addNewEngagement`, {
@@ -69,7 +91,7 @@ export default function EngagementModalForm(props) {
         </div>
         <CPButton text='Back' onClick={props.onBack}/>
         {/* TODO: integrate edit api call for test case*/}
-        <CPButton text='Done' onClick={addNew}/>
+        <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
   );
 }
