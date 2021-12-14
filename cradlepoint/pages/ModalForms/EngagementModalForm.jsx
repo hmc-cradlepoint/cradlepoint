@@ -49,34 +49,6 @@ export default function EngagementModalForm(props) {
     props.onBack()
   }
 
-  async function addNew() {
-    // console.log("addNew is called with: " + JSON.stringify(data))
-    // const res = await fetch(`${process.env.HOST}/api/addNewEngagement`, {
-    //   body: JSON.stringify(data),
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   method: 'POST'
-    // })
-    // router.push("/3EngagementDetails?_id=" + data._id);
-  
-    // const result = await res.json()
-
-    // fetch(`${process.env.HOST}/api/addNewEngagement`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.parse(JSON.stringify(data)),
-    // })
-    // .then((resp) => {
-    //   console.log(resp);
-    //   console.log("Succesfully created new engagement");
-    //   router.push("/3EngagementDetails?_id=" + data._id);
-    // })
-    // .catch((e) => console.log(e));
-  }
-
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in Engagement Info</h2>
@@ -90,7 +62,6 @@ export default function EngagementModalForm(props) {
 
         </div>
         <CPButton text='Back' onClick={props.onBack}/>
-        {/* TODO: integrate edit api call for test case*/}
         <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
   );

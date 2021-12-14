@@ -13,6 +13,9 @@ import styling from '../styles/tableStyling';
 
 export default function EngagementDetails(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+      })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
@@ -124,7 +127,7 @@ export default function EngagementDetails(props) {
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
         <CreateNewModalFlow modalData={props.allTestPlans} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-        <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => setEditModalFlow(false)} />
+        <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
             <div>
