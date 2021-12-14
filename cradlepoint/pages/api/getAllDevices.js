@@ -1,4 +1,3 @@
-const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
 /*
   Gets the requested device from the database
