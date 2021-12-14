@@ -11,17 +11,21 @@ export default async (req, res) => {
   }
   try{
     const data = req.body;
+    // Check that data is formatted correctly
     const valid = await engagementSchema.isValid(data);
-    if (valid && ObjectId.isValid(data.testPlanId)){
-      const result = engagementSchema.cast(data);
+    // Check that all Id strings are Valid Mongo Object Ids
+    const validObjectIds = ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+    if (valid && validObjectIds){
+      const validData = engagementSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
-      const id = ObjectId(result._id);
-      const testplanId = ObjectId(result.testPlanId);
+      const id = ObjectId(validData._id);
+      const testplanId = ObjectId(validData.testPlanId);
+      // Create the database query and replacement object
       const query = {_id: id};
-      const engagement = {...result , _id: id, testPlanId:testplanId};
+      const newEngagement = {...validData , _id: id, testPlanId:testplanId};
       // Update the Database w/ new Engagement
       const db = await connectToDb();
-      await db.collection("engagements").replaceOne(query, engagement);
+      await db.collection("engagements").replaceOne(query, newEngagement);
       res.status(200).send({message: "Success!"});
     } else {
       res.status(422).send({message: 'Input not in right format'})
