@@ -1,5 +1,6 @@
 import {testSchema} from "../schemas/testSchema";
 import {testCaseSchema} from "../schemas/testCaseSchema";
+import {testPlanSchema} from "../schemas/testPlanSchema";
 import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
 
@@ -71,4 +72,32 @@ export async function addTestCase(data) {
     } catch (err) {
         throw err
     }
+}
+
+export async function addTestPlan(data) {
+    try {
+        const client = await connectToDb();
+        const valid = await testPlanSchema.isValid(data);
+        if (valid && ObjectId.isValid(data.engagementId)){
+            const testPlan = testPlanSchema.cast(data);
+            for (const i in testPlan.summaryBOM) {
+                if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
+                    
+                    throw new Error('Invalid Device Id')
+                }
+            }
+            const SummaryBOM = testPlan.summaryBOM.map(device => {
+                return {...device, deviceId: ObjectId(device.deviceId)};
+            });
+
+            const result = await client.collection('testPlan').insertOne({...testPlan, SummaryBOM});
+            return result;
+        }
+        else {
+            throw new Error('input nor in right format')
+        }
+    } catch (err) {
+        throw err
+    }
+
 }

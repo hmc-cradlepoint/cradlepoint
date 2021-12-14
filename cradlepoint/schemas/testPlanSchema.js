@@ -19,7 +19,7 @@ export const testPlanSchema = yup.object().shape({
       quantity: yup.number().positive().required(),
       deviceId: yup.string().required(),
     })
-  ).required(),
+  ).required(),  
   createdOn: yup.date().default(function () {
     return new Date();
   }).required(),
