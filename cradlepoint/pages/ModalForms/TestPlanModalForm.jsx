@@ -28,6 +28,31 @@ export default function TestPlanModalForm(props) {
     });
   }
 
+  async function handleSubmitData() {
+    let newData = {
+      ...props.data, 
+      "_id":data._id, 
+      "name":data.name, 
+      "isActive":data.isActive,
+      "version": data.version,
+      "customerFeedback": data.customerFeedback,
+      "detailedDescription": data.detailedDescription,
+      "deviceConfig": data.deviceConfig,
+    }
+    try{
+      const res = await fetch('/api/editTestPlan', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+    } catch (err){
+      console.log("Error:",err)
+    }
+    props.onBack()
+  }
+
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Test Plan Info</h2>
@@ -49,8 +74,7 @@ export default function TestPlanModalForm(props) {
           <CPButton text='Back' onClick={()=>{
           setData(initialData);
           props.onBack();}}/>
-          {/* TODO: integrate edit api call for test plan*/}
-          <CPButton text='Done'/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
         </div>
       </Modal>
   );

@@ -50,7 +50,6 @@ export default function TestCaseModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-
     props.onBack()
   }
 
