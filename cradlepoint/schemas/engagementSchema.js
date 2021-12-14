@@ -9,7 +9,6 @@ export const engagementSchema = yup.object().shape({
   POC_Engineer: yup.string().matches(/^\d+$/),
   customer: yup.string().required(),
   SFDC: yup.string().url(),
-  // Needs to be resolved. Can't have engagement and test plan Id required in each other wihout one already being in the db
   testPlanId: yup.string().optional(),
   createdOn: yup.date().default(function () {
     return new Date();

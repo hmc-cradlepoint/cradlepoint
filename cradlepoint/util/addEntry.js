@@ -41,13 +41,17 @@ export async function addTestCase(data) {
         if (valid && ObjectId.isValid(data.testPlanId) ) {
             const testCase = testCaseSchema.cast(data);
             for (const i in testCase.tests) {
-                console.log(testCase.tests[i])
                 if (!ObjectId.isValid(testCase.tests[i])) {
                     
                     throw new Error('Invalid Test Id')
                 }
             }
             const testPlanId = ObjectId(data.testPlanId);
+            for (const i in testCase.BOM) {
+                if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
+                    throw new Error('Invalid Device Id')
+                }
+            }
             const BOM = testCase.BOM.map(device => {
                 return {...device, deviceId: ObjectId(device.deviceId)}
               });
@@ -75,9 +79,14 @@ export async function addTestPlan(data) {
     try {
         const client = await connectToDb();
         const valid = await testPlanSchema.isValid(data);
-        console.log(ObjectId.isValid(data.engagementId))
         if (valid && ObjectId.isValid(data.engagementId)){
             const testPlan = testPlanSchema.cast(data);
+            for (const i in testPlan.summaryBOM) {
+                if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
+                    
+                    throw new Error('Invalid Device Id')
+                }
+            }
             const SummaryBOM = testPlan.summaryBOM.map(device => {
                 return {...device, deviceId: ObjectId(device.deviceId)};
             }); 
