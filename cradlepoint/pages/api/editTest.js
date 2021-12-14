@@ -11,14 +11,20 @@ export default async (req, res) => {
   }
   try{
     const data = req.body;
+    // Check that data is formatted correctly
     const valid = await testSchema.isValid(data);
-    if (valid && ObjectId.isValid(data.testCaseId)){
-      const result = testSchema.cast(data);
+    // Check that all Id strings are Valid Mongo Object Ids
+    const validResults = !data.results.map((str) =>ObjectId.isValid(str)).includes(false);
+    const validObjectIds = validResults && ObjectId.isValid(data.testCaseId) && ObjectId.isValid(data._id);
+    if (valid && validObjectIds){
+      const validData = testSchema.cast(data);
       // Set ID strings to Mongo ObjectId's
-      const id = ObjectId(result._id);
-      const testCaseId = ObjectId(result.testCaseId);
+      const id = ObjectId(validData._id);
+      const testCaseId = ObjectId(validData.testCaseId);
+      const results = validData.results.map(resultId => ObjectId(resultId));
+      // Create the database query and replacement object
       const query = {_id: id};
-      const newTest = {...result, _id: id, testCaseId:testCaseId };
+      const newTest = {...validData, _id: id, testCaseId:testCaseId, results:results };
       // Update the Database w/ new test
       const db = await connectToDb();
       await db.collection("tests").replaceOne(query, newTest);
@@ -26,7 +32,6 @@ export default async (req, res) => {
     } else {
       res.status(422).send({message: 'Input not in right format'})
     }
-
   } catch (err) {
     res.status(500).send(err);
   }
