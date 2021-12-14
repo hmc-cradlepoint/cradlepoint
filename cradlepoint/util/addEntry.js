@@ -17,7 +17,8 @@ export async function addTest(data) {
                 }
             }
             const testCaseId = ObjectId(data.testCaseId);
-            const result = await client.collection('tests').insertOne({...test, testCaseId: testCaseId});
+            const _id = ObjectId(data._id);
+            const result = await client.collection('tests').insertOne({...test, _id: _id, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
             await client.collection('testCases').updateOne(
                 { "_id": testCaseId }, // query matching , refId should be "ObjectId" type

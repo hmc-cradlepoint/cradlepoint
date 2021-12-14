@@ -29,8 +29,6 @@ export default function TestDetails(props) {
     }
     ]);
 
-
-
     function results() {
         // Test table component
         return (
@@ -45,9 +43,6 @@ export default function TestDetails(props) {
             </div>
         )
     }
-
-
-
 
     const [resultModalOpen, setResultModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false); 
@@ -67,7 +62,6 @@ export default function TestDetails(props) {
             setEditModalOpen(false)
       }
     }
-
     
     function details() {
         return (
@@ -93,32 +87,31 @@ export default function TestDetails(props) {
               onBack={()=> setEditModalOpen(false)}
             //   TODO: should pass in the current test detail to populate the pop-up
               selectedRow={selectedRow}
-              ></TestModalForm>
+            />
 
             <ResultModalForm
               isOpen={resultModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setResultModalOpen(false)}
-              ></ResultModalForm>
+            />
 
-        <SplitScreen
-            topChildren={
-                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>{
-                    updateModal("edit");}}/>
-                </div>}
-            leftSection={details()}
-            rightSection={description()}
-            bottomChildren={
-                <div>
-                {results()}
-                </div>
-            }
-        />
-        </div> 
- 
+            <SplitScreen
+                topChildren={
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                    <h1>Test Details</h1>
+                    <CPButton text="Edit"
+                    onClick={()=>{
+                        updateModal("edit");}}/>
+                    </div>}
+                leftSection={details()}
+                rightSection={description()}
+                bottomChildren={
+                    <div>
+                    {results()}
+                    </div>
+                }
+            />
+        </div>
     )
 }
 

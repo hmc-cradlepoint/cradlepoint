@@ -125,7 +125,7 @@ export default function TestCaseDetails(props) {
 
     return (
         <div>
-            <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <CreateNewModalFlow ID={props.testCase._id} modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}

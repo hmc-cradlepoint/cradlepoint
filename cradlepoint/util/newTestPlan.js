@@ -1,7 +1,6 @@
 import connectToDb from "mongodb";
 import {testPlanSchema} from "../schemas/testPlanSchema"
 
-
 export default async function newTestPlan(params, res) {
     const client = await connectToDb();
     try {
