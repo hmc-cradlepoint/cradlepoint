@@ -6,18 +6,21 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tableColumns';
 import styles from '../styles/EngagementDetails.module.css';
-import EditEDDescription from './engagementDetailsModals/editEDDescriptions';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import { flowType } from './createNewModalFlow/utils';
+import EditModalFlow from './editModalFlow';
+import CreateNewModalFlow from './createNewModalFlow';
+import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function EngagementDetails(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+    })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
-    const [editDescriptionModal, setEditDescriptionModal] = useState(false);
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     function handleEditNavigation(id) {
@@ -80,7 +83,7 @@ export default function EngagementDetails(props) {
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <h3>Active test plan: </h3>
-                <PlainTable rows={props.activeTestPlan} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <PlainTable rows={props.activeTestPlan ? props.activeTestPlan : ""} columns={activeTestPlanCol} className={classes.root} height={175}/>
                 <br />
                 <h3>Archived test plans: </h3>
                 <PlainTable rows={props.archivedTestPlans} columns={testPlanColWithButton} className={classes.root}/>
@@ -124,13 +127,13 @@ export default function EngagementDetails(props) {
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
         <CreateNewModalFlow modalData={props.allTestPlans} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
-        <EditEDDescription modalOpen={editDescriptionModal} onBack={() => setEditDescriptionModal(false)} />
+        <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
             <div>
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                     <h1>Engagement Details</h1>
-                    <CPButton text="Edit Descriptions" onClick={() => setEditDescriptionModal(true)}/>
+                    <CPButton text="Edit" onClick={() => setEditModalFlow(true)}/>
                 </div>
             </div>
             }
@@ -154,7 +157,9 @@ export async function getServerSideProps(context) {
             return { notFound: true }
         }
         const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query._id}`)).json();
-        const activeTestPlan = await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json();
+        const activeTestPlan = engagement[0]
+        ? await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json()
+        : null
         const allTestPlans = await (await fetch(`${process.env.HOST}/api/getLibraryTestPlans`)).json();
     
         return {

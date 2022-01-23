@@ -13,4 +13,8 @@ const modalType = {
     SCRATCH: "SCRATCH",
 }
 
-export {flowType, modalType};
+const modalFormType = {
+    NEW: "NEW",
+    EDIT: "EDIT"
+}
+export {flowType, modalType, modalFormType};

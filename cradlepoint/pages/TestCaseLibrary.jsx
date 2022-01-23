@@ -4,8 +4,8 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testCaseColumns, testCaseRows } from '../util/tableColumns';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import { flowType } from './createNewModalFlow/utils';
+import CreateNewModalFlow from './createNewModalFlow';
+import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function TestCaseLibrary(props) {

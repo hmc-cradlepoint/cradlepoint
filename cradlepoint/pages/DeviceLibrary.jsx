@@ -3,7 +3,7 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import { BOMRows, LibraryBOMColumns } from '../util/tableColumns';
+import {LibraryBOMColumns } from '../util/tableColumns';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
 import styling from '../styles/tableStyling';

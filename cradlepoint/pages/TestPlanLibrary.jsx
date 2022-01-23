@@ -4,8 +4,8 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import { testPlanColumns, testPlanRows } from '../util/tableColumns';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
-import { flowType } from './createNewModalFlow/utils';
+import CreateNewModalFlow from './createNewModalFlow';
+import { flowType } from '../util/modalUtils';
 
 // TODO: adjust scaling and font of the page
 export default function TestPlanLibrary(props) {

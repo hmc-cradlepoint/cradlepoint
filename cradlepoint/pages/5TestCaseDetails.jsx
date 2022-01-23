@@ -6,14 +6,18 @@ import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
 import SelectQuantityModal from './deviceModals/selectQuantity';
-import CreateNewModalFlow from './createNewModalFlow/createNewModalFlow';
+import EditModalFlow from './editModalFlow';
+import CreateNewModalFlow from './createNewModalFlow';
 import styles from '../styles/EngagementDetails.module.css';
-import { BOMColumns, BOMRows, testRows, testColumns} from '../util/tableColumns';
-import { flowType } from './createNewModalFlow/utils';
+import { BOMColumns, testColumns} from '../util/tableColumns';
+import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function TestCaseDetails(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+    })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
@@ -23,7 +27,7 @@ export default function TestCaseDetails(props) {
     }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
-
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const testColumnsWithActions = testColumns.concat([
     { 
         field: 'button', 
@@ -107,8 +111,8 @@ export default function TestCaseDetails(props) {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Subject: TBD</p>
-                <p>Percent of Tests Passed: TBD</p>
+                <p>Subject: {props.testCase.name}</p>
+                {/* <p>Percent of Tests Passed: TBD</p> */}
             </div>
         )
     }
@@ -126,6 +130,7 @@ export default function TestCaseDetails(props) {
     return (
         <div>
             <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
@@ -145,9 +150,8 @@ export default function TestCaseDetails(props) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Test Case Details</h1>
                 <CPButton text="Edit"
-                onClick={()=>{
-                    console.log("clicked")
-                    updateModal("edit");}}/>
+                onClick={()=>
+                    setEditModalFlow(true)}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}
@@ -168,7 +172,7 @@ export async function getServerSideProps(context) {
         const testCase = await (await fetch(`${process.env.HOST}/api/getTestCase?_id=${context.query._id}`)).json()
         const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query._id}`)).json()
         // TODO: getLibraryTests api
-        const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
+        // const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
         
         if (testCase.len == 0) {
             return { notFound: true }
@@ -177,7 +181,7 @@ export async function getServerSideProps(context) {
             props: {
                 testCase: testCase[0],
                 tests,
-                allTests
+                allTests: []
             },
         }
     }

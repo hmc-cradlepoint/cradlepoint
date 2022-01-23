@@ -1,15 +1,23 @@
 import React, {useState} from 'react';
+import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import styles from '../styles/EngagementDetails.module.css';
-import { resultColumns, resultRows } from '../util/tableColumns';
+import { resultColumns } from '../util/tableColumns';
 import ResultModalForm from './ResultModalForm';
-import TestModalForm from './TestModalForm';
 import styling from '../styles/tableStyling';
+import EditModalFlow from './editModalFlow';
+import { flowType } from '../util/modalUtils';
+
 
 export default function TestDetails(props) {
+    const router = useRouter();
+    const refreshData = ( () => {
+        router.replace(router.asPath);
+    })
+    
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
@@ -50,7 +58,7 @@ export default function TestDetails(props) {
 
 
     const [resultModalOpen, setResultModalOpen] = useState(false);
-    const [editModalOpen, setEditModalOpen] = useState(false); 
+    const [editModalFlow, setEditModalFlow] = useState(false);
     const emptyRow = {subject: '', description: ''};
     const [selectedRow, setSelectedRow] = useState(emptyRow); 
 
@@ -59,12 +67,6 @@ export default function TestDetails(props) {
         case "result":
             setResultModalOpen(true)
             break;
-        case "edit":
-            setEditModalOpen(true)
-            break;
-        default:
-            setResultModalOpen(false)
-            setEditModalOpen(false)
       }
     }
 
@@ -87,14 +89,8 @@ export default function TestDetails(props) {
 
     return (
         <div>
-            <TestModalForm
-              isOpen={editModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setEditModalOpen(false)}
-            //   TODO: should pass in the current test detail to populate the pop-up
-              selectedRow={selectedRow}
-              ></TestModalForm>
-
+            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+            
             <ResultModalForm
               isOpen={resultModalOpen} 
               onClickNext={updateModal}
@@ -106,8 +102,7 @@ export default function TestDetails(props) {
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <h1>Test Details</h1>
                 <CPButton text="Edit"
-                onClick={()=>{
-                    updateModal("edit");}}/>
+                onClick={()=>setEditModalFlow(true)}/>
                 </div>}
             leftSection={details()}
             rightSection={description()}
