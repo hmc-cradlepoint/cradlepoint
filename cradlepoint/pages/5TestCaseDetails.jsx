@@ -36,7 +36,7 @@ export default function TestCaseDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="Details" onClick={() => handleNavigation(params.id)}/>
+            <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete"/>
         </div>
         ),
@@ -54,7 +54,7 @@ export default function TestCaseDetails(props) {
             renderCell: () => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="Edit"/>
+                    <CPButton text="View"/>
                     <CPButton text="Delete"/>
                     </div>
                 )

@@ -29,7 +29,7 @@ export default function TestDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="Details"/>
+            <CPButton text="View"/>
             <CPButton text="Delete"/>
         </div>
         ),

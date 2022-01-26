@@ -36,8 +36,9 @@ export default function EngagementDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <>
-            <CPButton text="EDIT" onClick={() => handleEditNavigation(params.id)}/>
+            <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
             <CPButton text="SET ACTIVE"/>
+            <CPButton text="Delete"/>
         </>
         ),
         flex: 1.5
@@ -52,7 +53,7 @@ export default function EngagementDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <>
-            <CPButton text="EDIT" onClick={() => handleEditNavigation(params.id)}/>
+            <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
         </>
         ),
         flex: 1
@@ -66,9 +67,10 @@ export default function EngagementDetails(props) {
             headerClassName: 'header',
             align: 'center',
             renderCell: () => (
-            <span>
-                <CPButton text="EDIT"/>
-            </span>
+            <div style={{display: "flex", flexDirection: "row"}}>
+                <CPButton text="View"/>
+                <CPButton text="Delete"/>
+            </div>
             ),
             flex: 1
         }

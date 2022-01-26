@@ -36,7 +36,7 @@ export default function TestPlanLibrary(props) {
           headerClassName: 'header',
           align: 'center',
           renderCell: () => (
-            <CPButton text="DETAILS"/>
+            <CPButton text="View"/>
           )
         }
       ]);
@@ -51,7 +51,6 @@ export default function TestPlanLibrary(props) {
               text="Create New Test Plan"
               onClick={() => setCreateNewFlow(true)}
             />
-            {/* TODO: get rows from database */}
             <PlainTable rows={props.testPlansData} columns={testPlanColumnsWithActions} className={classes.root}/>
 
       </PlainScreen>
