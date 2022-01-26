@@ -26,7 +26,7 @@ export default function HomeScreen(props) {
       // export to downloadable json file  
       let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
 
-      let fileName = 'engagement_' + id +'.json';
+      let fileName = jsonData[0].name +'.json';
 
       let linkElement = document.createElement('a');
       linkElement.setAttribute('href', dataUri);
