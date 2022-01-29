@@ -68,10 +68,11 @@ const LibraryBOMColumns = [
 const resultColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'details', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
-    { field: 'POCApproval', headerName: 'POCApproval Status', headerClassName: 'header', flex: 1},
-    { field: 'SEApproval', headerName: 'SEApproval Status', headerClassName: 'header', flex: 1},
-    // { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
+    // { field: 'POCApproval', headerName: 'POCApproval Status', headerClassName: 'header', flex: 1},
+    // { field: 'SEApproval', headerName: 'SEApproval Status', headerClassName: 'header', flex: 1},
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
     { field: 'evidence', headerName: 'Evidence', headerClassName: 'header', flex: 1},
+    { field: 'createdOn', headerName: 'Date created', headerClassName: 'header', flex: 1},
 ];
 
 
