@@ -2,7 +2,7 @@ const engagementColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'statusCode', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'engagementDetails', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
+    { field: 'description', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
     { field: 'SE', headerName: 'SEng', headerClassName: 'header', flex: 1},
     { field: 'POC_Engineer', headerName: 'POC Eng', headerClassName: 'header', flex: 1},
     { field: 'customer', headerName: 'Customer', headerClassName: 'header', flex: 1},
