@@ -22,7 +22,7 @@ export default function TestCaseLibrary(props) {
           headerClassName: 'header',
           align: 'center',
           renderCell: () => (
-            <CPButton text="DETAILS"/>
+            <CPButton text="View"/>
           )
         }
       ]);
