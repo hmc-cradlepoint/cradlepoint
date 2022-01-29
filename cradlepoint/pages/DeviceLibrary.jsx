@@ -4,68 +4,57 @@ import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import {LibraryBOMColumns } from '../util/tableColumns';
-import SelectDeviceModal from './deviceModals/selectDevice';
-import SelectQuantityModal from './deviceModals/selectQuantity';
 import styling from '../styles/tableStyling';
+import DeviceModalForm from './DeviceModalForm';
+import styles from '../styles/EngagementDetails.module.css';
+
+
 
 export default function DeviceLibrary(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
-    const LibraryBOMColumnsWithActions = LibraryBOMColumns.concat([
-        { 
-          field: 'button', 
-          flex: 1,
-          minWidth: 100,
-          headerName: 'Actions',
-          headerClassName: 'header',
-          align: 'center',
-          renderCell: () => (
-            <CPButton text="DETAILS"/>
-          )
-        }
-      ]);
+    // Seems like we don't need to have these device library actions, so they are removed
+    //
+    // const LibraryBOMColumnsWithActions = LibraryBOMColumns.concat([
+    //     { 
+    //       field: 'button', 
+    //       flex: 1,
+    //       minWidth: 100,
+    //       headerName: 'Actions',
+    //       headerClassName: 'header',
+    //       align: 'center',
+    //       renderCell: () => (
+    //         <CPButton text="DETAILS"/>
+    //       )
+    //     }
+    //   ]);
 
-      const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
-      const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-  
-      function updateModal(modalType){
-        switch(modalType){
-          case "select_device":
-              setSelectDeviceModalOpen(true)
-              break;
-          case "select_quantity":
-              setSelectQuantityModalOpen(true)
-              break;
-        }
-      }
+
+    const [deviceModalOpen, setDeviceModalOpen] = useState(false);
 
     return(
         <div>
-          <SelectDeviceModal
-              modalOpen={selectDeviceModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setSelectDeviceModalOpen(false)}
-              ></SelectDeviceModal>
-            
-            <SelectQuantityModal
-              modalOpen={selectQuantityModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setSelectQuantityModalOpen(false)}
-              ></SelectQuantityModal> 
-
+              <DeviceModalForm
+                isOpen={deviceModalOpen}
+                onBack={()=> setDeviceModalOpen(false)}
+              ></DeviceModalForm>
             <PlainScreen>
-                <CPButton 
-                  text="Add New Device"
-                  onClick={() => {updateModal("select_device")}}
-                />
-                <PlainTable rows={props.devicesData} columns={LibraryBOMColumnsWithActions} className={classes.root}/>
+              <div className={styles.tableContainer} style={{paddingTop: 50}}>
+                  <div className={styles.tableButtonRow}>
+                      <h2>Device Library</h2>
+                      <CPButton text="Add New"
+                              onClick={() => {setDeviceModalOpen(true);}}
+                      />
+                  </div>
+                  <PlainTable rows={props.devicesData} columns={LibraryBOMColumns} className={classes.root}/>
+              </div>
             </PlainScreen>
       </div>
     )
 }
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   try {
     const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
     const devicesData = await res.json();
