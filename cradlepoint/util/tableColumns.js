@@ -13,7 +13,6 @@ const engagementColumns = [
 const testPlanColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
-    // { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
     { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1},
@@ -87,16 +86,16 @@ const engagementRows = [
   ];
 
 const testPlanRows = [
-    {_id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "1", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "2", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "3", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "4", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "5", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "6", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "7", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "8", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "9", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "10", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
 ]; 
 
 const testCaseRows = [

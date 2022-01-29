@@ -193,6 +193,7 @@ export async function getServerSideProps(context) {
             "description": (testCase.name != "")?testCase.name:"N/A",
             "percentPassed":"__%",
             "config": (testCase.config != "")?testCase.config:"N/A",
+            "topology": testCase.topology,
             // Other Fields not displayed:
             // "timeEstimate"
             // "testPlanId"
