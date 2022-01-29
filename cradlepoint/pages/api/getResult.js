@@ -1,14 +1,12 @@
 const { ObjectId } = require('mongodb');
 import connectToDb from "../../util/mongodb";
 /*
-  Gets the requested test plan from the database
+  Gets the requested result from the database
   
-  Will pull every test associated with a test
-
-  Input: takes in a test ID
+  Input: takes in a result ID
 */
 export default async (req, res) => {
-  const query = { 'testId': ObjectId(req.query.testId) };
+  const query = { '_id': ObjectId(req.query._id) };
 
   const client = await connectToDb();
   const cursor = client.collection("result").find(query);
