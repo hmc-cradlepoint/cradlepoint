@@ -33,7 +33,7 @@ const testCaseColumns = [
 const testColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'description', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     //{ field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
 ];
 
@@ -67,7 +67,7 @@ const LibraryBOMColumns = [
 
 const resultColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
-    { field: 'details', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     { field: 'POCApproval', headerName: 'POCApproval Status', headerClassName: 'header', flex: 1},
     { field: 'SEApproval', headerName: 'SEApproval Status', headerClassName: 'header', flex: 1},
     // { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
