@@ -12,18 +12,25 @@ import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, testColumns} from '../util/tableColumns';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
+import NavDir from '../components/navDir';
+import { useNavContext } from '../context/AppWrapper';
 
 export default function TestCaseDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
-        router.replace(router.asPath);
+        router.replace(router.asPath);q
     })
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
+    const { directory, dispatch } = useNavContext();
+
     function handleNavigation(id) {
-        router.push("/6TestDetails?_id="+id);
+        const nextPage = "/6TestDetails?_id="+id;
+        const payload = {title: "Test Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
     }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
@@ -119,6 +126,7 @@ export default function TestCaseDetails(props) {
     function description() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
+                <NavDir pages={directory} />
                 <h2>Detailed Description</h2>
                 <p>{props.testCase.description}</p>
             </div>
