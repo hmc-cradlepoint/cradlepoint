@@ -128,7 +128,7 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.testPlanData.detailedDescription}</p>
+                <p>{props.testPlanData.description}</p>
             </div>
         )
     }

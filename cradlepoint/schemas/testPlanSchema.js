@@ -3,7 +3,7 @@ import * as yup from 'yup';
 export const testPlanSchema = yup.object().shape({
   _id: yup.string().optional(),
   name: yup.string().required(),
-  detailedDescription: yup.string().required(),
+  description: yup.string().required(),
   version: yup.string().required(),
   deviceConfig: yup.string(),
   customerFeedback: yup.string(),

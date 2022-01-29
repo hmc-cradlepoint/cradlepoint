@@ -14,7 +14,7 @@ const testPlanColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     // { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'detailedDescription', headerName: 'Description', headerClassName: 'header', flex: 2},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
     { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1},
     //{ field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
