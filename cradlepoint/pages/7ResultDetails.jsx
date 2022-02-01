@@ -42,7 +42,7 @@ export default function ResultDetails(props) {
 
     return (
         <div>
-            <EditModalFlow data={props.resultData} type={flowType.RESULT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+        <EditModalFlow data={props.resultData} type={flowType.RESULT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
 
             
         <SplitScreen
@@ -71,7 +71,9 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
+    console.log("getServerSideProps called");
     const res = await fetch(`${process.env.HOST}/api/getResult?_id=`+context.query._id);
+    console.log("res is returned");
     const resultData = await res.json().then((data) => data[0]);
     
     return {

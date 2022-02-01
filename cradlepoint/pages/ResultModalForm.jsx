@@ -3,25 +3,22 @@ import Modal from 'react-modal';
 import CPButton from "../components/button/CPButton";
 import styles from '../styles/Modal.module.css'
 import PropTypes from 'prop-types';
-import {Formik} from 'formik';
+import {Formik, Field} from 'formik';
 import { SmallTextInput, BigTextInput } from "../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import {ObjectID} from 'bson';
-
+import {flowType, modalFormType} from '../util/modalUtils';
 
 export default function ResultModalForm(props) {
     const initialData = {
       _id: props.data?._id??new ObjectID(),
       details: props.data?.details??"",
-      // POCApproval:  props.data.POCApproval,
-      // SEApproval: props.data.SEApproval,
       evidence: props.data?.evidence??"",
       testId: props.data.testId,
       resultStatus: props.data?.resultStatus??"unknown"
     }
-
-   
-    const [data, setData] = useState(initialData)
+    
+  const [data, setData] = useState(initialData)
   
     function handleChange(evt) {
       const value = evt.target.value;
@@ -36,16 +33,20 @@ export default function ResultModalForm(props) {
         ...props.data, 
         "_id":data._id, 
         "details":data.details, 
-        // "POCApproval":data.POCApproval,
-        // "SEApproval": data.SEApproval,
         "evidence": data.evidence,
         "testId": data.testId,
         "resultStatus": data.resultStatus,
       }
-      
+      const endPoint = '/api/editResult';
+      const method = 'PUT';
+      if (props.modalFormType==modalFormType.NEW){
+        endPoint = '/api/addNewResult';
+        method = 'POST';
+      }
+      console.log("handleSubmit");
       try{
-        const res = await fetch('/api/editResult', {
-          method: 'PUT',
+        const res = await fetch(endPoint, {
+          method: method,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -55,7 +56,8 @@ export default function ResultModalForm(props) {
         console.log("Error:",err)
       }
       
-      props.onBack()
+      props.onBack();
+      setData(initialData);
     }
   
   
@@ -67,19 +69,19 @@ export default function ResultModalForm(props) {
           <Formik>
             <label>
               Result Status:
-              <select value={data.resultStatus} onChange={handleChange}>
+              <Field as="select" name="resultStatus" value={data.resultStatus} onChange={handleChange}>
                 <option value="pass">Pass</option>
                 <option value="unknown">Unknown</option>
                 <option value="fail">Fail</option>
-              </select>
+              </Field>
               </label>
             </Formik>
             </div>
         <BigTextInput label='Detail Description:' name='details' value={data.details} onChange={handleChange}/>
         <BigTextInput label='Evidence:' name='evidence' value={data.evidence} onChange={handleChange}/>
-        
+
         </div>
-        <CPButton text='Back' onClick={props.onBack}/>
+        <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
         <CPButton text='Create' onClick={handleSubmitData}/>
       </Modal>
   );

@@ -41,7 +41,6 @@ export default function TestDetails(props) {
     ]);
 
 
-
     function results() {
         // Test table component
         return (
@@ -62,11 +61,13 @@ export default function TestDetails(props) {
     const [editModalFlow, setEditModalFlow] = useState(false);
     
     function details() {
+        
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
             </div>
         )
+        // TODO: add result status in test schema so it can display the result status of the latest result
     }
     function description() {
         return (
@@ -79,12 +80,19 @@ export default function TestDetails(props) {
 
     return (
         <div>
-            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+            <EditModalFlow 
+                data={props.testData} 
+                type={flowType.TEST} 
+                modalOpen={editModalFlow} 
+                onClose={() => {setEditModalFlow(false); refreshData();}} 
+            />
             <ResultModalForm
               data={{testId: props.testData._id}}
               isOpen={resultModalOpen} 
-              onBack={()=> setResultModalOpen(false)}
               modalFormType={modalFormType.NEW}
+              onBack={() => {
+                  setResultModalOpen(false); 
+                  refreshData();}}
               ></ResultModalForm>
 
         <SplitScreen
@@ -136,6 +144,7 @@ export async function getServerSideProps(context) {
             // "testId"
         }
     })));
+    
     return {
       props: {testData, resultsData}, // will be passed to the page component as props
     }
