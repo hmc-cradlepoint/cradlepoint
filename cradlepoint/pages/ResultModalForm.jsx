@@ -81,7 +81,7 @@ export default function ResultModalForm(props) {
 
         </div>
         <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
-        <CPButton text='Create' onClick={handleSubmitData}/>
+        <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
   );
 }
