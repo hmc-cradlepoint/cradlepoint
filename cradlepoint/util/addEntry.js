@@ -18,7 +18,11 @@ export async function addResult(data) {
             // Push the test plan into the test case array as well
             await client.collection('tests').updateOne(
                 { "_id": testId }, // query matching , refId should be "ObjectId" type
-                { $push: { results: result.insertedId}} // arr will be array of objects
+                {$push: { results: result.insertedId}} // arr will be array of objects
+            );
+            await client.collection('tests').updateOne(
+                { "_id": testId }, // query matching , refId should be "ObjectId" type
+                { $set: { resultStatus: testResult.resultStatus}}
             );
             return result
         }

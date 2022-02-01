@@ -55,7 +55,6 @@ export default function ResultModalForm(props) {
       } catch (err){
         console.log("Error:",err)
       }
-      
       props.onBack();
       setData(initialData);
     }

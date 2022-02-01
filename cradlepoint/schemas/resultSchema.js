@@ -5,7 +5,7 @@ export const resultSchema = yup.object().shape({
   details: yup.string().required(),
   // POCApproval: yup.string().matches(/^\d+$/),
   // SEApproval: yup.string().matches(/^\d+$/),
-  evidence: yup.string().required(),
+  evidence: yup.string().optional(),
   testId: yup.string().required(),
   resultStatus: yup.string().required(),
   createdOn: yup.date().default(function () {

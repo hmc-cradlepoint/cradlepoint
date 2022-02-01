@@ -17,9 +17,13 @@ export default function TestDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    const [resultModalOpen, setResultModalOpen] = useState(false);
+    const [editModalFlow, setEditModalFlow] = useState(false);
     
     const useStyles = makeStyles(styling);
     const classes = useStyles();
+
     function handleNavigation(id) {
         router.push("/7ResultDetails?_id="+id);
     }
@@ -57,14 +61,12 @@ export default function TestDetails(props) {
     }
 
 
-    const [resultModalOpen, setResultModalOpen] = useState(false);
-    const [editModalFlow, setEditModalFlow] = useState(false);
     
     function details() {
-        
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
+                <p>Most Recent Result Status: {props.testData.resultStatus?? "unknown"}</p>
             </div>
         )
         // TODO: add result status in test schema so it can display the result status of the latest result
@@ -87,13 +89,13 @@ export default function TestDetails(props) {
                 onClose={() => {setEditModalFlow(false); refreshData();}} 
             />
             <ResultModalForm
-              data={{testId: props.testData._id}}
-              isOpen={resultModalOpen} 
-              modalFormType={modalFormType.NEW}
-              onBack={() => {
+                data={{testId: props.testData._id}}
+                isOpen={resultModalOpen} 
+                modalFormType={modalFormType.NEW}
+                onBack={() => {
                   setResultModalOpen(false); 
                   refreshData();}}
-              ></ResultModalForm>
+            ></ResultModalForm>
 
         <SplitScreen
             topChildren={
