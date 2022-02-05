@@ -10,9 +10,12 @@ import ResultModalForm from './ResultModalForm';
 import styling from '../styles/tableStyling';
 import EditModalFlow from './editModalFlow';
 import {flowType, modalFormType} from '../util/modalUtils';
-
+import NavDir from '../components/navDir';
+import { useNavContext } from '../context/AppWrapper';
 
 export default function TestDetails(props) {
+    const { directory, dispatch } = useNavContext();
+
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
@@ -102,11 +105,15 @@ export default function TestDetails(props) {
 
         <SplitScreen
             topChildren={
+                <>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>setEditModalFlow(true)}/>
-                </div>}
+                    <h1>Test Details</h1>
+                    <CPButton text="Edit"
+                    onClick={()=>setEditModalFlow(true)}/>
+                </div>
+                </>
+            }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={
