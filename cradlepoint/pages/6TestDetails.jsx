@@ -75,7 +75,7 @@ export default function TestDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.testData.details}</p>
+                <p>{props.testData.description}</p>
             </div>
         )
     }
@@ -137,7 +137,7 @@ export async function getServerSideProps(context) {
         return {
             "_id": result._id,
             "evidence": result.evidence?result.evidence:"",
-            "details": result.details?result.details:"",
+            "details": result.details?result.description:"",
             "resultStatus": result.resultStatus?result.resultStatus:"unknown",
             "createdOn": result.createdOn?result.createdOn:""
             // "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
