@@ -66,7 +66,7 @@ export default function TestPlanModalForm(props) {
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
         </div>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <BigTextInput label="Test Plan Description:" name='testPlanDescription' value={data.description} onChange={handleChange}/>
+        <BigTextInput label="Test Plan Description:" name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange}/>
         </div>
         </div>

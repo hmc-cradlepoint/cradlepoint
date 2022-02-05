@@ -56,7 +56,7 @@ export default function EngagementModalForm(props) {
           <SmallTextInput label="Engagement Name:" name='name' value={data.name} onChange={handleChange}/>
           <SmallTextInput label='Customer' name='customer' value={data.customer} onChange={handleChange}/>
           <SmallTextInput label="SFDC:" name='SFDC' value={data.SFDC} onChange={handleChange}/>
-          <BigTextInput label="Engagement Description:" name='engagementDescription' value={data.description} onChange={handleChange}/>
+          <BigTextInput label="Engagement Description:" name='description' value={data.description} onChange={handleChange}/>
         </div>
 
         </div>
