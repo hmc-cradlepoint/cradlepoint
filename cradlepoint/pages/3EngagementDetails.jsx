@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
@@ -10,12 +10,16 @@ import EditModalFlow from './editModalFlow';
 import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
+import { useNavContext } from '../context/AppWrapper';
+import NavDir from '../components/navDir';
 
 export default function EngagementDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    const { directory, dispatch } = useNavContext();
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
@@ -24,7 +28,10 @@ export default function EngagementDetails(props) {
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     function handleEditNavigation(id) {
-        router.push("/4TestPlanDetails?_id=" + id);
+        const nextPage = "/4TestPlanDetails?_id=" + id;
+        const payload = {title: "Test Plan Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
     }
 
     //   TODO: style the active test plan
@@ -133,6 +140,7 @@ export default function EngagementDetails(props) {
         <SplitScreen
             topChildren={
             <div>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                     <h1>Engagement Details</h1>
                     <CPButton text="Edit" onClick={() => setEditModalFlow(true)}/>
