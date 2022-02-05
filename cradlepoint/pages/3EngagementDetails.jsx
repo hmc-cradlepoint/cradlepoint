@@ -118,7 +118,7 @@ export default function EngagementDetails(props) {
                 <h2>Details</h2>
                 <p><b>ID:</b> {props.engagement._id}<br/>
                 <b>Client:</b> {props.engagement.customer}<br/> 
-                <b>SFDC:</b> {props.engagement.SFDC}<br/>
+                <b>SFDC:</b> <a href={props.engagement.SFDC}><u style={{color: "darkblue"}}>SFDC link</u></a> <br/>
                 <b>Status:</b> {props.engagement.statusCode}<br/>
                 <b>System Engineer:</b> {props.engagement.SEDetails[0].firstName} {props.engagement.SEDetails[0].lastName}<br/>
                 <b>POC Engineer:</b> {props.engagement.POC_Eningeer_details[0].firstName} {props.engagement.POC_Eningeer_details[0].lastName}</p>
