@@ -6,13 +6,14 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router';
 import {ObjectID} from 'bson';
+import { Formik, Field } from "formik";
 
 export default function TestPlanModalForm(props) {
   const router = useRouter();
   const initialData = {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
-    isActive: props.data.isActive?props.data.isActive:"",
+    isActive: props.data.isActive?props.data.isActive:"true",
     version: props.data.version?props.data.version:"",
     customerFeedback: props.data.customerFeedback?props.data.customerFeedback:"",
     description: props.data.description?props.data.description:"",
@@ -60,7 +61,17 @@ export default function TestPlanModalForm(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
           <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
-          <SmallTextInput label="Active:" name='active' value={data.isActive} onChange={handleChange}/>
+          <div style={{padding: "25px"}}>
+          <Formik>
+            <label>
+              Active:
+              <Field as="select" name="isActive" value={data.isActive} onChange={handleChange}>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </Field>
+              </label>
+            </Formik>
+            </div>
           <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange}/>
           </div>
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>

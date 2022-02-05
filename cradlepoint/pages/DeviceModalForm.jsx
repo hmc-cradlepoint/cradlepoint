@@ -18,7 +18,7 @@ export default function ResultModalForm(props) {
       deviceType: "",
     }
     const [data, setData] = useState(initialData);
-  
+    const options = ["Software", "Hardware"];
     function handleChange(evt) {
       const value = evt.target.value;
       setData({
@@ -53,10 +53,24 @@ export default function ResultModalForm(props) {
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Add New Device to Library</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Device Name" name='deviceName' value={data.deviceName} onChange={handleChange}/>
-        <SmallTextInput label="Code Version" name='codeVersion' value={data.codeVersion} onChange={handleChange} />
-        <SmallTextInput label="SKU" name='SKU' value={data.SKU} onChange={handleChange} />
-        <SmallTextInput label="Device Type" name='deviceType' value={data.deviceType} onChange={handleChange} />
+        <SmallTextInput label="Device Name:" name='deviceName' value={data.deviceName} onChange={handleChange}/>
+        <SmallTextInput label="Code Version:" name='codeVersion' value={data.codeVersion} onChange={handleChange} />
+        <SmallTextInput label="SKU:" name='SKU' value={data.SKU} onChange={handleChange} />
+        {/* <SmallTextInput label="Device Type" name='deviceType' value={data.deviceType} onChange={handleChange} /> */}
+
+        {/* <div style={{padding: "25px"}}>
+          <Formik>
+            <label>
+              Device Type:
+              <Field as="select" name="deviceType" value={data.deviceType} onChange={handleChange}>
+                <option value="Software">Software</option>
+                <option value="Hardware">Hardware</option>
+              </Field>
+              </label>
+            </Formik>
+            </div> */}
+          <DropDown title="Device Type: " name="deviceType" value={data.deviceType} 
+            onChange={handleChange} options={options}/>
         </div>
         <CPButton text='Back' onClick={()=>{
           setData(initialData);
