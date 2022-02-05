@@ -159,13 +159,15 @@ export default function TestPlanDetails(props) {
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
-                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <NavDir pages={directory} />
-                <h1>Test Plan Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>{
-                    setEditModalFlow(true);}}/>
-                </div>}
+                <>
+                    <NavDir pages={directory} />
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                        <h1>Test Plan Details</h1>
+                        <CPButton text="Edit"
+                        onClick={()=> setEditModalFlow(true) }/>
+                    </div>
+                </>
+                }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={

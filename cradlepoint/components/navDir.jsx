@@ -20,16 +20,16 @@ export default function NavDir(props) {
     }
 
     return (
-        <div>
+        <div style={{display: "flex", flexDirection: "row", textAlign: "center"}}>
             {props.pages.directory.map((page) => {
                 return (
-                    <p>
+                    <p style={{padding: 2}}>
                         <LinkedButton 
                             href={page.url}
                             name={page.title}
                             onClick={() => popDir(page.title, page.url)}
                         />
-                        {">"}
+                        {" >"}
                     </p>
                 )
             })}

@@ -126,7 +126,6 @@ export default function TestCaseDetails(props) {
     function description() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <NavDir pages={directory} />
                 <h2>Detailed Description</h2>
                 <p>{props.testCase.description}</p>
             </div>
@@ -155,12 +154,15 @@ export default function TestCaseDetails(props) {
         
         <SplitScreen
             topChildren={
+                <>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Case Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>
-                    setEditModalFlow(true)}/>
-                </div>}
+                    <h1>Test Case Details</h1>
+                    <CPButton text="Edit"
+                    onClick={() => setEditModalFlow(true)}/>
+                </div>
+                </>
+            }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={

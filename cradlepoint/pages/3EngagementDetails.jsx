@@ -140,8 +140,8 @@ export default function EngagementDetails(props) {
         <SplitScreen
             topChildren={
             <div>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                    <NavDir pages={directory} />
                     <h1>Engagement Details</h1>
                     <CPButton text="Edit" onClick={() => setEditModalFlow(true)}/>
                 </div>
