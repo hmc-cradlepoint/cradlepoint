@@ -88,6 +88,6 @@ export default function ResultModalForm(props) {
 
 ResultModalForm.propTypes = {
   onBack: PropTypes.bool.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 }
 
