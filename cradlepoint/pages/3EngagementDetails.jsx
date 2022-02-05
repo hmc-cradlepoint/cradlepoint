@@ -107,7 +107,7 @@ export default function EngagementDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.engagement.engagementDetails}</p>
+                <p>{props.engagement.description}</p>
             </div>
         )
     }

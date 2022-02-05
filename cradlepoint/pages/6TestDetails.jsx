@@ -82,7 +82,7 @@ export default function TestDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.testData.details}</p>
+                <p>{props.testData.description}</p>
             </div>
         )
     }
@@ -136,7 +136,7 @@ export async function getServerSideProps(context) {
         return {
             "_id": result._id,
             "evidence": (result.evidence != "")?result.evidence:"N/A",
-            "details": (result.details != "")?result.details:"N/A",
+            "description": (result.description != "")?result.description:"N/A",
             "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
             "SEApproval": (result.SEApproval != "")?result.SEApproval:"N/A",
             // Other Fields not displayed:

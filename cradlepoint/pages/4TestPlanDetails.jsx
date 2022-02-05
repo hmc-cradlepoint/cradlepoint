@@ -128,7 +128,7 @@ export default function TestPlanDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
-                <p>{props.testPlanData.detailedDescription}</p>
+                <p>{props.testPlanData.description}</p>
             </div>
         )
     }
@@ -193,6 +193,7 @@ export async function getServerSideProps(context) {
             "description": (testCase.name != "")?testCase.name:"N/A",
             "percentPassed":"__%",
             "config": (testCase.config != "")?testCase.config:"N/A",
+            "topology": testCase.topology,
             // Other Fields not displayed:
             // "timeEstimate"
             // "testPlanId"

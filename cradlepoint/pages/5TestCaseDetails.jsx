@@ -112,6 +112,7 @@ export default function TestCaseDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Subject: {props.testCase.name}</p>
+                <p>Topology: {props.testCase.topology}</p>
                 {/* <p>Percent of Tests Passed: TBD</p> */}
             </div>
         )

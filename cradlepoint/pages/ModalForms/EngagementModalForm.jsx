@@ -16,7 +16,7 @@ export default function EngagementModalForm(props) {
     name: props.data?.name??"",
     customer: props.data?.customer??"",
     SFDC: props.data?.SFDC??"",
-    engagementDetails: props.data?.engagementDetails??"",
+    description: props.data?.description??"",
   })
 
   function handleChange(evt) {
@@ -29,7 +29,7 @@ export default function EngagementModalForm(props) {
 
   async function handleSubmitData() {
     // console.log(props.data);
-    let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "engagementDetails":data.engagementDetails}
+    let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "description":data.description}
     delete newData.POC_Eningeer_details;
     delete newData.SEDetails;
     try{
@@ -56,7 +56,7 @@ export default function EngagementModalForm(props) {
           <SmallTextInput label="Engagement Name:" name='name' value={data.name} onChange={handleChange}/>
           <SmallTextInput label='Customer' name='customer' value={data.customer} onChange={handleChange}/>
           <SmallTextInput label="SFDC:" name='SFDC' value={data.SFDC} onChange={handleChange}/>
-          <BigTextInput label="Engagement Description:" name='engagementDetails' value={data.engagementDetails} onChange={handleChange}/>
+          <BigTextInput label="Engagement Description:" name='description' value={data.description} onChange={handleChange}/>
         </div>
 
         </div>

@@ -12,7 +12,7 @@ export default function TestModalForm(props) {
   const initialData = {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
-    details: props.data?.details??"",
+    description: props.data?.description??"",
   }
   const [data, setData] = useState(initialData);
 
@@ -29,7 +29,7 @@ export default function TestModalForm(props) {
       ...props.data, 
       "_id":data._id, 
       "name":data.name, 
-      "details":data.details
+      "description":data.description
     }
     try{
       const res = await fetch('/api/editTest', {
@@ -51,7 +51,7 @@ export default function TestModalForm(props) {
         <h2>Fill in Test Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput label="Subject" name='name' value={data.name} onChange={handleChange}/>
-        <BigTextInput label="Description" name='details' value={data.details} onChange={handleChange} />
+        <BigTextInput label="Description" name='description' value={data.description} onChange={handleChange} />
         </div>
         <CPButton text='Back' onClick={()=>{
           setData(initialData);

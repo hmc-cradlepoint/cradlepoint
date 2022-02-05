@@ -4,7 +4,7 @@ export const engagementSchema = yup.object().shape({
   _id: yup.string().optional(),
   name: yup.string().required(),
   statusCode: yup.number().positive().integer().required(),
-  engagementDetails: yup.string().required(),
+  description: yup.string().required(),
   SE: yup.string().matches(/^\d+$/),
   POC_Engineer: yup.string().matches(/^\d+$/),
   customer: yup.string().required(),

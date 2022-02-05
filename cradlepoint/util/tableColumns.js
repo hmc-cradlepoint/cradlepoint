@@ -2,7 +2,7 @@ const engagementColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'statusCode', headerName: 'Status', headerClassName: 'header', flex: 1},
-    { field: 'engagementDetails', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
+    { field: 'description', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, hide: true, minWidth: 200},
     { field: 'SE', headerName: 'SEng', headerClassName: 'header', flex: 1},
     { field: 'POC_Engineer', headerName: 'POC Eng', headerClassName: 'header', flex: 1},
     { field: 'customer', headerName: 'Customer', headerClassName: 'header', flex: 1},
@@ -13,8 +13,7 @@ const engagementColumns = [
 const testPlanColumns = [
     { field: '_id', headerName: 'ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
-    // { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
-    { field: 'detailedDescription', headerName: 'Description', headerClassName: 'header', flex: 2},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', flex: 2},
     { field: 'deviceConfig', headerName: 'Device Config', headerClassName: 'header', flex: 1},
     { field: 'createdOn', headerName: 'Date Created', headerClassName: 'header', flex: 1},
     //{ field: 'status', headerName: 'Status', headerClassName: 'header', flex: 1},
@@ -33,7 +32,7 @@ const testCaseColumns = [
 const testColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Subject', headerClassName: 'header', flex: 1},
-    { field: 'details', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'description', headerName: 'Details', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     //{ field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
 ];
 
@@ -68,7 +67,7 @@ const LibraryBOMColumns = [
 
 const resultColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
-    { field: 'details', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
+    { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
     { field: 'POCApproval', headerName: 'POCApproval Status', headerClassName: 'header', flex: 1},
     { field: 'SEApproval', headerName: 'SEApproval Status', headerClassName: 'header', flex: 1},
     // { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
@@ -88,16 +87,16 @@ const engagementRows = [
   ];
 
 const testPlanRows = [
-    {_id: "1", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "2", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "3", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "4", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "5", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "6", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "7", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "8", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "9", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
-    {_id: "10", subject: "subject", topology: "topology", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "1", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "2", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "3", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "4", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "5", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "6", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "7", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "8", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "9", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
+    {_id: "10", subject: "subject", description: "lorem ipsum dolores et", percentPassed: "95%", customerFeedback: "it's been great so far!", authors: "NW", version: "1.2", dateCreated: "05/11/2021", deviceConfigs: "some devices"},
 ]; 
 
 const testCaseRows = [
