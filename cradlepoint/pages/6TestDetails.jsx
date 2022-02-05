@@ -137,7 +137,7 @@ export async function getServerSideProps(context) {
         return {
             "_id": result._id,
             "evidence": result.evidence?result.evidence:"",
-            "details": result.details?result.description:"",
+            "description": result.description?result.description:"",
             "resultStatus": result.resultStatus?result.resultStatus:"unknown",
             "createdOn": result.createdOn?result.createdOn:""
             // "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",

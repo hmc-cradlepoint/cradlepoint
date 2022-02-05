@@ -12,7 +12,7 @@ import {flowType, modalFormType} from '../util/modalUtils';
 export default function ResultModalForm(props) {
     const initialData = {
       _id: props.data?._id??new ObjectID(),
-      details: props.data?.details??"",
+      description: props.data?.description??"",
       evidence: props.data?.evidence??"",
       testId: props.data.testId,
       resultStatus: props.data?.resultStatus??"unknown"
@@ -32,7 +32,7 @@ export default function ResultModalForm(props) {
       let newData = {
         ...props.data, 
         "_id":data._id, 
-        "details":data.details, 
+        "description":data.description, 
         "evidence": data.evidence,
         "testId": data.testId,
         "resultStatus": data.resultStatus,
@@ -76,7 +76,7 @@ export default function ResultModalForm(props) {
               </label>
             </Formik>
             </div>
-        <BigTextInput label='Detail Description:' name='details' value={data.details} onChange={handleChange}/>
+        <BigTextInput label='Detail Description:' name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label='Evidence:' name='evidence' value={data.evidence} onChange={handleChange}/>
 
         </div>

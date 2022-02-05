@@ -25,18 +25,18 @@ export default function ResultDetails(props) {
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Details: {props.resultData.details}</p>
-            </div>
+            <p>Evidence: {props.resultData.evidence}</p>
+            <p>Status: {props.resultData.resultStatus}</p>
+            <p>Date Created: {props.resultData.createdOn}</p>
+        </div>
         )
     }
     function description() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
-                <h2>Detailed Description</h2>
-                <p>Evidence: {props.resultData.evidence}</p>
-                <p>Status: {props.resultData.resultStatus}</p>
-                <p>Date Created: {props.resultData.createdOn}</p>
-            </div>
+               <h2>Detailed Description</h2>
+               <p>{props.resultData.description}</p>
+           </div>
         )
     }
 
