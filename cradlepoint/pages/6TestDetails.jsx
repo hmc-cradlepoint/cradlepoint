@@ -25,7 +25,10 @@ export default function TestDetails(props) {
     const classes = useStyles();
 
     function handleNavigation(id) {
-        router.push("/7ResultDetails?_id="+id);
+        const nextPage = "/7ResultDetails?_id="+id;
+        const payload = {title: "Result Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
     }
 
     const resultWithActions = resultColumns.concat([
