@@ -13,6 +13,10 @@ export function AppWrapper({children}) {
                 return {
                     directory: [...state.directory, action.payload]
                 }
+            case "POP_TO_CURR_PAGE":
+                return {
+                    directory: [...action.payload]
+                }
             default:
                 return initialState;
         }

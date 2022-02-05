@@ -73,8 +73,6 @@ const BOMColumnsWithFields = LibraryBOMColumns.concat([
         }
     }]);
 
-
-  console.log(props.selectedRowData);
   return (
     
     <>
