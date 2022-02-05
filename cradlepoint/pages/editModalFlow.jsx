@@ -4,6 +4,7 @@ import EngagementModalForm from './ModalForms/EngagementModalForm';
 import TestPlanModalForm from './ModalForms/TestPlanModalForm';
 import TestCaseModalForm from './ModalForms/TestCaseModalForm';
 import TestModalForm from './ModalForms/TestModalForm';
+import ResultModalForm from "./ResultModalForm";
 
 export default function EditModalFlow(props) {
 
@@ -17,6 +18,8 @@ export default function EditModalFlow(props) {
         return <TestCaseModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose}/>
       case flowType.TEST:
         return <TestModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose} />
+      case flowType.RESULT:
+        return <ResultModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose} />
       }
   }
     return (

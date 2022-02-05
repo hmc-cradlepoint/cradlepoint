@@ -8,4 +8,5 @@ export const testSchema = yup.object().shape({
     yup.string().required()
   ).required(),
   testCaseId: yup.string().required(),
+  resultStatus: yup.string().optional()
 });

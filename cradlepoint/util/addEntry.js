@@ -3,7 +3,37 @@ import {testCaseSchema} from "../schemas/testCaseSchema";
 import {testPlanSchema} from "../schemas/testPlanSchema";
 import {engagementSchema} from "../schemas/engagementSchema";
 import connectToDb from "./mongodb";
+import { resultSchema } from "../schemas/resultSchema";
 const { ObjectId } = require('mongodb');
+
+export async function addResult(data) {
+    try {
+        const client = await connectToDb();
+        const valid = await resultSchema.isValid(data)
+        if (valid && ObjectId.isValid(data.testId) ) {
+            const id = ObjectId(data._id);
+            const testResult = resultSchema.cast(data);
+            const testId = ObjectId(data.testId);
+            const result = await client.collection('result').insertOne({...testResult, _id: id, testId: testId});
+            // Push the test plan into the test case array as well
+            await client.collection('tests').updateOne(
+                { "_id": testId }, // query matching , refId should be "ObjectId" type
+                {$push: { results: result.insertedId}} // arr will be array of objects
+            );
+            await client.collection('tests').updateOne(
+                { "_id": testId }, // query matching , refId should be "ObjectId" type
+                { $set: { resultStatus: testResult.resultStatus}}
+            );
+            return result
+        }
+        else {
+            throw new Error('Data is not in right format')
+        }
+        
+    } catch (err) {
+        throw err
+    }
+}
 
 export async function addTest(data) {
     try {

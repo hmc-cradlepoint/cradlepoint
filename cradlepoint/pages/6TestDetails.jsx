@@ -9,7 +9,7 @@ import { resultColumns } from '../util/tableColumns';
 import ResultModalForm from './ResultModalForm';
 import styling from '../styles/tableStyling';
 import EditModalFlow from './editModalFlow';
-import { flowType } from '../util/modalUtils';
+import {flowType, modalFormType} from '../util/modalUtils';
 
 
 export default function TestDetails(props) {
@@ -17,9 +17,16 @@ export default function TestDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    const [resultModalOpen, setResultModalOpen] = useState(false);
+    const [editModalFlow, setEditModalFlow] = useState(false);
     
     const useStyles = makeStyles(styling);
     const classes = useStyles();
+
+    function handleNavigation(id) {
+        router.push("/7ResultDetails?_id="+id);
+    }
 
     const resultWithActions = resultColumns.concat([
     { 
@@ -29,14 +36,13 @@ export default function TestDetails(props) {
         align: 'center',
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
-            <CPButton text="View"/>
+            <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete"/>
         </div>
         ),
         flex: 2
     }
     ]);
-
 
 
     function results() {
@@ -46,7 +52,7 @@ export default function TestDetails(props) {
                 <div className={styles.tableButtonRow}>
                     <h2>Results</h2>
                     <CPButton text="Add New"
-                            onClick={() => {updateModal("result");}}
+                            onClick={() => {setResultModalOpen(true)}}
                     />
                 </div>
                 <PlainTable rows={props.resultsData} columns={resultWithActions} className={classes.root}/>
@@ -55,28 +61,15 @@ export default function TestDetails(props) {
     }
 
 
-
-
-    const [resultModalOpen, setResultModalOpen] = useState(false);
-    const [editModalFlow, setEditModalFlow] = useState(false);
-    const emptyRow = {subject: '', description: ''};
-    const [selectedRow, setSelectedRow] = useState(emptyRow); 
-
-    function updateModal(modalType){
-      switch(modalType){
-        case "result":
-            setResultModalOpen(true)
-            break;
-      }
-    }
-
     
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
+                <p>Most Recent Result Status: {props.testData.resultStatus?? "unknown"}</p>
             </div>
         )
+        // TODO: add result status in test schema so it can display the result status of the latest result
     }
     function description() {
         return (
@@ -89,13 +82,20 @@ export default function TestDetails(props) {
 
     return (
         <div>
-            <EditModalFlow data={props.testData} type={flowType.TEST} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
-            
+            <EditModalFlow 
+                data={props.testData} 
+                type={flowType.TEST} 
+                modalOpen={editModalFlow} 
+                onClose={() => {setEditModalFlow(false); refreshData();}} 
+            />
             <ResultModalForm
-              isOpen={resultModalOpen} 
-              onClickNext={updateModal}
-              onBack={()=> setResultModalOpen(false)}
-              ></ResultModalForm>
+                data={{testId: props.testData._id}}
+                isOpen={resultModalOpen} 
+                modalFormType={modalFormType.NEW}
+                onBack={() => {
+                  setResultModalOpen(false); 
+                  refreshData();}}
+            ></ResultModalForm>
 
         <SplitScreen
             topChildren={
@@ -132,17 +132,21 @@ export async function getServerSideProps(context) {
        TODO: Refactor out fetch call
     */
     const res2 = await fetch(`${process.env.HOST}/api/getResults?testId=`+context.query._id);
+ 
     const resultsData = await res2.json().then((data) => data.map((result => {
         return {
             "_id": result._id,
-            "evidence": (result.evidence != "")?result.evidence:"N/A",
-            "description": (result.description != "")?result.description:"N/A",
-            "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
-            "SEApproval": (result.SEApproval != "")?result.SEApproval:"N/A",
+            "evidence": result.evidence?result.evidence:"",
+            "description": result.description?result.description:"",
+            "resultStatus": result.resultStatus?result.resultStatus:"unknown",
+            "createdOn": result.createdOn?result.createdOn:""
+            // "POCApproval": (result.POCApproval != "")?result.POCApproval:"N/A",
+            // "SEApproval": (result.SEApproval != "")?result.SEApproval:"N/A",
             // Other Fields not displayed:
             // "testId"
         }
     })));
+    
     return {
       props: {testData, resultsData}, // will be passed to the page component as props
     }
