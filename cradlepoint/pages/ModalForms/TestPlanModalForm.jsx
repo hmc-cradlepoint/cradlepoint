@@ -6,7 +6,7 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router';
 import {ObjectID} from 'bson';
-import { Formik, Field } from "formik";
+import DropDown from "../../components/fields/DropDown";
 
 export default function TestPlanModalForm(props) {
   const router = useRouter();
@@ -54,6 +54,7 @@ export default function TestPlanModalForm(props) {
     props.onBack()
   }
 
+  const options = ["true", "false"];
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Test Plan Info</h2>
@@ -61,17 +62,8 @@ export default function TestPlanModalForm(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
           <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
-          <div style={{padding: "25px"}}>
-          <Formik>
-            <label>
-              Active:
-              <Field as="select" name="isActive" value={data.isActive} onChange={handleChange}>
-                <option value="true">True</option>
-                <option value="false">False</option>
-              </Field>
-              </label>
-            </Formik>
-            </div>
+          <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
+            onChange={handleChange} options={options}/>
           <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange}/>
           </div>
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
