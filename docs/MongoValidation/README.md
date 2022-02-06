@@ -12,4 +12,4 @@ db.runCommand({
 \\ Use To see all validation rules in a database
 db.getCollectionInfos()
 ```
-Wasn't sure what filetype to use for the files in this dir, but they describe the validation rules for each collection.
+There's probably a better filetype than json, but these files describe the validation rules for each collection.
