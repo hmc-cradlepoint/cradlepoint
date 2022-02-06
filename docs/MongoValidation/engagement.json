@@ -1,0 +1,39 @@
+{
+   $jsonSchema: {
+      required: [ "name", "statusCode", "description", "SE", "POC_Engineer", "customer", "SFDC", "testPlanId", "createdOn" ],
+      properties: {
+         name: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         statusCode: {
+            bsonType: "int",
+            description: "must be an int and is required"
+         },
+         description: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         SE: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         POC_Engineer: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         customer: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         testPlanId: {
+            bsonType: "objectId",
+            description: "must be an objectId and is required"
+         },
+         createdOn: {
+            bsonType: "date",
+            description: "must be a date and is required"
+         },
+      }
+   }
+ }
