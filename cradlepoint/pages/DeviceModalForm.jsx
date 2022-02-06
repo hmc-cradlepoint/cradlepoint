@@ -15,17 +15,21 @@ export default function ResultModalForm(props) {
       deviceName: "",
       codeVersion: "",
       SKU: "",
-      deviceType: "",
+      deviceType: "Software",
     }
     const [data, setData] = useState(initialData);
     const options = ["Software", "Hardware"];
+    
     function handleChange(evt) {
       const value = evt.target.value;
       setData({
         ...data,
         [evt.target.name]: value
       });
+      console.log(data)
     }
+
+
   
     async function handleSubmitData() {
       let newData = {
@@ -46,7 +50,8 @@ export default function ResultModalForm(props) {
       } catch (err){
         console.log("Error:",err)
       }
-      props.onBack()
+      props.onBack();
+      
     }
 
   return (
@@ -56,20 +61,7 @@ export default function ResultModalForm(props) {
         <SmallTextInput label="Device Name:" name='deviceName' value={data.deviceName} onChange={handleChange}/>
         <SmallTextInput label="Code Version:" name='codeVersion' value={data.codeVersion} onChange={handleChange} />
         <SmallTextInput label="SKU:" name='SKU' value={data.SKU} onChange={handleChange} />
-        {/* <SmallTextInput label="Device Type" name='deviceType' value={data.deviceType} onChange={handleChange} /> */}
-
-        {/* <div style={{padding: "25px"}}>
-          <Formik>
-            <label>
-              Device Type:
-              <Field as="select" name="deviceType" value={data.deviceType} onChange={handleChange}>
-                <option value="Software">Software</option>
-                <option value="Hardware">Hardware</option>
-              </Field>
-              </label>
-            </Formik>
-            </div> */}
-          <DropDown title="Device Type: " name="deviceType" value={data.deviceType} 
+        <DropDown title="Device Type: " fieldName="deviceType" value={data.deviceType} 
             onChange={handleChange} options={options}/>
         </div>
         <CPButton text='Back' onClick={()=>{
