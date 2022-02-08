@@ -18,7 +18,7 @@ import { useNavContext } from '../context/AppWrapper';
 export default function TestCaseDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
-        router.replace(router.asPath);q
+        router.replace(router.asPath);
     })
 
     const useStyles = makeStyles(styling);
