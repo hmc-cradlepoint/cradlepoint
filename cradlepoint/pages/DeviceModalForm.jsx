@@ -42,7 +42,6 @@ export default function ResultModalForm(props) {
           },
           body: JSON.stringify(newData),
         })
-        console.log(newData)
       } catch (err){
         console.log("Error:",err)
       }

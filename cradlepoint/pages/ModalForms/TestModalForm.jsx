@@ -52,7 +52,6 @@ export default function TestModalForm(props) {
         },
         body: JSON.stringify(newData),
       })
-      console.log(res);
     } catch (err){
       console.log("Error:",err)
     }
