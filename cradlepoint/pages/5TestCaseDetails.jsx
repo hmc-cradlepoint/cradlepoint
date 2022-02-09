@@ -36,6 +36,7 @@ export default function TestCaseDetails(props) {
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
     const testColumnsWithActions = testColumns.concat([
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
     { 
         field: 'button', 
         headerName: 'Actions',

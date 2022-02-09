@@ -14,6 +14,7 @@ export default function TestModalForm(props) {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     description: props.data?.description??"",
+    resultStatus: props.data?.resultStatus??"unknown"
   }
   const [data, setData] = useState(initialData);
 
@@ -32,7 +33,8 @@ export default function TestModalForm(props) {
       "name":data.name, 
       "description":data.description,
       "testCaseId": props.testCaseId,
-      "results": []
+      "results": [],
+      "resultStatus": data.resultStatus
     }
 
     const endPoint = '/api/editTest';
