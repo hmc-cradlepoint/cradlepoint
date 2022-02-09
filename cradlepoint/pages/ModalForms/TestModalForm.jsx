@@ -66,7 +66,7 @@ export default function TestModalForm(props) {
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in Test Info</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Subject" name='name' value={data.name} onChange={handleChange}/>
+        <SmallTextInput label="Name" name='name' value={data.name} onChange={handleChange}/>
         <BigTextInput label="Description" name='description' value={data.description} onChange={handleChange} />
         </div>
         <CPButton text='Back' onClick={()=>{
