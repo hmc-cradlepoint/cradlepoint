@@ -76,7 +76,7 @@ export default function HomeScreen(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
               <h2>Engagements</h2>
               <CPButton 
-              text="Create New Engagement"
+              text="Add New"
               onClick={() => setCreateNewFlow(true)}
             />
           </div>
