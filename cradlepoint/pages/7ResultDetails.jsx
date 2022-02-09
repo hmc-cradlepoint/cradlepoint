@@ -46,8 +46,6 @@ export default function ResultDetails(props) {
     return (
         <div>
         <EditModalFlow data={props.resultData} type={flowType.RESULT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
-
-            
         <SplitScreen
             topChildren={
                 <>

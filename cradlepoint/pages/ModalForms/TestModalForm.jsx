@@ -57,7 +57,7 @@ export default function TestModalForm(props) {
       console.log("Error:",err)
     }
     // TODO: if create new, then should navigate to the corresponding test details page
-    props.onBack();
+    props.onClose();
     setData(initialData);
   }
 
