@@ -8,7 +8,8 @@
          },
          statusCode: {
             bsonType: "int",
-            description: "must be an int and is required"
+            enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            description: "must be an int of the provided values and is required"
          },
          description: {
             bsonType: "string",
@@ -23,6 +24,10 @@
             description: "must be a string and is required"
          },
          customer: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         SFDC: {
             bsonType: "string",
             description: "must be a string and is required"
          },
