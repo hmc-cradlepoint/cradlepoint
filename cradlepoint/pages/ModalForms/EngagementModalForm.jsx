@@ -28,7 +28,6 @@ export default function EngagementModalForm(props) {
   }
 
   async function handleSubmitData() {
-    // console.log(props.data);
     let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "description":data.description}
     delete newData.POC_Eningeer_details;
     delete newData.SEDetails;

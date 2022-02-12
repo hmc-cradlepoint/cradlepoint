@@ -43,7 +43,7 @@ export default function ResultModalForm(props) {
         endPoint = '/api/addNewResult';
         method = 'POST';
       }
-      console.log("handleSubmit");
+
       try{
         const res = await fetch(endPoint, {
           method: method,
