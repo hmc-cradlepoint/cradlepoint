@@ -6,6 +6,8 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
+import {modalFormType} from '../../util/modalUtils';
+import { arrayOf, objectOf } from "prop-types";
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();
@@ -13,6 +15,8 @@ export default function TestCaseModalForm(props) {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     description: props.data?.description??"",
+    config: props.data?.config??"",
+    topology: props.data?.topology??"",
   }
   const [data, setData] = useState(initialData)
 
@@ -30,21 +34,37 @@ export default function TestCaseModalForm(props) {
       delete d.device;
       return d;
     });
+
     let newData = {
       ...props.data, 
-      "_id":data._id, 
+      "_id":data._id.toString(), 
       "name":data.name, 
       "description":data.description,
-      "BOM": BOM,
+      "testPlanId": props.testPlanId,
+      "topology": data.topology,
+      "config": data.config
     }
+  
+    const endPoint = '/api/editTestCase';
+    const method = 'PUT';
+    if (props.modalFormType==modalFormType.NEW){
+      endPoint = '/api/addNewTestCase';
+      method = 'POST';
+      newData["tests"] = [];
+      // newData["BOM"] = arrayOf(objectOf());
+    }
+
     console.log("NewData:", newData);
+
     try{
-      const res = await fetch('/api/editTestCase', {
-        method: 'PUT',
+      const d = JSON.stringify(newData);
+      const res = await fetch(endPoint, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(d)
         },
-        body: JSON.stringify(newData),
+        body: d
       })
       console.log("RES:", res)
     } catch (err){
@@ -59,7 +79,10 @@ export default function TestCaseModalForm(props) {
         <h2>Fill in New Test Case Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput label="Subject:" name='name' value={data.name} onChange={handleChange}/>
+        {/* TODO: will be a file upload here instead */}
+        <SmallTextInput label="Topology:" name='topology' value={data.topology} onChange={handleChange}/>
         <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
+        <BigTextInput label="Config:" name='config' value={data.config} onChange={handleChange}/>
         </div>
         <CPButton text='Back' onClick={()=>{
           setData(initialData);

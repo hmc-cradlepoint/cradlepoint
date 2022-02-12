@@ -115,7 +115,13 @@ export default function CreateNewModalFlow(props) {
       case flowType.TEST_PLAN:
         return <TestPlanModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
       case flowType.TEST_CASE:
-        return <TestCaseModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestCaseModalForm 
+                              testPlanId={props.modalData.testPlanData._id} 
+                              modalFormType={modalFormType.NEW} 
+                              isOpen={scratchIsOpen} 
+                              onBack={() => setModalType(modalType.START)}
+                              onClose={()=> {setScratchIsOpen(false); props.onClose();}} 
+                             />
       case flowType.TEST:
         return <TestModalForm testCaseId={props.modalData.testCase._id} 
                               modalFormType={modalFormType.NEW} 

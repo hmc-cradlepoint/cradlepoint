@@ -155,7 +155,7 @@ export default function TestPlanDetails(props) {
             selectedRowData={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
-        <CreateNewModalFlow modalData={props.allTestCases} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
@@ -201,10 +201,10 @@ export async function getServerSideProps(context) {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
             "description": (testCase.name != "")?testCase.name:"N/A",
-            "percentPassed":"__%",
             "config": (testCase.config != "")?testCase.config:"N/A",
             "topology": testCase.topology,
             // Other Fields not displayed:
+            // "percentPassed":"__%",
             // "timeEstimate"
             // "testPlanId"
             // "BOM"
