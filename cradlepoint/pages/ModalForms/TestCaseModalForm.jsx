@@ -29,12 +29,6 @@ export default function TestCaseModalForm(props) {
   }
 
   async function handleSubmitData() {
-    // const clone = JSON.parse(JSON.stringify(props.data));
-    // const BOM = clone.BOM.map((d) => {
-    //   delete d.device;
-    //   return d;
-    // });
-
     let newData = {
       ...props.data, 
       "_id":data._id.toString(), 
@@ -47,14 +41,11 @@ export default function TestCaseModalForm(props) {
     
     const endPoint = '/api/editTestCase';
     const method = 'PUT';
-    if (props.modalFormType==modalFormType.NEW){
+   
+    if (props.modalFormType===modalFormType.NEW){
       endPoint = '/api/addNewTestCase';
       method = 'POST';
-      newData["tests"] = [];
-      newData["BOM"] = [];
-    }
-
-    console.log("NewData:", newData);
+    } 
 
     try{
       const d = JSON.stringify(newData);
@@ -70,7 +61,10 @@ export default function TestCaseModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    props.onClose()
+    props.onClose();
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
   }
 
   return (

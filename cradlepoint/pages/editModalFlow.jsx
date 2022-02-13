@@ -15,7 +15,12 @@ export default function EditModalFlow(props) {
       case flowType.TEST_PLAN:
         return <TestPlanModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose}/>
       case flowType.TEST_CASE:
-        return <TestCaseModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose} />
+        return <TestCaseModalForm modalFormType={modalFormType.EDIT} 
+                                  data={props.data} 
+                                  testPlanId={props.data.testPlanId}
+                                  isOpen={props.modalOpen} 
+                                  onBack={props.onClose} 
+                                  onClose={props.onClose}/>
       case flowType.TEST:
         return <TestModalForm modalFormType={modalFormType.EDIT} 
                               data={props.data} 
