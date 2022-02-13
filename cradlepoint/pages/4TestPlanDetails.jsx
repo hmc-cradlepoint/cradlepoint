@@ -200,7 +200,7 @@ export async function getServerSideProps(context) {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
-            "description": (testCase.name != "")?testCase.name:"N/A",
+            "description": (testCase.description != "")?testCase.description:"N/A",
             "config": (testCase.config != "")?testCase.config:"N/A",
             "topology": testCase.topology,
             // Other Fields not displayed:

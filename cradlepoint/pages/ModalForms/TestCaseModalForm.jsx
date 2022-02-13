@@ -29,11 +29,11 @@ export default function TestCaseModalForm(props) {
   }
 
   async function handleSubmitData() {
-    const clone = JSON.parse(JSON.stringify(props.data));
-    const BOM = clone.BOM.map((d) => {
-      delete d.device;
-      return d;
-    });
+    // const clone = JSON.parse(JSON.stringify(props.data));
+    // const BOM = clone.BOM.map((d) => {
+    //   delete d.device;
+    //   return d;
+    // });
 
     let newData = {
       ...props.data, 
@@ -44,14 +44,14 @@ export default function TestCaseModalForm(props) {
       "topology": data.topology,
       "config": data.config
     }
-  
+    
     const endPoint = '/api/editTestCase';
     const method = 'PUT';
     if (props.modalFormType==modalFormType.NEW){
       endPoint = '/api/addNewTestCase';
       method = 'POST';
       newData["tests"] = [];
-      // newData["BOM"] = arrayOf(objectOf());
+      newData["BOM"] = [];
     }
 
     console.log("NewData:", newData);
@@ -70,7 +70,7 @@ export default function TestCaseModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    props.onBack()
+    props.onClose()
   }
 
   return (
@@ -78,7 +78,7 @@ export default function TestCaseModalForm(props) {
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Fill in New Test Case Info</h2>
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Subject:" name='name' value={data.name} onChange={handleChange}/>
+        <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
         {/* TODO: will be a file upload here instead */}
         <SmallTextInput label="Topology:" name='topology' value={data.topology} onChange={handleChange}/>
         <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>

@@ -35,6 +35,7 @@ export async function addResult(data) {
     }
 }
 
+
 export async function addTest(data) {
     try {
         const client = await connectToDb();
@@ -66,29 +67,46 @@ export async function addTest(data) {
     }
 }
 
+/**Clone function
+ * test plan
+ * 
+ * create new test plan (but with empty test case array)
+ * get test case from original test plan
+ * add new test case to the new test plan with the info of original test case (duplicate)
+ *  - create new test case 
+ *  - add new test case to the test plan id array
+ * get test from original test case
+ * add new test to the new test case
+ * 
+ */
+
 export async function addTestCase(data) {
     try {
         const client = await connectToDb();
         const valid = await testCaseSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testPlanId) ) {
             const testCase = testCaseSchema.cast(data);
-            for (const i in testCase.tests) {
-                if (!ObjectId.isValid(testCase.tests[i])) {
-                    
-                    throw new Error('Invalid Test Id')
-                }
-            }
+            const id = ObjectId(data._id);
             const testPlanId = ObjectId(data.testPlanId);
-            for (const i in testCase.BOM) {
-                if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
-                    throw new Error('Invalid Device Id')
-                }
-            }
-            const BOM = testCase.BOM.map(device => {
-                return {...device, deviceId: ObjectId(device.deviceId)}
-              });
-            const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
+            // TODO: this is code that should be in clone function
+            // for (const i in testCase.tests) {
+            //     if (!ObjectId.isValid(testCase.tests[i])) {
+                    
+            //         throw new Error('Invalid Test Id')
+            //     }
+            // }
+
+            // for (const i in testCase.BOM) {
+            //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
+            //         throw new Error('Invalid Device Id')
+            //     }
+            // }
+            // const BOM = testCase.BOM.map(device => {
+            //     return {...device, deviceId: ObjectId(device.deviceId)}
+            //   });
+            // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
             
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId});
             // Push the test plan into the test case array as well
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
