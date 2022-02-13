@@ -155,7 +155,7 @@ export default function TestPlanDetails(props) {
             selectedRowData={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
-        <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
