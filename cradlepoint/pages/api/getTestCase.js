@@ -7,14 +7,15 @@ export default async (req, res) => {
 
   const client = await connectToDb();
   const cursor = client.collection("testCases").aggregate([
-    // Find the test Plan
+    // Find the test case
     { $match: { "_id": ObjectId(req.query._id) } },
-    // Separate apart the summaryBOMs
     {
-      $unwind: {
-          path: '$BOM'
-      }
+        $unwind: {
+            path: '$BOM',
+            preserveNullAndEmptyArrays: true
+        }
     },
+    // Separate apart the summaryBOMs
     // Lookup the devices in its table
     {
         $lookup: {
@@ -27,7 +28,8 @@ export default async (req, res) => {
     // Change the device from an array into just an object
     {
         $unwind: {
-            path: '$BOM.device'
+            path: '$BOM.device',
+            preserveNullAndEmptyArrays: true
         }
     },
     // Put everything back together

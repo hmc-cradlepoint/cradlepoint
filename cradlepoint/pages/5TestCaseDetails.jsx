@@ -135,7 +135,7 @@ export default function TestCaseDetails(props) {
     }
 
     const [selectedRows, setSelectedRows] = useState({});
-
+    
     return (
         <div>
             <CreateNewModalFlow modalData={props} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false);refreshData();}} />
@@ -188,6 +188,12 @@ export async function getServerSideProps(context) {
         
         if (testCase.len == 0) {
             return { notFound: true }
+        }
+        // TODO: this is a "sketchy" quickfix to situation where testCase BOM has not device
+        // the getTestCase query will return BOM as BOM: [{}]
+        // this like replaces it to BOM: []
+        if (!('_id' in testCase[0].BOM[0])){
+            testCase[0].BOM = [];
         }
           return {
             props: {
