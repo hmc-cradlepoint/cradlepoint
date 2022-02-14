@@ -11,8 +11,8 @@ export default function SplitScreen(props) {
                 {/* Add styling to leftSection and rightSection in SplitScreen.css as neccessary */}
                 {props.topChildren}
                 <div className={styles.sectionContainer}>
-                    <div className={styles.leftSection}>{props.leftSection}</div>
-                    <div className={styles.rightSection}>{props.rightSection}</div>
+                    <div style={{width: "50%", wordBreak: "break-word"}} className={styles.leftSection}>{props.leftSection}</div>
+                    <div style={{width: "50%", wordBreak: "break-word"}} className={styles.rightSection}>{props.rightSection}</div>
                 </div>
                 {props.bottomChildren}
             </div>

@@ -13,6 +13,8 @@ import styling from '../styles/tableStyling';
 
 import { BOMColumns, testCaseColumns} from '../util/tableColumns';
 import { flowType } from '../util/modalUtils';
+import NavDir from '../components/navDir';
+import { useNavContext } from '../context/AppWrapper';
 
 export default function TestPlanDetails(props) {
     const router = useRouter();
@@ -25,8 +27,13 @@ export default function TestPlanDetails(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
+    const { directory, dispatch } = useNavContext();
+
     function handleNavigation(id) {
-        router.push("/5TestCaseDetails?_id=" + id);
+        const nextPage = "/5TestCaseDetails?_id=" + id;
+        const payload = {title: "Test Case Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
     }
 
     const testCaseColumnsWithActions = testCaseColumns.concat([
@@ -152,12 +159,15 @@ export default function TestPlanDetails(props) {
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
-                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Plan Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>{
-                    setEditModalFlow(true);}}/>
-                </div>}
+                <>
+                    <NavDir pages={directory} />
+                    <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                        <h1>Test Plan Details</h1>
+                        <CPButton text="Edit"
+                        onClick={()=> setEditModalFlow(true) }/>
+                    </div>
+                </>
+                }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={

@@ -8,6 +8,7 @@ import { SmallTextInput, BigTextInput } from "../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import {ObjectID} from 'bson';
 import {flowType, modalFormType} from '../util/modalUtils';
+import DropDown from "../components/fields/DropDown";
 
 export default function ResultModalForm(props) {
     const initialData = {
@@ -15,7 +16,7 @@ export default function ResultModalForm(props) {
       description: props.data?.description??"",
       evidence: props.data?.evidence??"",
       testId: props.data.testId,
-      resultStatus: props.data?.resultStatus??"unknown"
+      resultStatus: props.data?.resultStatus??"Unknown"
     }
     
   const [data, setData] = useState(initialData)
@@ -43,7 +44,7 @@ export default function ResultModalForm(props) {
         endPoint = '/api/addNewResult';
         method = 'POST';
       }
-      console.log("handleSubmit");
+
       try{
         const res = await fetch(endPoint, {
           method: method,
@@ -59,23 +60,14 @@ export default function ResultModalForm(props) {
       setData(initialData);
     }
   
+  const options = ["Pass", "Unknown", "Fail"];
   
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Add New Result to Test</h2>
         <div style={{alignItems:borderLeft}}>
-        <div style={{padding: "25px"}}>
-          <Formik>
-            <label>
-              Result Status:
-              <Field as="select" name="resultStatus" value={data.resultStatus} onChange={handleChange}>
-                <option value="pass">Pass</option>
-                <option value="unknown">Unknown</option>
-                <option value="fail">Fail</option>
-              </Field>
-              </label>
-            </Formik>
-            </div>
+        <DropDown title="Result Status: " fieldName="resultStatus" value={data.resultStatus} 
+            onChange={handleChange} options={options}/>
         <BigTextInput label='Detail Description:' name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label='Evidence:' name='evidence' value={data.evidence} onChange={handleChange}/>
 
@@ -88,6 +80,6 @@ export default function ResultModalForm(props) {
 
 ResultModalForm.propTypes = {
   onBack: PropTypes.bool.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 }
 

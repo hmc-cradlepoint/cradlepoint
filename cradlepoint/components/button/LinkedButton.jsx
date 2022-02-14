@@ -1,12 +1,12 @@
-import { Button } from "@mui/material"
-import Link from 'next/link'
+import Button from '@mui/material/Button';
+import Link from 'next/link';
 
-export default function LinkedButton({href, name}) {
+export default function LinkedButton({href, name, onClick}) {
     // Must add passHref to Link
     // console.log(name);
     return (
       <Link href={href} passHref>
-        <Button>{name}</Button>
+        <Button onClick={onClick}>{name}</Button>
       </Link>
     )
   }

@@ -12,6 +12,8 @@ import styles from '../styles/EngagementDetails.module.css';
 import { BOMColumns, testColumns} from '../util/tableColumns';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
+import NavDir from '../components/navDir';
+import { useNavContext } from '../context/AppWrapper';
 
 export default function TestCaseDetails(props) {
     const router = useRouter();
@@ -22,13 +24,19 @@ export default function TestCaseDetails(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
+    const { directory, dispatch } = useNavContext();
+
     function handleNavigation(id) {
-        router.push("/6TestDetails?_id="+id);
+        const nextPage = "/6TestDetails?_id="+id;
+        const payload = {title: "Test Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
     }
     
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
     const testColumnsWithActions = testColumns.concat([
+    { field: 'resultStatus', headerName: 'Result Status', headerClassName: 'header', flex: 1},
     { 
         field: 'button', 
         headerName: 'Actions',
@@ -130,7 +138,7 @@ export default function TestCaseDetails(props) {
 
     return (
         <div>
-            <CreateNewModalFlow modalData={props.allTests} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+            <CreateNewModalFlow modalData={props} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false);refreshData();}} />
             <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
@@ -148,12 +156,15 @@ export default function TestCaseDetails(props) {
         
         <SplitScreen
             topChildren={
+                <>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Test Case Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>
-                    setEditModalFlow(true)}/>
-                </div>}
+                    <h1>Test Case Details</h1>
+                    <CPButton text="Edit"
+                    onClick={() => setEditModalFlow(true)}/>
+                </div>
+                </>
+            }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={

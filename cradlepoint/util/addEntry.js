@@ -40,18 +40,20 @@ export async function addTest(data) {
         const client = await connectToDb();
         const valid = await testSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testCaseId) ) {
+            const id = ObjectId(data._id);
             const test = testSchema.cast(data);
-            for (const result in test.results) {
-                if (!ObjectId.isValid(result)) {
-                    throw new Error('Invalid Result Id')
-                }
-            }
+            // TODO: if we clone to make new test, we don't really need to copy the tests over?
+            // for (const result in test.results) {
+            //     if (!ObjectId.isValid(result)) {
+            //         throw new Error('Invalid Result Id')
+            //     }
+            // }
             const testCaseId = ObjectId(data.testCaseId);
-            const result = await client.collection('tests').insertOne({...test, testCaseId: testCaseId});
+            const result = await client.collection('tests').insertOne({...test, _id: id, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
             await client.collection('testCases').updateOne(
                 { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
-                { $push: { tests: result.insertedId}} // arr will be array of objects
+                { $push: { tests: ObjectId(result.insertedId)}} // arr will be array of objects
             );
             return result
         }

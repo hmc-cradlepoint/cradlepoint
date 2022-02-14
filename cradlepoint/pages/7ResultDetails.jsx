@@ -10,9 +10,12 @@ import ResultModalForm from './ResultModalForm';
 import styling from '../styles/tableStyling';
 import EditModalFlow from './editModalFlow';
 import { flowType } from '../util/modalUtils';
-
+import NavDir from '../components/navDir';
+import { useNavContext } from '../context/AppWrapper';
 
 export default function ResultDetails(props) {
+    const { directory, dispatch } = useNavContext();
+
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
@@ -43,15 +46,17 @@ export default function ResultDetails(props) {
     return (
         <div>
         <EditModalFlow data={props.resultData} type={flowType.RESULT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
-
-            
         <SplitScreen
             topChildren={
+                <>
+                <NavDir pages={directory} />
                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <h1>Result Details</h1>
-                <CPButton text="Edit"
-                onClick={()=>setEditModalFlow(true)}/>
-                </div>}
+                    <h1>Result Details</h1>
+                    <CPButton text="Edit"
+                    onClick={()=>setEditModalFlow(true)}/>
+                </div>
+                </>
+                }
             leftSection={details()}
             rightSection={description()}
             bottomChildren={

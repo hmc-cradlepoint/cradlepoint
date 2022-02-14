@@ -10,14 +10,15 @@ import {ObjectID} from 'bson';
 
 export default function EngagementModalForm(props) {
   const router = useRouter();
-
-  const [data, setData] = useState({
+  const initialData = {
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     customer: props.data?.customer??"",
     SFDC: props.data?.SFDC??"",
     description: props.data?.description??"",
-  })
+  }
+  
+  const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
     const value = evt.target.value;
@@ -28,7 +29,6 @@ export default function EngagementModalForm(props) {
   }
 
   async function handleSubmitData() {
-    // console.log(props.data);
     let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "description":data.description}
     delete newData.POC_Eningeer_details;
     delete newData.SEDetails;
@@ -60,13 +60,8 @@ export default function EngagementModalForm(props) {
         </div>
 
         </div>
-        <CPButton text='Back' onClick={props.onBack}/>
+        <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
         <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
   );
-}
-
-EngagementModalForm.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onBack: PropTypes.bool.isRequired,
 }

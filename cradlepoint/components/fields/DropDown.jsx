@@ -5,16 +5,25 @@ import { Field, Formik} from 'formik';
 
 // 1-line text field
 export default function DropDown(props) {
+
+    function handleChange(evt) {
+      console.log(evt);
+      props.onChange(evt);
+    }
+    
     return (
-    <Formik>
-        <Field name="result" as="select" >
-           {/* <option value="passed">Passed</option>
-           <option value="unknown">Unknown</option>
-           <option value="failed">Failed</option> */}
-           {props.options.map((option)=>
-                {return <option value={option}>{option}</option>})
-            }
-       </Field>
-    </Formik>
+        <div style={{padding: "25px"}}>
+        <Formik>
+          <label>
+            {props.title}
+            <Field as="select" name={props.fieldName} value={props.value} 
+            onChange={handleChange}>
+              {props.options.map((o) => {
+                return <option value={o}>{o}</option>
+              })}
+            </Field>
+            </label>
+          </Formik>
+          </div>
     )
 }

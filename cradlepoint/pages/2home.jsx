@@ -8,16 +8,26 @@ import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
 import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
+import { useNavContext } from '../context/AppWrapper';
+import NavDir from '../components/navDir';
+
+// TOOD: figure out with not clearing the history when going back
 
 export default function HomeScreen(props) {
     const router = useRouter();
     const useStyles = makeStyles(styling);
     const classes = useStyles();
-
+    
+    const { directory, dispatch } = useNavContext();
+    
     function handleNavigation(id) {
-      router.push("/3EngagementDetails?_id=" + id);
+      const nextPage = "/3EngagementDetails?_id=" + id;
+      const payload = {title: "Engagement Details", url: nextPage};
+      router.push(nextPage);
+      dispatch({type: "ADD_PAGE", payload: payload});
     }
 
+    // TODO: put this in a util folder
     async function exportToJson(id) {
       // get export data
       const jsonData = await (await fetch(`/api/getEngagementDetails?_id=${id}`)).json();
@@ -61,11 +71,12 @@ export default function HomeScreen(props) {
       <div >
         <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
+        <NavDir pages={directory} />
         <h1>Home</h1>
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
               <h2>Engagements</h2>
               <CPButton 
-              text="Create New Engagement"
+              text="Add New"
               onClick={() => setCreateNewFlow(true)}
             />
           </div>
