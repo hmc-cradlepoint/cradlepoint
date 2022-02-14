@@ -120,7 +120,7 @@ export default function CreateNewModalFlow(props) {
                               modalFormType={modalFormType.NEW} 
                               isOpen={scratchIsOpen} 
                               onBack={() => setModalType(modalType.START)}
-                              onClose={()=> {setScratchIsOpen(false); props.onClose();}} 
+                              onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}} 
                              />
       case flowType.TEST:
         return <TestModalForm testCaseId={props.modalData.testCase._id} 
@@ -131,7 +131,7 @@ export default function CreateNewModalFlow(props) {
                               />
       }
   }
-
+  
   switch (modal) {
     case modalType.START:
       return <StartModal />;

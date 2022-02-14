@@ -139,7 +139,7 @@ export default function TestPlanDetails(props) {
             </div>
         )
     }
-
+    console.log(createNewFlow);
     return (
         <>
         <SelectDeviceModal
