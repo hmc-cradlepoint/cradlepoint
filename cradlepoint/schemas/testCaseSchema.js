@@ -4,9 +4,10 @@ export const testCaseSchema = yup.object().shape({
   _id: yup.string().optional(),
   name: yup.string().required(),
   description: yup.string().required(),
-  timeEstimate: yup.number().positive().required(),
   config: yup.string().required(),
   topology: yup.string().required(),
+  timeEstimate: yup.number().positive().required(),
+  testPlanId: yup.string().required(),
   tests: yup.array().of(
     yup.string().required()
   ).required(),
@@ -17,5 +18,4 @@ export const testCaseSchema = yup.object().shape({
       deviceId: yup.string().required(),
     })
   ).required(),
-  testPlanId: yup.string().required(),
 });

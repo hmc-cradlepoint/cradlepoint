@@ -3,29 +3,33 @@
         "_id": {
             "$oid": "619003fec01efe48e4b3fe0d"
         },
+        "name": "BGP redundancy",
+        "description": "Test route convergence when peer fails",
+        "config": "[{'system': {'system_id': 'BGP Router'}}, []]",
+        "topology": "Link / PDF / Image",
+        "timeEstimate": 1.0,
         "testPlanId": {
             "$oid": ""
         },
-        "BOM": [],
         "tests": [
             {
                 "$oid": "62030ca5399a9fbc6eb3250f"
             }
         ],
-        "name": "BGP redundancy",
-        "config": "[{'system': {'system_id': 'BGP Router'}}, []]",
-        "description": "Test route convergence when peer fails",
-        "timeEstimate": 1.0,
-        "topology": "Link / PDF / Image"
+        "BOM": []
     },
     {
         "_id": {
             "$oid": "61b6f8dc8e4c9b518de0080b"
         },
-        "timeEstimate": 2.0,
+        "name": "LTE Failover",
         "description": "Test failover to LTE during upstream failure",
         "config": "[{'system': {'system_id': 'LTE Router'}}, []]",
-        "name": "LTE Failover",
+        "topology": "Link / PDF / Image",
+        "timeEstimate": 2.0,
+        "testPlanId": {
+            "$oid": ""
+        },
         "tests": [
             {
                 "$oid": "62030d5dda979d0a8723fe40"
@@ -39,20 +43,20 @@
                     "$oid": "617251a399915be1b771acb6"
                 }
             }
-        ],
-        "testPlanId": {
-            "$oid": ""
-        },
-        "topology": "Link / PDF / Image"
+        ]
     },
     {
         "_id": {
             "$oid": "61b6f93e8e4c9b518de0080c"
         },
-        "timeEstimate": 3.0,
+        "name": "VRRP",
         "description": "Test VRRP backup during hardware failure",
         "config": "[{'system': {'system_id': 'VRRP Router'}}, []]",
-        "name": "VRRP",
+        "topology": "Link / PDF / Image",
+        "timeEstimate": 3.0,
+        "testPlanId": {
+            "$oid": "6172500699915be1b771acb3"
+        },
         "tests": [
             {
                 "$oid": "6203133122465bec90d059b5"
@@ -66,20 +70,20 @@
                     "$oid": "617251a399915be1b771acb6"
                 }
             }
-        ],
-        "testPlanId": {
-            "$oid": "6172500699915be1b771acb3"
-        },
-        "topology": "Link / PDF / Image"
+        ]
     },
     {
         "_id": {
             "$oid": "61b805bee52286d566d94a7d"
         },
-        "timeEstimate": 4.0,
+        "name": "TCP Throughput",
         "description": "Test TCP throughput between two endpoints",
         "config": "[{'system': {'system_id': 'Throughput Router'}}, []]",
-        "name": "TCP Throughput",
+        "topology": "Link / PDF / Image",
+        "timeEstimate": 4.0,
+        "testPlanId": {
+            "$oid": ""
+        },
         "tests": [
             {
                 "$oid": "62031ec2da87ce7850b4bd46"
@@ -94,10 +98,6 @@
                 "quantity": 12,
                 "deviceId": "617251a399915be1b771acb6"
             }
-        ],
-        "testPlanId": {
-            "$oid": ""
-        },
-        "topology": "Link / PDF / Image"
+        ]
     }
 ]
