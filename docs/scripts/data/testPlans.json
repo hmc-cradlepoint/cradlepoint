@@ -1,8 +1,6 @@
 [
     {
-        "_id": {
-            "$oid": "61724e5599915be1b771acb2"
-        },
+        "_id": ObjectId("61724e5599915be1b771acb2"),
         "name": "BGP + LTE Test Plan",
         "description": "No Description Yet.",
         "customerFeedback": "No Feedback Yet.",
@@ -12,24 +10,16 @@
         "version": "1234",
         "isActive": true,
         "deviceConfig": "???",
-        "engagementId": {
-            "$oid": "617246a299915be1b771aca0"
-        },
+        "engagementId": ObjectId("617246a299915be1b771aca0"),
         "testCases": [
-            {
-                "$oid": "619003fec01efe48e4b3fe0d"
-            },
-            {
-                "$oid": "61b6f8dc8e4c9b518de0080b"
-            }
+            ObjectId("619003fec01efe48e4b3fe0d"),
+            ObjectId("61b6f8dc8e4c9b518de0080b")
         ],
         "summaryBOM": [
             {
                 "isOptional": false,
                 "quantity": 1,
-                "deviceId": {
-                    "$oid": "617251a399915be1b771acb6"
-                }
+                "deviceId": ObjectId("617251a399915be1b771acb6")
             }
         ],
         "createdOn": {
@@ -37,9 +27,7 @@
         }
     },
     {
-        "_id": {
-            "$oid": "6172500699915be1b771acb3"
-        },
+        "_id": ObjectId("6172500699915be1b771acb3"),
         "name": "VRRP + TCP Test Plan",
         "description": "No Description Yet.",
         "customerFeedback": "No Feedback Yet.",
@@ -49,31 +37,21 @@
         "version": "1234",
         "isActive": true,
         "deviceConfig": "???",
-        "engagementId": {
-            "$oid": "617249e199915be1b771aca2"
-        },
+        "engagementId": ObjectId("617249e199915be1b771aca2"),
         "testCases": [
-            {
-                "$oid": "61b6f93e8e4c9b518de0080c"
-            },
-            {
-                "$oid": "61b805bee52286d566d94a7d"
-            }
+            ObjectId("61b6f93e8e4c9b518de0080c"),
+            ObjectId("61b805bee52286d566d94a7d")
         ],
         "summaryBOM": [
             {
                 "isOptional": false,
                 "quantity": 1,
-                "deviceId": {
-                    "$oid": "61ac5bb5d32cd5c89f9014c7"
-                }
+                "deviceId": ObjectId("61ac5bb5d32cd5c89f9014c7")
             },
             {
                 "isOptional": true,
                 "quantity": 1,
-                "deviceId": {
-                    "$oid": "61f86a3b9602a56382ad3b47"
-                }
+                "deviceId": ObjectId("61f86a3b9602a56382ad3b47")
             }
         ],
         "createdOn": {

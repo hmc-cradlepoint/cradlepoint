@@ -1,112 +1,80 @@
 [
     {
-        "_id": {
-            "$oid": "619003fec01efe48e4b3fe0d"
-        },
+        "_id": ObjectId("619003fec01efe48e4b3fe0d"),
         "name": "BGP redundancy",
         "description": "Test route convergence when peer fails",
         "config": "[{'system': {'system_id': 'BGP Router'}}, []]",
         "topology": "Link / PDF / Image",
         "timeEstimate": 1.0,
-        "testPlanId": {
-            "$oid": "61724e5599915be1b771acb2"
-        },
+        "testPlanId": ObjectId("61724e5599915be1b771acb2"),
         "tests": [
-            {
-                "$oid": "62030ca5399a9fbc6eb3250f"
-            }
+            ObjectId("62030ca5399a9fbc6eb3250f")
         ],
         "BOM": [
             {
                 "isOptional": false,
                 "quantity": 4,
-                "deviceId": {
-                    "$oid": "61f5859d938920434df9044b"
-                }
+                "deviceId": ObjectId("61f5859d938920434df9044b")
             }
         ]
     },
     {
         "_id": {
-            "$oid": "61b6f8dc8e4c9b518de0080b"
+            "$oid": ObjectId("61b6f8dc8e4c9b518de0080b")
         },
         "name": "LTE Failover",
         "description": "Test failover to LTE during upstream failure",
         "config": "[{'system': {'system_id': 'LTE Router'}}, []]",
         "topology": "Link / PDF / Image",
         "timeEstimate": 2.0,
-        "testPlanId": {
-            "$oid": "61724e5599915be1b771acb2"
-        },
+        "testPlanId": ObjectId("61724e5599915be1b771acb2"),
         "tests": [
-            {
-                "$oid": "62030d5dda979d0a8723fe40"
-            }
+            ObjectId("62030d5dda979d0a8723fe40")
         ],
         "BOM": [
             {
                 "isOptional": false,
                 "quantity": 4,
-                "deviceId": {
-                    "$oid": "61f58566938920434df9044a"
-                }
+                "deviceId": ObjectId("61f58566938920434df9044a")
             }
         ]
     },
     {
-        "_id": {
-            "$oid": "61b6f93e8e4c9b518de0080c"
-        },
+        "_id": ObjectId("61b6f93e8e4c9b518de0080c"),
         "name": "VRRP",
         "description": "Test VRRP backup during hardware failure",
         "config": "[{'system': {'system_id': 'VRRP Router'}}, []]",
         "topology": "Link / PDF / Image",
         "timeEstimate": 3.0,
-        "testPlanId": {
-            "$oid": "6172500699915be1b771acb3"
-        },
+        "testPlanId": ObjectId("6172500699915be1b771acb3"),
         "tests": [
-            {
-                "$oid": "6203133122465bec90d059b5"
-            }
+            ObjectId("6203133122465bec90d059b5")
         ],
         "BOM": [
             {
                 "isOptional": false,
                 "quantity": 1,
-                "deviceId": {
-                    "$oid": "61f5859d938920434df9044b"
-                }
+                "deviceId": ObjectId("61f5859d938920434df9044b")
             }
         ]
     },
     {
-        "_id": {
-            "$oid": "61b805bee52286d566d94a7d"
-        },
+        "_id": ObjectId("61b805bee52286d566d94a7d"),
         "name": "TCP Throughput",
         "description": "Test TCP throughput between two endpoints",
         "config": "[{'system': {'system_id': 'Throughput Router'}}, []]",
         "topology": "Link / PDF / Image",
         "timeEstimate": 4.0,
-        "testPlanId": {
-            "$oid": "6172500699915be1b771acb3"
-        },
+        "testPlanId": ObjectId("6172500699915be1b771acb3"),
         "tests": [
-            {
-                "$oid": "62031ec2da87ce7850b4bd46"
-            },
-            {
-                "$oid": "6207eefeecd82c932ee7ecc4"
-            }
+            ObjectId("62031ec2da87ce7850b4bd46"),
+            ObjectId("6207eefeecd82c932ee7ecc4")
         ],
         "BOM": [
             {
                 "isOptional": false,
                 "quantity": 2,
-                "deviceId": {
-                    "$oid": "61f58566938920434df9044a"
-                }
+                "deviceId": ObjectId("61f58566938920434df9044a")
             }
         ]
     }
