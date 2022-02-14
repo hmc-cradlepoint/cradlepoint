@@ -1,0 +1,18 @@
+[
+    {
+        "code":1,
+        "userType":"admin"
+    },
+    {
+        "code":2,
+        "userType":"POC Engineer"
+    },
+    {
+        "code":3,
+        "userType":"SE"
+    },
+    {
+        "code":4,
+        "userType":"Customer"
+    }
+]
