@@ -8,7 +8,7 @@
         },
         "resultStatus": "Pass",
         "testId": {
-            "$oid": ""
+            "$oid": "62030ca5399a9fbc6eb3250f"
         },
         "evidence": "236 seconds (String or File)",
         "description": "BGP Default Route Convergence Time"
@@ -22,7 +22,7 @@
         },
         "resultStatus": "Pass",
         "testId": {
-            "$oid": ""
+            "$oid": "62030d5dda979d0a8723fe40"
         },
         "evidence": "12 seconds (String or File)",
         "description": "LTE Failover Time"
@@ -36,7 +36,7 @@
         },
         "resultStatus": "Fail",
         "testId": {
-            "$oid": ""
+            "$oid": "6203133122465bec90d059b5"
         },
         "evidence": "(String or File)",
         "description": "VRRP Slave becomes Master"
@@ -50,7 +50,7 @@
         },
         "resultStatus": "Unknown",
         "testId": {
-            "$oid": ""
+            "$oid": "62031ec2da87ce7850b4bd46"
         },
         "evidence": "783.23Mb/s  (String or File)",
         "description": "TCP Throughput"

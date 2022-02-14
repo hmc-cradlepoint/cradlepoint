@@ -1,24 +1,78 @@
 [
     {
         "_id": {
-            "$oid": "6192e7c0b769d28dff5942ca"
+            "$oid": "62030ca5399a9fbc6eb3250f"
         },
+        "name": "BGP Failure",
+        "description": "Disable BGP Peer",
         "testCaseId": {
-            "$oid": "61900413c01efe48e4b3fe0e"
+            "$oid": ""
         },
-        "results": [],
-        "name": "test name",
-        "description": "test post details"
+        "results": [
+            {
+                "$oid": "61f88ad332ebbaba0d9d8efd"
+            }
+        ],
+        "resultStatus": "Unknown"
     },
     {
         "_id": {
-            "$oid": "6192e7e7b769d28dff5942cb"
+            "$oid": "62030d5dda979d0a8723fe40"
         },
+        "name": "Upstream failure",
+        "description": "Block traffic from an upstream hop. Router interface remains up.",
         "testCaseId": {
-            "$oid": "61900413c01efe48e4b3fe0e"
+            "$oid": ""
+        },
+        "results": [
+            {
+                "$oid": "61f88af932ebbaba0d9d9005"
+            }
+        ],
+        "resultStatus": "pass"
+    },
+    {
+        "_id": {
+            "$oid": "6203133122465bec90d059b5"
+        },
+        "name": "VRRP Failure",
+        "description": "Block VRRP keepalives",
+        "testCaseId": {
+            "$oid": ""
+        },
+        "results": [
+            {
+                "$oid": "61f89b9ae53281ef3ad88612"
+            }
+        ],
+        "resultStatus": "Unknown"
+    },
+    {
+        "_id": {
+            "$oid": "62031ec2da87ce7850b4bd46"
+        },
+        "name": "Throughput Client",
+        "description": "Test TCP throughput to throughput server",
+        "testCaseId": {
+            "$oid": ""
+        },
+        "results": [
+            {
+                "oid": "61f89c4e1684f52f11f4a8f8"
+            }
+        ],
+        "resultStatus": "unknown"
+    },
+    {
+        "_id": {
+            "$oid": "6207eefeecd82c932ee7ecc4"
+        },
+        "name": "Throughput Server",
+        "description": "Listen for throughput clients to test",
+        "testCaseId": {
+            "$oid": ""
         },
         "results": [],
-        "name": "test name",
-        "description": "test post details"
+        "resultStatus": "unknown"
     }
 ]
