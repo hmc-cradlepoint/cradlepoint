@@ -1,10 +1,58 @@
 [
     {
-        "code":1,
-        "userType":"admin"
+        "_id": {
+            "$oid": "61f88ad332ebbaba0d9d8efd"
+        },
+        "createdOn": {
+            "$date": "2022-02-01T01:20:59.112Z"
+        },
+        "resultStatus": "Pass",
+        "testId": {
+            "$oid": ""
+        },
+        "evidence": "236 seconds (String or File)",
+        "description": "BGP Default Route Convergence Time"
     },
     {
-        "code":2,
-        "userType":"POC Engineer"
+        "_id": {
+            "$oid": "61f88af932ebbaba0d9d9005"
+        },
+        "createdOn": {
+            "$date": "2022-02-01T01:21:53.252Z"
+        },
+        "resultStatus": "Pass",
+        "testId": {
+            "$oid": ""
+        },
+        "evidence": "12 seconds (String or File)",
+        "description": "LTE Failover Time"
+    },
+    {
+        "_id": {
+            "$oid": "61f89b9ae53281ef3ad88612"
+        },
+        "createdOn": {
+            "$date": "2022-02-01T02:32:19.187Z"
+        },
+        "resultStatus": "Fail",
+        "testId": {
+            "$oid": ""
+        },
+        "evidence": "(String or File)",
+        "description": "VRRP Slave becomes Master"
+    },
+    {
+        "_id": {
+            "$oid": "61f89c4e1684f52f11f4a8f8"
+        },
+        "createdOn": {
+            "$date": "2022-02-01T02:35:05.507Z"
+        },
+        "resultStatus": "Unknown",
+        "testId": {
+            "$oid": ""
+        },
+        "evidence": "783.23Mb/s  (String or File)",
+        "description": "TCP Throughput"
     }
 ]

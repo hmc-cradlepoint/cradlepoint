@@ -1,10 +1,29 @@
 [
     {
-        "code":1,
-        "userType":"admin"
+        "_id": {
+            "$oid": "617251a399915be1b771acb6"
+        },
+        "deviceName": "5-yr NetCloud Branch Essentials Plan, Advanced Plan, and AER2200 router with WiFi (1200Mbps modem), North America",
+        "codeVersion": "7.21.90",
+        "SKU": "BAA5-2200120B-NN",
+        "deviceType": "Software"
     },
     {
-        "code":2,
-        "userType":"POC Engineer"
+        "_id": {
+            "$oid": "61ac5bb5d32cd5c89f9014c7"
+        },
+        "deviceName": "Second Device",
+        "codeVersion": "7.21.10",
+        "SKU": "BAA5-2200130B-NN",
+        "deviceType": "Physical"
+    },
+    {
+        "_id": {
+            "$oid": "61f86a3b9602a56382ad3b47"
+        },
+        "deviceName": "Third Device",
+        "codeVersion": "1234",
+        "SKU": "testSKU",
+        "deviceType": "software"
     }
 ]

@@ -1,10 +1,24 @@
 [
     {
-        "code":1,
-        "userType":"admin"
+        "_id": {
+            "$oid": "6192e7c0b769d28dff5942ca"
+        },
+        "testCaseId": {
+            "$oid": "61900413c01efe48e4b3fe0e"
+        },
+        "results": [],
+        "name": "test name",
+        "description": "test post details"
     },
     {
-        "code":2,
-        "userType":"POC Engineer"
+        "_id": {
+            "$oid": "6192e7e7b769d28dff5942cb"
+        },
+        "testCaseId": {
+            "$oid": "61900413c01efe48e4b3fe0e"
+        },
+        "results": [],
+        "name": "test name",
+        "description": "test post details"
     }
 ]
