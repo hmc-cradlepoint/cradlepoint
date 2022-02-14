@@ -45,8 +45,10 @@ export default function TestCaseModalForm(props) {
     if (props.modalFormType===modalFormType.NEW){
       endPoint = '/api/addNewTestCase';
       method = 'POST';
+      newData["BOM"] = [];
+      newData["tests"] = [];
     } 
-
+    
     try{
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
