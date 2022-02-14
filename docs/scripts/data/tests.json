@@ -7,7 +7,7 @@
         "description": "Disable BGP Peer",
         "resultStatus": "Unknown",
         "testCaseId": {
-            "$oid": ""
+            "$oid": "619003fec01efe48e4b3fe0d"
         },
         "results": [
             {
@@ -23,7 +23,7 @@
         "description": "Block traffic from an upstream hop. Router interface remains up.",
         "resultStatus": "pass",
         "testCaseId": {
-            "$oid": ""
+            "$oid": "61b6f8dc8e4c9b518de0080b"
         },
         "results": [
             {
@@ -39,7 +39,7 @@
         "description": "Block VRRP keepalives",
         "resultStatus": "Unknown",
         "testCaseId": {
-            "$oid": ""
+            "$oid": "61b6f93e8e4c9b518de0080c"
         },
         "results": [
             {
@@ -55,7 +55,7 @@
         "description": "Test TCP throughput to throughput server",
         "resultStatus": "unknown",
         "testCaseId": {
-            "$oid": ""
+            "$oid": "61b805bee52286d566d94a7d"
         },
         "results": [
             {
@@ -71,7 +71,7 @@
         "description": "Listen for throughput clients to test",
         "resultStatus": "unknown",
         "testCaseId": {
-            "$oid": ""
+            "$oid": "61b805bee52286d566d94a7d"
         },
         "results": []
     }
