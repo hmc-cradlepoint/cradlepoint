@@ -20,9 +20,7 @@
         ]
     },
     {
-        "_id": {
-            "$oid": ObjectId("6203133122465bec90d059b5")
-        },
+        "_id": ObjectId("6203133122465bec90d059b5"),
         "name": "VRRP Failure",
         "description": "Block VRRP keepalives",
         "resultStatus": "Unknown",

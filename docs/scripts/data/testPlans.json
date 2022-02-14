@@ -22,9 +22,7 @@
                 "deviceId": ObjectId("617251a399915be1b771acb6")
             }
         ],
-        "createdOn": {
-            "$date": "2021-10-21T07:00:00.000Z"
-        }
+        "createdOn": Date("2021-10-21T07:00:00.000Z")
     },
     {
         "_id": ObjectId("6172500699915be1b771acb3"),
@@ -54,8 +52,6 @@
                 "deviceId": ObjectId("61f86a3b9602a56382ad3b47")
             }
         ],
-        "createdOn": {
-            "$date": "2021-10-21T07:00:00.000Z"
-        }
+        "createdOn": Date("2021-10-21T07:00:00.000Z")
     }
 ]

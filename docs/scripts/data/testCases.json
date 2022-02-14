@@ -19,9 +19,7 @@
         ]
     },
     {
-        "_id": {
-            "$oid": ObjectId("61b6f8dc8e4c9b518de0080b")
-        },
+        "_id": ObjectId("61b6f8dc8e4c9b518de0080b"),
         "name": "LTE Failover",
         "description": "Test failover to LTE during upstream failure",
         "config": "[{'system': {'system_id': 'LTE Router'}}, []]",
