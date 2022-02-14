@@ -25,17 +25,10 @@
         ],
         "summaryBOM": [
             {
-                "isOptional": true,
-                "quantity": 12,
+                "isOptional": false,
+                "quantity": 1,
                 "deviceId": {
                     "$oid": "617251a399915be1b771acb6"
-                }
-            },
-            {
-                "isOptional": false,
-                "quantity": 3,
-                "deviceId": {
-                    "$oid": "61ac5bb5d32cd5c89f9014c7"
                 }
             }
         ],
@@ -69,15 +62,15 @@
         ],
         "summaryBOM": [
             {
-                "isOptional": true,
-                "quantity": 2,
+                "isOptional": false,
+                "quantity": 1,
                 "deviceId": {
                     "$oid": "61ac5bb5d32cd5c89f9014c7"
                 }
             },
             {
-                "isOptional": false,
-                "quantity": 3,
+                "isOptional": true,
+                "quantity": 1,
                 "deviceId": {
                     "$oid": "61f86a3b9602a56382ad3b47"
                 }

@@ -16,7 +16,15 @@
                 "$oid": "62030ca5399a9fbc6eb3250f"
             }
         ],
-        "BOM": []
+        "BOM": [
+            {
+                "isOptional": false,
+                "quantity": 4,
+                "deviceId": {
+                    "$oid": "61f5859d938920434df9044b"
+                }
+            }
+        ]
     },
     {
         "_id": {
@@ -37,10 +45,10 @@
         ],
         "BOM": [
             {
-                "isOptional": true,
-                "quantity": 12,
+                "isOptional": false,
+                "quantity": 4,
                 "deviceId": {
-                    "$oid": "617251a399915be1b771acb6"
+                    "$oid": "61f58566938920434df9044a"
                 }
             }
         ]
@@ -64,10 +72,10 @@
         ],
         "BOM": [
             {
-                "isOptional": true,
-                "quantity": 12,
+                "isOptional": false,
+                "quantity": 1,
                 "deviceId": {
-                    "$oid": "617251a399915be1b771acb6"
+                    "$oid": "61f5859d938920434df9044b"
                 }
             }
         ]
@@ -94,9 +102,11 @@
         ],
         "BOM": [
             {
-                "isOptional": true,
-                "quantity": 12,
-                "deviceId": "617251a399915be1b771acb6"
+                "isOptional": false,
+                "quantity": 2,
+                "deviceId": {
+                    "$oid": "61f58566938920434df9044a"
+                }
             }
         ]
     }
