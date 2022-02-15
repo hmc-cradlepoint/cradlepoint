@@ -99,7 +99,7 @@ export default function CreateNewModalFlow(props) {
     return (
         <Modal className={styles.Modal} isOpen={props.modalOpen && modal === modalType.START}>
           <h2>Create New {props.type}</h2>
-          <CPButton text='From scratch' className="ModalButton" onClick={() => setModalType(modalType.SCRATCH)}/>
+          <CPButton text='From scratch' className="ModalButton" onClick={() => {setModalType(modalType.SCRATCH); setScratchIsOpen(true);}}/>
           <CPButton text={'From exisiting ' + props.type + ' (Clone)'} onClick={()=>setModalType(modalType.CLONE)}/>
           <CPButton text='Cancel' onClick={props.onClose}/>
         </Modal>
@@ -120,7 +120,8 @@ export default function CreateNewModalFlow(props) {
                                   modalFormType={modalFormType.NEW} 
                                   isOpen={scratchIsOpen} 
                                   onBack={() => setModalType(modalType.START)}
-                                  onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}}/>
+                                  onClose={()=> {setScratchIsOpen(false); 
+                                                setModalType(modalType.START); props.onClose();}}/>
       case flowType.TEST_CASE:
         return <TestCaseModalForm testPlanId={props.modalData.testPlanData._id} 
                                   modalFormType={modalFormType.NEW} 

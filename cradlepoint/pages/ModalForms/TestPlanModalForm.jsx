@@ -52,7 +52,7 @@ export default function TestPlanModalForm(props) {
       newData["summaryBOM"] = [];
       newData["testCases"] = [];
     } 
-    console.log("newData ", newData)
+
     try{
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
@@ -71,9 +71,9 @@ export default function TestPlanModalForm(props) {
     if (props.modalFormType==modalFormType.NEW){
       setData(initialData);
     }
-
   }
 
+  // for the dropdown of isActive
   const options = [true, false];
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>

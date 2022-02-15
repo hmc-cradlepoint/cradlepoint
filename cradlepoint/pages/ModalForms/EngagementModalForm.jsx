@@ -7,6 +7,7 @@ import { borderLeft } from "@mui/system";
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
+import { modalFormType } from '../../util/modalUtils';
 
 export default function EngagementModalForm(props) {
   const router = useRouter();
@@ -16,6 +17,9 @@ export default function EngagementModalForm(props) {
     customer: props.data?.customer??"",
     SFDC: props.data?.SFDC??"",
     description: props.data?.description??"",
+    statusCode: props.data?.statusCode??1,
+    SE: props.data?.SE??"",
+    POC_Engineer: props.data?.POC_Engineer??""
   }
   
   const [data, setData] = useState(initialData)
@@ -29,23 +33,46 @@ export default function EngagementModalForm(props) {
   }
 
   async function handleSubmitData() {
-    let newData = {...props.data, "_id":data._id, "name":data.name, "customer":data.customer, "SFDC":data.SFDC, "description":data.description}
-    delete newData.POC_Eningeer_details;
-    delete newData.SEDetails;
+    console.log(props.modalFormType)
+    let newData = {
+      ...props.data, 
+      "_id":data._id.toString(), 
+      "name":data.name, 
+      "customer":data.customer, 
+      "SFDC":data.SFDC, 
+      "description":data.description,
+      "statusCode": data.statusCode,
+      "SE": data.SE,
+      "POC_Engineer": data.POC_Engineer}
+
+   
+    const endPoint = '/api/editEngagement';
+    const method = 'PUT';
+    
+    if (props.modalFormType===modalFormType.NEW){
+      endPoint = '/api/addNewEngagement';
+      method = 'POST';
+    } 
+
+    console.log(newData)
     try{
-      const res = await fetch('/api/editEngagement', {
-        method: 'PUT',
+      const d = JSON.stringify(newData);
+      const res = await fetch(endPoint, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(d)
         },
-        body: JSON.stringify(newData),
+        body: d
       })
       console.log("RES:", res)
     } catch (err){
-      
       console.log("Error:",err)
     }
-    props.onBack()
+    props.onClose();
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
   }
 
   return (
@@ -53,10 +80,12 @@ export default function EngagementModalForm(props) {
         <h2>Fill in Engagement Info</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display: 'flex', flexDirection: 'column'}}>
-          <SmallTextInput label="Engagement Name:" name='name' value={data.name} onChange={handleChange}/>
-          <SmallTextInput label='Customer' name='customer' value={data.customer} onChange={handleChange}/>
-          <SmallTextInput label="SFDC:" name='SFDC' value={data.SFDC} onChange={handleChange}/>
-          <BigTextInput label="Engagement Description:" name='description' value={data.description} onChange={handleChange}/>
+          <SmallTextInput label="Name: " name='name' value={data.name} onChange={handleChange}/>
+          <SmallTextInput label='Customer: ' name='customer' value={data.customer} onChange={handleChange}/>
+          <SmallTextInput label="SE: " name='SE' value={data.SE} onChange={handleChange}/>
+          <SmallTextInput label='POC Eng: ' name='POC_Engineer' value={data.POC_Engineer} onChange={handleChange}/>
+          <SmallTextInput label="SFDC: " name='SFDC' value={data.SFDC} onChange={handleChange}/>
+          <BigTextInput label="Description: " name='description' value={data.description} onChange={handleChange}/>
         </div>
 
         </div>

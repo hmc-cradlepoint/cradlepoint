@@ -164,9 +164,10 @@ export async function addEngagement(data) {
     try {
         const client = await connectToDb();
         const valid = await engagementSchema.isValid(data);
-        if (valid && ObjectId.isValid(data.testPlanId)){
+        if (valid){
             const engagement = engagementSchema.cast(data);
-            const result = await client.collection('engagements').insertOne(engagement);
+            const id = ObjectId(data._id);
+            const result = await client.collection('engagements').insertOne({...engagement, _id:id});
             return result;
         }
         else {
