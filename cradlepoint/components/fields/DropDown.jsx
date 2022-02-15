@@ -19,7 +19,7 @@ export default function DropDown(props) {
             <Field as="select" name={props.fieldName} value={props.value} 
             onChange={handleChange}>
               {props.options.map((o) => {
-                return <option value={o}>{o}</option>
+                return <option value={o}>{o.toString()}</option>
               })}
             </Field>
             </label>
