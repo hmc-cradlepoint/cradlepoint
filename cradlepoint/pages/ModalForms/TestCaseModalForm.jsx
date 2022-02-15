@@ -7,7 +7,6 @@ import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
 import {modalFormType} from '../../util/modalUtils';
-import { arrayOf, objectOf } from "prop-types";
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();

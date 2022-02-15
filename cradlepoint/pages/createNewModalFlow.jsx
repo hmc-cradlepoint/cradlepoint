@@ -111,17 +111,23 @@ export default function CreateNewModalFlow(props) {
   function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return <EngagementModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)} />
+        return <EngagementModalForm modalFormType={modalFormType.NEW} 
+                                    isOpen={scratchIsOpen} 
+                                    onBack={() => setModalType(modalType.START)} 
+                                    onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}}/>
       case flowType.TEST_PLAN:
-        return <TestPlanModalForm modalFormType={modalFormType.NEW} isOpen={true} onBack={() => setModalType(modalType.START)}/>
+        return <TestPlanModalForm engagementId={props.modalData.engagement._id}
+                                  modalFormType={modalFormType.NEW} 
+                                  isOpen={scratchIsOpen} 
+                                  onBack={() => setModalType(modalType.START)}
+                                  onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}}/>
       case flowType.TEST_CASE:
-        return <TestCaseModalForm 
-                              testPlanId={props.modalData.testPlanData._id} 
-                              modalFormType={modalFormType.NEW} 
-                              isOpen={scratchIsOpen} 
-                              onBack={() => setModalType(modalType.START)}
-                              onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}} 
-                             />
+        return <TestCaseModalForm testPlanId={props.modalData.testPlanData._id} 
+                                  modalFormType={modalFormType.NEW} 
+                                  isOpen={scratchIsOpen} 
+                                  onBack={() => setModalType(modalType.START)}
+                                  onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}} 
+                                  />
       case flowType.TEST:
         return <TestModalForm testCaseId={props.modalData.testCase._id} 
                               modalFormType={modalFormType.NEW} 

@@ -11,9 +11,18 @@ export default function EditModalFlow(props) {
   function getModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
-        return <EngagementModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose}/>
+        return <EngagementModalForm modalFormType={modalFormType.EDIT} 
+                                    data={props.data} 
+                                    isOpen={props.modalOpen} 
+                                    onBack={props.onClose}
+                                    onClose={props.onClose}/>
       case flowType.TEST_PLAN:
-        return <TestPlanModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose}/>
+        return <TestPlanModalForm modalFormType={modalFormType.EDIT} 
+                                  data={props.data} 
+                                  engagementId={props.data.engagementId}
+                                  isOpen={props.modalOpen} 
+                                  onBack={props.onClose}
+                                  onClose={props.onClose}/>
       case flowType.TEST_CASE:
         return <TestCaseModalForm modalFormType={modalFormType.EDIT} 
                                   data={props.data} 
@@ -31,7 +40,10 @@ export default function EditModalFlow(props) {
                               onBack={props.onClose} 
                               onClose={props.onClose}/>
       case flowType.RESULT:
-        return <ResultModalForm modalFormType={modalFormType.EDIT} data={props.data} isOpen={props.modalOpen} onBack={props.onClose} />
+        return <ResultModalForm modalFormType={modalFormType.EDIT} 
+                                data={props.data} 
+                                isOpen={props.modalOpen} 
+                                onBack={props.onClose} />
       }
   }
     return (

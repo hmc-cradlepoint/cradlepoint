@@ -131,18 +131,24 @@ export async function addTestPlan(data) {
         const valid = await testPlanSchema.isValid(data);
         if (valid && ObjectId.isValid(data.engagementId)){
             const testPlan = testPlanSchema.cast(data);
-            for (const i in testPlan.summaryBOM) {
-                if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
+            const id = ObjectId(data._id);
+            const engagementId = ObjectId(data.engagementId);
+            // for (const i in testPlan.summaryBOM) {
+            //     if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
                     
-                    throw new Error('Invalid Device Id')
-                }
-            }
-            const SummaryBOM = testPlan.summaryBOM.map(device => {
-                return {...device, deviceId: ObjectId(device.deviceId)};
-            }); 
+            //         throw new Error('Invalid Device Id')
+            //     }
+            // }
+            // const SummaryBOM = testPlan.summaryBOM.map(device => {
+            //     return {...device, deviceId: ObjectId(device.deviceId)};
+            // }); 
 
-            const result = await client.collection('testPlan').insertOne({...testPlan, SummaryBOM});
-            return result;
+            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
+            const engagementResult = await client.collection('engagements').updateOne(
+                { "_id": engagementId }, // query matching , refId should be "ObjectId" type
+                { $set: { testPlanId: result.insertedId}} // arr will be array of objects
+                );
+            return engagementResult;
         }
         else {
             throw new Error('input nor in right format')

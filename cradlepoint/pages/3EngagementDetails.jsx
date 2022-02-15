@@ -105,7 +105,7 @@ export default function EngagementDetails(props) {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                <PlainTable rows={props.activeTestPlan[0].summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
+                {/* <PlainTable rows={props.activeTestPlan[0].summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/> */}
             </div>
         )
     }
@@ -135,7 +135,7 @@ export default function EngagementDetails(props) {
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-        <CreateNewModalFlow modalData={props.allTestPlans} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
