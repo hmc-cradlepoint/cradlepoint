@@ -139,7 +139,7 @@ export default function TestPlanDetails(props) {
             </div>
         )
     }
-    console.log(createNewFlow);
+
     return (
         <>
         <SelectDeviceModal
@@ -189,7 +189,9 @@ export async function getServerSideProps(context) {
     */
     const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query._id);
     const testPlanData = await res.json().then((data) => data[0]);
-
+    if (!('_id' in testPlanData.summaryBOM[0])){
+        testPlanData.summaryBOM = [];
+    }
     /* 
        Gets Data for Test Cases Table
        TODO: Error Check await call
@@ -213,7 +215,10 @@ export async function getServerSideProps(context) {
 
     const allTestCases = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases`)).json();
     const allDevices = await (await fetch(`${process.env.HOST}/api/getAllDevices`)).json();
-
+    // TODO: this is a "sketchy" quickfix to situation where testPlan summary BOM has no device
+    // the getTestPlan query will return BOM as BOM: [{}]
+    // this line replaces it to BOM: []
+ 
     return {
       props: {
           testPlanData, 

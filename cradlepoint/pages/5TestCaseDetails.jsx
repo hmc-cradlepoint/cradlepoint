@@ -190,9 +190,9 @@ export async function getServerSideProps(context) {
         if (testCase.len == 0) {
             return { notFound: true }
         }
-        // TODO: this is a "sketchy" quickfix to situation where testCase BOM has not device
+        // TODO: this is a "sketchy" quickfix to situation where testCase BOM has no device
         // the getTestCase query will return BOM as BOM: [{}]
-        // this like replaces it to BOM: []
+        // this line replaces it to BOM: []
         if (!('_id' in testCase[0].BOM[0])){
             testCase[0].BOM = [];
         }
