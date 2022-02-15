@@ -92,10 +92,10 @@ export default function EngagementDetails(props) {
                     <CPButton text="Add New" onClick={() => setCreateNewFlow(true)}/>
                 </div>
                 <h3>Active test plan: </h3>
-                <PlainTable rows={props.activeTestPlan ? props.activeTestPlan : ""} columns={activeTestPlanCol} className={classes.root} height={175}/>
+                <PlainTable rows={props.activeTestPlan ?? []} columns={activeTestPlanCol} className={classes.root} height={175}/>
                 <br />
                 <h3>Archived test plans: </h3>
-                <PlainTable rows={props.archivedTestPlans} columns={testPlanColWithButton} className={classes.root}/>
+                <PlainTable rows={props.archivedTestPlans ?? []} columns={testPlanColWithButton} className={classes.root}/>
             </div>
         )
     }
@@ -105,7 +105,7 @@ export default function EngagementDetails(props) {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                {/* <PlainTable rows={props.activeTestPlan[0].summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/> */}
+                <PlainTable rows={props.activeTestPlan?.summaryBOM ??[]} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -167,9 +167,7 @@ export async function getServerSideProps(context) {
             return { notFound: true }
         }
         const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query._id}`)).json();
-        const activeTestPlan = engagement[0]
-        ? await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json()
-        : null
+        const activeTestPlan = (engagement[0] && engagement[0].testPlanId)? await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json(): null
         const allTestPlans = await (await fetch(`${process.env.HOST}/api/getLibraryTestPlans`)).json();
     
         return {
