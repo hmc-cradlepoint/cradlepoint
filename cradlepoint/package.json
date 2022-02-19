@@ -16,6 +16,8 @@
     "@mui/material": "^5.0.0",
     "@mui/styles": "^5.0.1",
     "@mui/x-data-grid": "^4.0.0",
+    "aws": "^0.0.3-2",
+    "aws-sdk": "^2.1073.0",
     "bson": "^4.6.0",
     "formik": "^2.2.9",
     "mongodb": "^4.1.3",
