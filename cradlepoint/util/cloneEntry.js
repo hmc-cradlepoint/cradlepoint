@@ -47,20 +47,18 @@ export async function cloneTestCase(data) {
                 var test;
                 try {
                     test = await (await fetch(`${process.env.HOST}/api/getLibraryTests?_id=${testId}`)).json()
+                    test = test[0];
                 } catch {
                     throw new Error("cannot get test corresponding to id")
                 }
-
+             
                 test._id = newTestId.toString();
                 test.testCaseId = data._id;
-                console.log("HI");
-                throw new Error("updated test id and test case id " + JSON.stringify(test));
-
-                // console.log("test ", test);
-                // addTest(test);
-                // newTests.push(newTestId);
+                test.results = [];
+                
+                addTest(test);
             }
-
+            console.log(newTests)
             // for (const i in testCase.BOM) {
             //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
             //         throw new Error('Invalid Device Id')
@@ -72,7 +70,7 @@ export async function cloneTestCase(data) {
             
             // TODO: should replace result with the following line once cloneTest is done
             // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, tests: newTests, BOM: BOM});
-            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId});
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests: newTests});
             // Push the test plan into the test case array as well
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
