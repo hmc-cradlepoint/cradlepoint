@@ -20,11 +20,31 @@ export default function TestCaseDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+    console.log("here", props.testCase._id);
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
+
+    async function deleteTest(resId, parentTestCaseId) {
+        let data = {
+            "_id": resId,
+            "parentTestCaseId": parentTestCaseId,
+        }
+        try {
+            const res = await fetch('/api/deleteTest', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            console.log("RES:", res)
+        } catch (err) {
+            console.log("Error:",err)
+        }
+    }
 
     function handleNavigation(id) {
         const nextPage = "/6TestDetails?_id="+id;
@@ -45,7 +65,7 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete"/>
+            <CPButton text="Delete" onClick={() => {deleteTest(params.id, props.testCase._id); refreshData()}}/>
         </div>
         ),
         flex: 2

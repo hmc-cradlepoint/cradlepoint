@@ -6,7 +6,6 @@ import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
 
 export async function deleteResult(data) {
-    // TODO: 1. update state on delete force reload
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
@@ -26,31 +25,17 @@ export async function deleteResult(data) {
 export async function deleteTest(data) {
     try {
         const client = await connectToDb();
-        const valid = await testSchema.isValid(data)
-        if (valid && ObjectId.isValid(data.testCaseId) ) {
-            const id = ObjectId(data._id);
-            const test = testSchema.cast(data);
-            // TODO: if we clone to make new test, we don't really need to copy the tests over?
-            // for (const result in test.results) {
-            //     if (!ObjectId.isValid(result)) {
-            //         throw new Error('Invalid Result Id')
-            //     }
-            // }
-            const testCaseId = ObjectId(data.testCaseId);
-            const result = await client.collection('tests').insertOne({...test, _id: id, testCaseId: testCaseId});
-            // Push the test plan into the test case array as well
-            await client.collection('testCases').updateOne(
-                { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
-                { $push: { tests: ObjectId(result.insertedId)}} // arr will be array of objects
-            );
-            return result
-        }
-        else {
-            throw new Error('Data is not in right format')
-        }
-        
+        const id = ObjectId(data._id);
+        const parentId = ObjectId(data.parentTestCaseId);
+        const result = await client.collection('tests').deleteOne({"_id": id});
+        // Delete result id from parent 'testCases' field
+        await client.collection('testCases').updateOne(
+            { "_id": parentId },
+            { $pull: {tests: id} }
+        );
+        return result;
     } catch (err) {
-        throw err
+        throw err;
     }
 }
 
