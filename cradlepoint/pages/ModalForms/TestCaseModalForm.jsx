@@ -6,17 +6,31 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
-import {modalFormType} from '../../util/modalUtils';
+import {modalType, modalFormType} from '../../util/modalUtils';
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();
-  const initialData = {
-    _id: props.data?._id??new ObjectID(),
-    name: props.data?.name??"",
-    description: props.data?.description??"",
-    config: props.data?.config??"",
-    topology: props.data?.topology??"",
-  }
+  console.log(props.cloneData);
+  const initialData = (props.isClone)? 
+    {
+      _id: new ObjectID(),
+      name: (props.cloneData?.name??"") + " (copy)",
+      description: props.cloneData?.description??"",
+      config: props.cloneData?.config??"",
+      topology: props.cloneData?.topology??"",
+      BOM: props.cloneData?.BOM??[],
+      tests: props.cloneData?.tests??[]
+    }:{
+      _id: new ObjectID(),
+      name: "",
+      description: "",
+      config: "",
+      topology: "",
+      BOM: [],
+      tests: []
+    }
+  
+  
   const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
@@ -35,19 +49,23 @@ export default function TestCaseModalForm(props) {
       "description":data.description,
       "testPlanId": props.testPlanId,
       "topology": data.topology,
-      "config": data.config
+      "config": data.config,
+      "BOM": data.BOM,
+      "tests": data.tests,
     }
     
     const endPoint = '/api/editTestCase';
     const method = 'PUT';
    
     if (props.modalFormType===modalFormType.NEW){
-      endPoint = '/api/addNewTestCase';
       method = 'POST';
-      newData["BOM"] = [];
-      newData["tests"] = [];
+      endPoint = props.isClone?'/api/cloneTestCase':'/api/addNewTestCase';
     } 
-    
+
+    console.log(newData);
+    const d = JSON.stringify(newData);
+    console.log("d ", d);
+
     try{
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
@@ -62,10 +80,10 @@ export default function TestCaseModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    props.onClose();
-    if (props.modalFormType==modalFormType.NEW){
-      setData(initialData);
-    }
+    // props.onClose();
+    // if (props.modalFormType==modalFormType.NEW){
+    //   setData(initialData);
+    // }
   }
 
   return (

@@ -12,6 +12,7 @@ export default function MenuBar() {
         <LinkedButton href="/2home" name="Home" onClick={() => dispatch("HOME")}/>
         <LinkedButton href="/TestPlanLibrary" name="Test Plan Library"/>
         <LinkedButton href="/TestCaseLibrary" name="Test Case Library"/>
+        <LinkedButton href="/TestLibrary" name="Test Library"/>
         <LinkedButton href="/DeviceLibrary" name="Device Library"/>
         <Button>Notification</Button>
         <Button>Logout</Button>

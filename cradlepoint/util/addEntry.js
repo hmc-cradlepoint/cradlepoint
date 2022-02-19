@@ -43,12 +43,6 @@ export async function addTest(data) {
         if (valid && ObjectId.isValid(data.testCaseId) ) {
             const id = ObjectId(data._id);
             const test = testSchema.cast(data);
-            // TODO: if we clone to make new test, we don't really need to copy the tests over?
-            // for (const result in test.results) {
-            //     if (!ObjectId.isValid(result)) {
-            //         throw new Error('Invalid Result Id')
-            //     }
-            // }
             const testCaseId = ObjectId(data.testCaseId);
             const result = await client.collection('tests').insertOne({...test, _id: id, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
@@ -67,18 +61,6 @@ export async function addTest(data) {
     }
 }
 
-/**Clone function
- * test plan
- * 
- * create new test plan (but with empty test case array)
- * get test case from original test plan
- * add new test case to the new test plan with the info of original test case (duplicate)
- *  - create new test case 
- *  - add new test case to the test plan id array
- * get test from original test case
- * add new test to the new test case
- * 
- */
 
 export async function addTestCase(data) {
     try {
@@ -144,9 +126,20 @@ export async function addTestPlan(data) {
             // }); 
 
             const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
+            
+            // // get old active test plan id and set its isActive field to false
+            // // if (data.isActive){
+            //     const oldTestPlanId = await client.collection('engagments').findOne({ "_id": engagementId }, {testPlanId:1});
+            //     console.log(oldTestPlanId)
+            //     const updateOldResult = await client.collection('testPlan').updateOne(
+            //     { "_id": oldTestPlanId }, 
+            //     { $set: { isActive: false}} 
+            //     );
+            // // }
+            
             const engagementResult = await client.collection('engagements').updateOne(
-                { "_id": engagementId }, // query matching , refId should be "ObjectId" type
-                { $set: { testPlanId: result.insertedId}} // arr will be array of objects
+                { "_id": engagementId }, 
+                { $set: { testPlanId: result.insertedId}} // update the active test plan id in engagement
                 );
             return engagementResult;
         }

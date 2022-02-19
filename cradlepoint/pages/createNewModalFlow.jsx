@@ -15,6 +15,7 @@ import styling from '../styles/tableStyling';
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
+  const [cloneData, setCloneData] = useState({});
 
   function CloneModal() {
     const useStyles = makeStyles(styling);
@@ -43,7 +44,6 @@ export default function CreateNewModalFlow(props) {
             headerName: 'Actions',
             headerClassName: 'header',
             align: 'center',
-            // TODO: figure out how to get row ID from render cell function
             renderCell: () => (
               <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
             )
@@ -59,9 +59,11 @@ export default function CreateNewModalFlow(props) {
               headerName: 'Actions',
               headerClassName: 'header',
               align: 'center',
-              // TODO: figure out how to get row ID from render cell function
-              renderCell: () => (
-                <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
+              renderCell: (data) => (
+                <CPButton text="clone" onClick={() => {setCloneData(data.row);
+                                                        setModalType(modalType.SCRATCH);
+                                                        console.log(data)
+                                                        }}/>
               )
             }
             ]);
@@ -74,7 +76,6 @@ export default function CreateNewModalFlow(props) {
               headerName: 'Actions',
               headerClassName: 'header',
               align: 'center',
-              // TODO: figure out how to get row ID from render cell function
               renderCell: () => (
                 <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
               )
@@ -83,11 +84,25 @@ export default function CreateNewModalFlow(props) {
       }
     }
 
+    function renderRows(type){
+      switch (type){
+        case "Engagement":
+          return props.modalData.allEngagements;
+        case "Test Plan":
+          return props.modalData.allTestPlans;
+        case "Test Case":
+          return props.modalData.allTestCases;
+        case "Test":
+          return props.modalData.allTests;
+      }
+    }
+    console.log(props.modalData)
     return (
       <Modal className={styles.Modal} isOpen={true}>
           <h2>Choose an Existing {props.type} to Clone</h2>
           <PlainTable 
-              rows={props.modalData}
+              // rows={props.modalData}
+              rows={renderRows(props.type)}
               columns={renderColumns(props.type)}
               className={classes.root}/> 
           <CPButton text='Back' onClick={() => setModalType(modalType.START)}/>
@@ -108,7 +123,7 @@ export default function CreateNewModalFlow(props) {
 
   const [scratchIsOpen, setScratchIsOpen] = useState(true);
 
-  function ScratchModal() {
+  function ScratchModal(isClone) {
     switch (props.type) {
       case flowType.ENGAGEMENT:
         return <EngagementModalForm modalFormType={modalFormType.NEW} 
@@ -125,6 +140,8 @@ export default function CreateNewModalFlow(props) {
       case flowType.TEST_CASE:
         return <TestCaseModalForm testPlanId={props.modalData.testPlanData._id} 
                                   modalFormType={modalFormType.NEW} 
+                                  cloneData={cloneData}
+                                  isClone={isClone}
                                   isOpen={scratchIsOpen} 
                                   onBack={() => setModalType(modalType.START)}
                                   onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}} 
@@ -143,8 +160,8 @@ export default function CreateNewModalFlow(props) {
     case modalType.START:
       return <StartModal />;
     case modalType.SCRATCH:
-      return <ScratchModal />;
+      return <ScratchModal isClone={false} />;
     case modalType.CLONE:
-      return <CloneModal />;
+      return <CloneModal  isClone={true} />;
   }
 }
