@@ -34,6 +34,25 @@ export default function TestDetails(props) {
         dispatch({type: "ADD_PAGE", payload: payload});
     }
 
+    async function deleteResult(resId, parentTestId) {
+        let data = {
+            "_id": resId,
+            "parentTestId": parentTestId,
+        }
+        try {
+            const res = await fetch('/api/deleteResult', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            console.log("RES:", res)
+        } catch (err) {
+            console.log("Error:",err)
+        }
+    }
+
     const resultWithActions = resultColumns.concat([
     { 
         field: 'button', 
@@ -43,7 +62,7 @@ export default function TestDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete"/>
+            <CPButton text="Delete" onClick={() => {deleteResult(params.id, props.testData._id); refreshData()}}/>
         </div>
         ),
         flex: 2
@@ -101,7 +120,7 @@ export default function TestDetails(props) {
                 onBack={() => {
                   setResultModalOpen(false); 
                   refreshData();}}
-            ></ResultModalForm>
+            />
 
         <SplitScreen
             topChildren={
