@@ -80,10 +80,10 @@ export default function TestCaseModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    // props.onClose();
-    // if (props.modalFormType==modalFormType.NEW){
-    //   setData(initialData);
-    // }
+    props.onClose();
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
   }
 
   return (

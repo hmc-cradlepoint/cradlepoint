@@ -37,13 +37,34 @@ export async function cloneTestCase(data) {
             const testCase = testCaseSchema.cast(data);
             const id = ObjectId(data._id);
             const testPlanId = ObjectId(data.testPlanId);
-            var newTests = [];
+            
+            // newBOM is the BOM for the new test case we are creating
+            var newBOM = [];
+
+            // iterates through the original test case's BOM, verify that each device id is valid,
+            // convert string deviceId to ObjectId, and push to the newBOM array
+            for (var i = 0; i < testCase.BOM.length; i++) {
+                const deviceId = ObjectId(testCase.BOM[i].deviceId);
+                if (!ObjectId.isValid(deviceId)) {
+                    throw new Error('Invalid Device Id')
+                }
+                newBOM.push(testCase.BOM[i])
+                newBOM[i].deviceId = deviceId
+            }
+            
+            // create new test case which starts initially with empty tests array and the new BOM
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests:[], BOM: newBOM});
+    
+            // iterate through all the tests of the original test case
+            // clone them and add them to the new test case
             for (var i = 0; i < testCase.tests.length; i++) {
                 const testId = testCase.tests[i];
+                // ensure the test id is valid
                 if (!ObjectId.isValid(ObjectId(testId))) {
                     throw new Error('Invalid Test Id')
                 }
-                const newTestId = new ObjectId();
+
+                // get test details of the corresponding test from the Test Library
                 var test;
                 try {
                     test = await (await fetch(`${process.env.HOST}/api/getLibraryTests?_id=${testId}`)).json()
@@ -51,31 +72,22 @@ export async function cloneTestCase(data) {
                 } catch {
                     throw new Error("cannot get test corresponding to id")
                 }
-             
+
+                // creating a new test id and make the parent test case id to the one we just created
+                const newTestId = new ObjectId();
                 test._id = newTestId.toString();
                 test.testCaseId = data._id;
                 test.results = [];
-                
-                addTest(test);
+                // add the test to the test case
+                const testResult = await addTest(test);
             }
-            console.log(newTests)
-            // for (const i in testCase.BOM) {
-            //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
-            //         throw new Error('Invalid Device Id')
-            //     }
-            // }
-            // const BOM = testCase.BOM.map(device => {
-            //     return {...device, deviceId: ObjectId(device.deviceId)}
-            //   });
             
-            // TODO: should replace result with the following line once cloneTest is done
-            // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, tests: newTests, BOM: BOM});
-            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests: newTests});
-            // Push the test plan into the test case array as well
+            // Push the test case into the test case array of its corresponding test plan
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
                 { $push: { testCases: result.insertedId}} // arr will be array of objects
                 );
+            console.log(testPlanResult)
             if (testPlanResult.modifiedCount != 1) {
                 throw new Error('Test Plan not updated')
             }
