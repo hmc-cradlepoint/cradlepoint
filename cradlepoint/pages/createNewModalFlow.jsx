@@ -15,7 +15,7 @@ import styling from '../styles/tableStyling';
 
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
-  const [cloneData, setCloneData] = useState({});
+  const [cloneData, setCloneData] = useState(null);
 
   function CloneModal() {
     const useStyles = makeStyles(styling);
@@ -44,8 +44,11 @@ export default function CreateNewModalFlow(props) {
             headerName: 'Actions',
             headerClassName: 'header',
             align: 'center',
-            renderCell: () => (
-              <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
+            renderCell: (data) => (
+              <CPButton text="clone" onClick={() => {setCloneData(data.row);
+                                                      setModalType(modalType.SCRATCH);
+                                                      console.log(data)
+                                                      }}/>
             )
           }
           ]);
@@ -133,10 +136,14 @@ export default function CreateNewModalFlow(props) {
       case flowType.TEST_PLAN:
         return <TestPlanModalForm engagementId={props.modalData.engagement._id}
                                   modalFormType={modalFormType.NEW} 
+                                  cloneData={cloneData}
+                                  isClone={isClone}
                                   isOpen={scratchIsOpen} 
                                   onBack={() => setModalType(modalType.START)}
                                   onClose={()=> {setScratchIsOpen(false); 
-                                                setModalType(modalType.START); props.onClose();}}/>
+                                                setModalType(modalType.START); 
+                                                props.onClose();
+                                                setCloneData(null);}}/>
       case flowType.TEST_CASE:
         return <TestCaseModalForm testPlanId={props.modalData.testPlanData._id} 
                                   modalFormType={modalFormType.NEW} 
@@ -144,7 +151,10 @@ export default function CreateNewModalFlow(props) {
                                   isClone={isClone}
                                   isOpen={scratchIsOpen} 
                                   onBack={() => setModalType(modalType.START)}
-                                  onClose={()=> {setScratchIsOpen(false); setModalType(modalType.START); props.onClose();}} 
+                                  onClose={()=> {setScratchIsOpen(false); 
+                                                  setModalType(modalType.START); 
+                                                  props.onClose();
+                                                  setCloneData(null);}} 
                                   />
       case flowType.TEST:
         return <TestModalForm testCaseId={props.modalData.testCase._id} 

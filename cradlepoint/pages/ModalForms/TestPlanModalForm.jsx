@@ -11,15 +11,42 @@ import {modalFormType} from '../../util/modalUtils';
 
 export default function TestPlanModalForm(props) {
   const router = useRouter();
-  const initialData = {
-    _id: props.data?._id??new ObjectID(),
-    name: props.data?.name??"",
-    isActive: props.data?.isActive??"true",
-    version: props.data?.version??"",
-    customerFeedback: props.data?.customerFeedback??"",
-    description: props.data?.description??"",
-    deviceConfig: props.data?.deviceConfig??""
-  }
+  console.log(props.cloneData);
+  // const initialData = {
+  //   _id: props.data?._id??new ObjectID(),
+  //   name: props.data?.name??"",
+  //   isActive: props.data?.isActive??"true",
+  //   version: props.data?.version??"",
+  //   customerFeedback: props.data?.customerFeedback??"",
+  //   description: props.data?.description??"",
+  //   deviceConfig: props.data?.deviceConfig??""
+  // }
+
+// TODO: do we even need this if else??
+  const initialData = (props.isClone)? 
+    {
+      _id: new ObjectID(),
+      name: (props.cloneData?.name??"") + " (copy)",
+      isActive: props.cloneData?.isActive??true,
+      version: props.cloneData?.version??"",
+      customerFeedback: props.cloneData?.customerFeedback??"",
+      description: props.cloneData?.description??"",
+      deviceConfig: props.cloneData?.deviceConfig??"",
+      summaryBOM: props.cloneData?.summaryBOM??[],
+      testCases: props.cloneData?.testCases??[]
+    }:{
+      _id: new ObjectID(),
+      name: "",
+      isActive: "true",
+      version: "",
+      customerFeedback: "",
+      description: "",
+      deviceConfig: "",
+      summaryBOM: [],
+      testCases: []
+    }
+
+
   const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
@@ -40,18 +67,20 @@ export default function TestPlanModalForm(props) {
       "customerFeedback": data.customerFeedback,
       "description": data.description,
       "deviceConfig": data.deviceConfig,
-      "engagementId": props.engagementId
+      "engagementId": props.engagementId,
+      "summaryBOM": data.summaryBOM,
+      "testCases": data.testCases,
     }
 
     const endPoint = '/api/editTestPlan';
     const method = 'PUT';
 
     if (props.modalFormType===modalFormType.NEW){
-      endPoint = '/api/addNewTestPlan';
       method = 'POST';
-      newData["summaryBOM"] = [];
-      newData["testCases"] = [];
+      endPoint = props.isClone?'/api/cloneTestPlan':'/api/addNewTestPlan';
     } 
+
+    console.log(newData);
 
     try{
       const d = JSON.stringify(newData);
@@ -67,10 +96,10 @@ export default function TestPlanModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    props.onClose();
-    if (props.modalFormType==modalFormType.NEW){
-      setData(initialData);
-    }
+    // props.onClose();
+    // if (props.modalFormType==modalFormType.NEW){
+    //   setData(initialData);
+    // }
   }
 
   // for the dropdown of isActive
@@ -89,7 +118,7 @@ export default function TestPlanModalForm(props) {
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
         </div>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <BigTextInput label="Test Plan Description:" name='description' value={data.description} onChange={handleChange}/>
+        <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange}/>
         </div>
         </div>

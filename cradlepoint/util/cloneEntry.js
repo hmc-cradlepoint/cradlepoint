@@ -102,6 +102,88 @@ export async function cloneTestCase(data) {
 }
 
 export async function cloneTestPlan(data) {
+
+    try {
+        const client = await connectToDb();
+        const valid = await testPlanSchema.isValid(data)
+        console.log("data ", data);
+
+        if (valid && ObjectId.isValid(data.engagementId) ) {
+            const testPlan = testPlanSchema.cast(data);
+            const id = ObjectId(data._id);
+            const engagementId = ObjectId(data.engagementId);
+            
+            // newSummaryBOM is the Summary BOM for the new test plan we are creating
+            var newSummaryBOM = [];
+
+            // iterates through the original test plan's summary BOM, verify that each device id is valid,
+            // convert string deviceId to ObjectId, and push to the newSummaryBOM array
+            for (var i = 0; i < testPlan.summaryBOM.length; i++) {
+                const deviceId = ObjectId(testPlan.summaryBOM[i].deviceId);
+                if (!ObjectId.isValid(deviceId)) {
+                    throw new Error('Invalid Device Id')
+                }
+                newSummaryBOM.push(testPlan.summaryBOM[i])
+                newSummaryBOM[i].deviceId = deviceId
+            }
+
+            // create new test plan which starts initially with empty test cases array and the new summary BOM
+            const result = await client.collection('testPlan').insertOne({...testPlan, _id: id, engagementId: engagementId, testCases:[], summaryBOM: newSummaryBOM});
+      
+            // iterate through all the test cases of the original test plan
+            // clone them and add them to the new test plan
+            for (var i = 0; i < testPlan.testCases.length; i++) {
+                const testCaseId = testPlan.testCases[i];
+                // ensure the test case id is valid
+                if (!ObjectId.isValid(ObjectId(testCaseId))) {
+                    throw new Error('Invalid Test Case Id')
+                }
+
+                // get test case details from the Test case Library
+                var testCase;
+                try {
+                    testCase = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases?_id=${testCaseId}`)).json()
+                    testCase = testCase[0];
+                } catch {
+                    throw new Error("cannot get test corresponding to id")
+                }
+
+                // creating a new test case id and set the parent test plan id to the one we just created
+                const newTestCaseId = new ObjectId();
+                testCase._id = newTestCaseId.toString();
+                testCase.testPlanId = data._id;
+           
+                // clone the child test case
+                await cloneTestCase(testCase);
+            }
+        
+            // check if we want to make the current test plan active, if so, we inactivate the old test plan of the engagement
+            // and set testPlanId to the new test plan id
+            if (data.isActive){
+                // inactivate the old test plan of the engagement
+                const oldTestPlan = await (await fetch(`${process.env.HOST}/api/getEngagement?_id=${engagementId}`)).json();
+                if (oldTestPlan.length>0){
+                    const oldTestPlanId = ObjectId(oldTestPlan[0].testPlanId);
+                    await client.collection('testPlan').updateOne({ "_id": oldTestPlanId}, 
+                                                                { $set: { "isActive": false}});
+                }
+                
+                // Update the active test plan of the engagement to the current one
+                await client.collection('engagements').updateOne(
+                { "_id": engagementId }, 
+                { $set: { testPlanId: id}} 
+                );
+            }
+            console.log("engagementId ", engagementId.toString())
+            console.log("testPlanId ", _id.toString())
+            return result
+        }
+        else {
+            throw new Error('Input not in right format')
+        }
+    } catch (err) {
+        throw err
+    }
 }
 
 // TODO: Possibly add Active test plan as we make an engagement

@@ -6,11 +6,11 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router'
 import {ObjectID} from 'bson';
-import {modalType, modalFormType} from '../../util/modalUtils';
+import {modalFormType} from '../../util/modalUtils';
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();
-  console.log(props.cloneData);
+  
   const initialData = (props.isClone)? 
     {
       _id: new ObjectID(),
