@@ -34,6 +34,29 @@ export default function EngagementDetails(props) {
         dispatch({type: "ADD_PAGE", payload: payload});
     }
 
+    async function setTestPlanActive(selectedTestPlanId){
+        let data ={
+            "engagementId": props.engagement._id,
+            "testPlanId": selectedTestPlanId
+        }
+        try{
+        const d = JSON.stringify(data);
+        const res = await fetch('/api/setTestPlanActive', {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(d)
+            },
+            body: d
+        })
+        console.log("RES:", res)
+        } catch (err){
+        console.log("Error:",err)
+        }
+
+        refreshData();
+    }
+
     //   TODO: style the active test plan
     const testPlanColWithButton = testPlanColumns.concat([
     { 
@@ -44,7 +67,7 @@ export default function EngagementDetails(props) {
         renderCell: (params) => (
         <>
             <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
-            <CPButton text="SET ACTIVE"/>
+            <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
             <CPButton text="Delete"/>
         </>
         ),
