@@ -80,8 +80,6 @@ export default function TestPlanModalForm(props) {
       endPoint = props.isClone?'/api/cloneTestPlan':'/api/addNewTestPlan';
     } 
 
-    console.log(newData);
-
     try{
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
@@ -96,10 +94,10 @@ export default function TestPlanModalForm(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    // props.onClose();
-    // if (props.modalFormType==modalFormType.NEW){
-    //   setData(initialData);
-    // }
+    props.onClose();
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
   }
 
   // for the dropdown of isActive
