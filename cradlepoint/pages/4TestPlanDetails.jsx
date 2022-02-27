@@ -210,7 +210,6 @@ export async function getServerSideProps(context) {
             "topology": testCase.topology,
             // Other Fields not displayed:
             // "percentPassed":"__%",
-            // "timeEstimate"
             // "testPlanId"
             // "BOM"
         }

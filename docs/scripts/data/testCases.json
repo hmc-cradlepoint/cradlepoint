@@ -5,7 +5,6 @@
         "description": "Test route convergence when peer fails",
         "config": "[{'system': {'system_id': 'BGP Router'}}, []]",
         "topology": "Link / PDF / Image",
-        "timeEstimate": 1.0,
         "testPlanId": ObjectId("61724e5599915be1b771acb2"),
         "tests": [
             ObjectId("62030ca5399a9fbc6eb3250f")
@@ -24,7 +23,6 @@
         "description": "Test failover to LTE during upstream failure",
         "config": "[{'system': {'system_id': 'LTE Router'}}, []]",
         "topology": "Link / PDF / Image",
-        "timeEstimate": 2.0,
         "testPlanId": ObjectId("61724e5599915be1b771acb2"),
         "tests": [
             ObjectId("62030d5dda979d0a8723fe40")
@@ -43,7 +41,6 @@
         "description": "Test VRRP backup during hardware failure",
         "config": "[{'system': {'system_id': 'VRRP Router'}}, []]",
         "topology": "Link / PDF / Image",
-        "timeEstimate": 3.0,
         "testPlanId": ObjectId("6172500699915be1b771acb3"),
         "tests": [
             ObjectId("6203133122465bec90d059b5")
@@ -62,7 +59,6 @@
         "description": "Test TCP throughput between two endpoints",
         "config": "[{'system': {'system_id': 'Throughput Router'}}, []]",
         "topology": "Link / PDF / Image",
-        "timeEstimate": 4.0,
         "testPlanId": ObjectId("6172500699915be1b771acb3"),
         "tests": [
             ObjectId("62031ec2da87ce7850b4bd46"),
