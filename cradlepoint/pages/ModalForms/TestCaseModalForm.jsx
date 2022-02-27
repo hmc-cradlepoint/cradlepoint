@@ -10,7 +10,6 @@ import {modalFormType} from '../../util/modalUtils';
 
 export default function TestCaseModalForm(props) {
   const router = useRouter();
-  
   const initialData = (props.isClone)? 
     {
       _id: new ObjectID(),
@@ -21,11 +20,11 @@ export default function TestCaseModalForm(props) {
       BOM: props.cloneData?.BOM??[],
       tests: props.cloneData?.tests??[]
     }:{
-      _id: new ObjectID(),
-      name: "",
-      description: "",
-      config: "",
-      topology: "",
+      _id: props.data?._id??new ObjectID(),
+      name: props.data?.name??"",
+      description: props.data?.description??"",
+      config: props.data?.config??"",
+      topology: props.data?.topology??"",
       BOM: [],
       tests: []
     }

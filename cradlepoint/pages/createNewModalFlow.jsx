@@ -16,6 +16,7 @@ import styling from '../styles/tableStyling';
 export default function CreateNewModalFlow(props) {
   const [modal, setModalType] = useState(modalType.START);
   const [cloneData, setCloneData] = useState(null);
+  const [isClone, setIsClone] = useState(false);
 
   function CloneModal() {
     const useStyles = makeStyles(styling);
@@ -99,7 +100,6 @@ export default function CreateNewModalFlow(props) {
           return props.modalData.allTests;
       }
     }
-    console.log(props.modalData)
     return (
       <Modal className={styles.Modal} isOpen={true}>
           <h2>Choose an Existing {props.type} to Clone</h2>
@@ -117,16 +117,17 @@ export default function CreateNewModalFlow(props) {
     return (
         <Modal className={styles.Modal} isOpen={props.modalOpen && modal === modalType.START}>
           <h2>Create New {props.type}</h2>
-          <CPButton text='From scratch' className="ModalButton" onClick={() => {setModalType(modalType.SCRATCH); setScratchIsOpen(true);}}/>
-          <CPButton text={'From exisiting ' + props.type + ' (Clone)'} onClick={()=>setModalType(modalType.CLONE)}/>
+          <CPButton text='From scratch' className="ModalButton" onClick={() => {setIsClone(false);setModalType(modalType.SCRATCH); setScratchIsOpen(true);}}/>
+          <CPButton text={'From exisiting ' + props.type + ' (Clone)'} onClick={()=>{setIsClone(true);setModalType(modalType.CLONE)}}/>
           <CPButton text='Cancel' onClick={props.onClose}/>
         </Modal>
     );
   }
 
   const [scratchIsOpen, setScratchIsOpen] = useState(true);
+  
 
-  function ScratchModal(isClone) {
+  function ScratchModal() {
     switch (props.type) {
       case flowType.ENGAGEMENT:
         return <EngagementModalForm modalFormType={modalFormType.NEW} 
@@ -170,8 +171,8 @@ export default function CreateNewModalFlow(props) {
     case modalType.START:
       return <StartModal />;
     case modalType.SCRATCH:
-      return <ScratchModal isClone={false} />;
+      return <ScratchModal/>;
     case modalType.CLONE:
-      return <CloneModal  isClone={true} />;
+      return <CloneModal/>;
   }
 }

@@ -12,17 +12,7 @@ import {modalFormType} from '../../util/modalUtils';
 export default function TestPlanModalForm(props) {
   const router = useRouter();
   console.log(props.cloneData);
-  // const initialData = {
-  //   _id: props.data?._id??new ObjectID(),
-  //   name: props.data?.name??"",
-  //   isActive: props.data?.isActive??"true",
-  //   version: props.data?.version??"",
-  //   customerFeedback: props.data?.customerFeedback??"",
-  //   description: props.data?.description??"",
-  //   deviceConfig: props.data?.deviceConfig??""
-  // }
 
-// TODO: do we even need this if else??
   const initialData = (props.isClone)? 
     {
       _id: new ObjectID(),
@@ -35,16 +25,16 @@ export default function TestPlanModalForm(props) {
       summaryBOM: props.cloneData?.summaryBOM??[],
       testCases: props.cloneData?.testCases??[]
     }:{
-      _id: new ObjectID(),
-      name: "",
-      isActive: "true",
-      version: "",
-      customerFeedback: "",
-      description: "",
-      deviceConfig: "",
-      summaryBOM: [],
-      testCases: []
-    }
+    _id: props.data?._id??new ObjectID(),
+    name: props.data?.name??"",
+    isActive: props.data?.isActive??"true",
+    version: props.data?.version??"",
+    customerFeedback: props.data?.customerFeedback??"",
+    description: props.data?.description??"",
+    deviceConfig: props.data?.deviceConfig??"",
+    summaryBOM: [],
+    testCases: []
+  }
 
 
   const [data, setData] = useState(initialData)
