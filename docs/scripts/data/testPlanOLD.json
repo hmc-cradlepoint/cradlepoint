@@ -1,0 +1,69 @@
+{
+    "_id": {
+        "$oid": "61724e5599915be1b771acb2"
+    },
+    "createdOn": {
+        "$date": "2021-10-21T07:00:00.000Z"
+    },
+    "summaryBOM": [
+        {
+            "isOptional": true,
+            "quantity": 12,
+            "deviceId": {
+                "$oid": "617251a399915be1b771acb6"
+            },
+            "device": {
+                "_id": "617251a399915be1b771acb6",
+                "deviceName": "5-yr NetCloud Branch Essentials Plan, Advanced Plan, and AER2200 router with WiFi (1200Mbps modem), North America",
+                "codeVersion": "7.21.90",
+                "SKU": "BAA5-2200120B-NN",
+                "deviceType": "Software"
+            }
+        },
+        {
+            "isOptional": false,
+            "quantity": 3,
+            "deviceId": {
+                "$oid": "61ac5bb5d32cd5c89f9014c7"
+            },
+            "device": {
+                "_id": "61ac5bb5d32cd5c89f9014c7",
+                "deviceName": "Second Device",
+                "codeVersion": "7.21.10",
+                "SKU": "BAA5-2200130B-NN",
+                "deviceType": "Physical"
+            }
+        }
+    ],
+    "isActive": true,
+    "authors": [
+        ""
+    ],
+    "testCases": [
+        {
+            "$oid": "6207fe622a984feaa1a95b83"
+        },
+        {
+            "$oid": "618ff52599912cea5510f06b"
+        },
+        {
+            "$oid": "6209675e07006a555f8cc530"
+        },
+        {
+            "$oid": "620967bb13602aa6719d4bec"
+        },
+        {
+            "$oid": "620967ee5b5336e551d27e61"
+        },
+        {
+            "$oid": "62096c8e3ed75ba7e9f74578"
+        }
+    ],
+    "engagementId": "617246a299915be1b771aca0",
+    "customerFeedback": "convergence!",
+    "deviceConfig": "[{\"system\":{\"system_id\":\"BGP Router\"}}, []]",
+    "version": "1234",
+    "description": "Test route convergence when peer fails.",
+    "name": "BGP redundancy",
+    "timeEstimate": 1.3
+}

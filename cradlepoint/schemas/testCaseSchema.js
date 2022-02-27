@@ -2,10 +2,12 @@ import * as yup from 'yup';
 
 export const testCaseSchema = yup.object().shape({
   _id: yup.string().optional(),
+  name: yup.string().required(),
   description: yup.string().required(),
   config: yup.string().required(),
   topology: yup.string().required(),
-  name: yup.string().required(),
+  timeEstimate: yup.number().positive().required(),
+  testPlanId: yup.string().required(),
   tests: yup.array().of(
     yup.string().required()
   ).required(),
@@ -16,5 +18,4 @@ export const testCaseSchema = yup.object().shape({
       deviceId: yup.string().required(),
     }).optional()
   ).required(),
-  testPlanId: yup.string().required(),
 });

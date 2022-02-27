@@ -1,0 +1,50 @@
+[
+    {
+        "_id": ObjectId("62030ca5399a9fbc6eb3250f"),
+        "name": "BGP Failure",
+        "description": "Disable BGP Peer",
+        "resultStatus": "Unknown",
+        "testCaseId": ObjectId("619003fec01efe48e4b3fe0d"),
+        "results": [
+            ObjectId("61f88ad332ebbaba0d9d8efd")
+        ]
+    },
+    {
+        "_id": ObjectId("62030d5dda979d0a8723fe40"),
+        "name": "Upstream failure",
+        "description": "Block traffic from an upstream hop. Router interface remains up.",
+        "resultStatus": "pass",
+        "testCaseId": ObjectId("61b6f8dc8e4c9b518de0080b"),
+        "results": [
+            ObjectId("61f88af932ebbaba0d9d9005")
+        ]
+    },
+    {
+        "_id": ObjectId("6203133122465bec90d059b5"),
+        "name": "VRRP Failure",
+        "description": "Block VRRP keepalives",
+        "resultStatus": "Unknown",
+        "testCaseId": ObjectId("61b6f93e8e4c9b518de0080c"),
+        "results": [
+            ObjectId("61f89b9ae53281ef3ad88612")
+        ]
+    },
+    {
+        "_id": ObjectId("62031ec2da87ce7850b4bd46"),
+        "name": "Throughput Client",
+        "description": "Test TCP throughput to throughput server",
+        "resultStatus": "unknown",
+        "testCaseId": ObjectId("61b805bee52286d566d94a7d"),
+        "results": [
+            ObjectId("61f89c4e1684f52f11f4a8f8")
+        ]
+    },
+    {
+        "_id": ObjectId("6207eefeecd82c932ee7ecc4"),
+        "name": "Throughput Server",
+        "description": "Listen for throughput clients to test",
+        "resultStatus": "unknown",
+        "testCaseId": ObjectId("61b805bee52286d566d94a7d"),
+        "results": []
+    }
+]
