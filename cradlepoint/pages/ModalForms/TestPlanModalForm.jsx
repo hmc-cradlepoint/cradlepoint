@@ -17,7 +17,7 @@ export default function TestPlanModalForm(props) {
     {
       _id: new ObjectID(),
       name: (props.cloneData?.name??"") + " (copy)",
-      isActive: props.cloneData?.isActive??true,
+      // isActive: props.cloneData?.isActive??true,
       version: props.cloneData?.version??"",
       customerFeedback: props.cloneData?.customerFeedback??"",
       description: props.cloneData?.description??"",
@@ -27,7 +27,7 @@ export default function TestPlanModalForm(props) {
     }:{
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
-    isActive: props.data?.isActive??"true",
+    // isActive: props.data?.isActive??true,
     version: props.data?.version??"",
     customerFeedback: props.data?.customerFeedback??"",
     description: props.data?.description??"",
@@ -60,6 +60,7 @@ export default function TestPlanModalForm(props) {
       "engagementId": props.engagementId,
       "summaryBOM": data.summaryBOM,
       "testCases": data.testCases,
+      "isActive": false
     }
 
     const endPoint = '/api/editTestPlan';
@@ -99,8 +100,8 @@ export default function TestPlanModalForm(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
           <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
-          <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
-            onChange={handleChange} options={options}/>
+          {/* <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
+            onChange={handleChange} options={options}/> */}
           <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange}/>
           </div>
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
