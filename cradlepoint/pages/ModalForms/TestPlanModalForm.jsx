@@ -17,7 +17,7 @@ export default function TestPlanModalForm(props) {
     {
       _id: new ObjectID(),
       name: (props.cloneData?.name??"") + " (copy)",
-      // isActive: props.cloneData?.isActive??true,
+      isActive: false,
       version: props.cloneData?.version??"",
       customerFeedback: props.cloneData?.customerFeedback??"",
       description: props.cloneData?.description??"",
@@ -27,7 +27,7 @@ export default function TestPlanModalForm(props) {
     }:{
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
-    // isActive: props.data?.isActive??true,
+    isActive: props.data?.isActive??false,
     version: props.data?.version??"",
     customerFeedback: props.data?.customerFeedback??"",
     description: props.data?.description??"",
@@ -60,7 +60,6 @@ export default function TestPlanModalForm(props) {
       "engagementId": props.engagementId,
       "summaryBOM": data.summaryBOM,
       "testCases": data.testCases,
-      "isActive": false
     }
 
     const endPoint = '/api/editTestPlan';
