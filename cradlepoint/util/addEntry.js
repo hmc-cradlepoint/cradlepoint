@@ -127,21 +127,21 @@ export async function addTestPlan(data) {
 
             const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
             
-            // // get old active test plan id and set its isActive field to false
-            // // if (data.isActive){
-            //     const oldTestPlanId = await client.collection('engagments').findOne({ "_id": engagementId }, {testPlanId:1});
-            //     console.log(oldTestPlanId)
-            //     const updateOldResult = await client.collection('testPlan').updateOne(
-            //     { "_id": oldTestPlanId }, 
-            //     { $set: { isActive: false}} 
-            //     );
-            // // }
-            
-            const engagementResult = await client.collection('engagements').updateOne(
-                { "_id": engagementId }, 
-                { $set: { testPlanId: result.insertedId}} // update the active test plan id in engagement
+            // if this test plan is active, update old test plan to not active and engagement points to new test plan id 
+            if (data.isActive){
+                const oldTestPlanId = await client.collection('engagments').findOne({ "_id": engagementId }, {testPlanId:1});
+                const updateOldResult = await client.collection('testPlan').updateOne(
+                { "_id": oldTestPlanId }, 
+                { $set: { isActive: false}} 
                 );
-            return engagementResult;
+
+                const engagementResult = await client.collection('engagements').updateOne(
+                    { "_id": engagementId }, 
+                    { $set: { testPlanId: result.insertedId}} // update the active test plan id in engagement
+                    );
+            }
+            
+            return result;
         }
         else {
             throw new Error('input nor in right format')
