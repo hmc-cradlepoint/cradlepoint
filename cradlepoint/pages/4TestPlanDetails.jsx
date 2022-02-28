@@ -155,7 +155,7 @@ export default function TestPlanDetails(props) {
             selectedRowData={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
-        <CreateNewModalFlow modalData={props.allTestCases} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <SplitScreen
             topChildren={
@@ -189,7 +189,12 @@ export async function getServerSideProps(context) {
     */
     const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query._id);
     const testPlanData = await res.json().then((data) => data[0]);
-
+     // TODO: this is a "sketchy" quickfix to situation where testPlan summary BOM has no device
+    // the getTestPlan query will return BOM as BOM: [{}]
+    // this line replaces it to BOM: []
+    if (!('deviceId' in testPlanData.summaryBOM[0])){
+        testPlanData.summaryBOM = [];
+    }
     /* 
        Gets Data for Test Cases Table
        TODO: Error Check await call
@@ -200,12 +205,11 @@ export async function getServerSideProps(context) {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
-            "description": (testCase.name != "")?testCase.name:"N/A",
-            "percentPassed":"__%",
+            "description": (testCase.description != "")?testCase.description:"N/A",
             "config": (testCase.config != "")?testCase.config:"N/A",
             "topology": testCase.topology,
             // Other Fields not displayed:
-            // "timeEstimate"
+            // "percentPassed":"__%",
             // "testPlanId"
             // "BOM"
         }
@@ -213,7 +217,8 @@ export async function getServerSideProps(context) {
 
     const allTestCases = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases`)).json();
     const allDevices = await (await fetch(`${process.env.HOST}/api/getAllDevices`)).json();
-
+   
+ 
     return {
       props: {
           testPlanData, 

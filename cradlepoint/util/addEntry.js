@@ -11,6 +11,7 @@ export async function addResult(data) {
         const client = await connectToDb();
         const valid = await resultSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testId) ) {
+            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const testResult = resultSchema.cast(data);
             const testId = ObjectId(data.testId);
@@ -35,19 +36,21 @@ export async function addResult(data) {
     }
 }
 
+
 export async function addTest(data) {
     try {
         const client = await connectToDb();
         const valid = await testSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testCaseId) ) {
+            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const test = testSchema.cast(data);
-            // TODO: if we clone to make new test, we don't really need to copy the tests over?
-            // for (const result in test.results) {
-            //     if (!ObjectId.isValid(result)) {
-            //         throw new Error('Invalid Result Id')
-            //     }
-            // }
+            // Error Check to ensure proper format for Mongo ObjectIds
+            for (const result in test.results) {
+                if (!ObjectId.isValid(result)) {
+                    throw new Error('Invalid Result Id')
+                }
+            }
             const testCaseId = ObjectId(data.testCaseId);
             const result = await client.collection('tests').insertOne({...test, _id: id, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
@@ -66,29 +69,37 @@ export async function addTest(data) {
     }
 }
 
+
 export async function addTestCase(data) {
     try {
         const client = await connectToDb();
         const valid = await testCaseSchema.isValid(data)
         if (valid && ObjectId.isValid(data.testPlanId) ) {
             const testCase = testCaseSchema.cast(data);
+            // Error Check to ensure proper format for Mongo ObjectIds
             for (const i in testCase.tests) {
                 if (!ObjectId.isValid(testCase.tests[i])) {
-                    
                     throw new Error('Invalid Test Id')
                 }
             }
+            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
+            const id = ObjectId(data._id);
             const testPlanId = ObjectId(data.testPlanId);
-            for (const i in testCase.BOM) {
-                if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
-                    throw new Error('Invalid Device Id')
-                }
-            }
-            const BOM = testCase.BOM.map(device => {
-                return {...device, deviceId: ObjectId(device.deviceId)}
-              });
-            const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
+            // Old Error Checking for mongo objectIds in the BOM
+            // for (const i in testCase.BOM) {
+            //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
+            //         throw new Error('Invalid Device Id')
+            //     }
+            // }
+
+            // Old BOM Code?
+            // const BOM = testCase.BOM.map(device => {
+            //     return {...device, deviceId: ObjectId(device.deviceId)}
+            //   });
+            // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
             
+            // TODO: Fix this line once BOM is figured out
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId});
             // Push the test plan into the test case array as well
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
@@ -113,17 +124,36 @@ export async function addTestPlan(data) {
         const valid = await testPlanSchema.isValid(data);
         if (valid && ObjectId.isValid(data.engagementId)){
             const testPlan = testPlanSchema.cast(data);
-            for (const i in testPlan.summaryBOM) {
-                if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
-                    
-                    throw new Error('Invalid Device Id')
-                }
-            }
-            const SummaryBOM = testPlan.summaryBOM.map(device => {
-                return {...device, deviceId: ObjectId(device.deviceId)};
-            }); 
+            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
+            const id = ObjectId(data._id);
+            const engagementId = ObjectId(data.engagementId);
+            // TODO: uncomment / fix once BOM is figured out
+            // for (const i in testPlan.summaryBOM) {
+            //     if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
+            //         throw new Error('Invalid Device Id')
+            //     }
+            // }
+            // const SummaryBOM = testPlan.summaryBOM.map(device => {
+            //     return {...device, deviceId: ObjectId(device.deviceId)};
+            // }); 
 
-            const result = await client.collection('testPlan').insertOne({...testPlan, SummaryBOM});
+            // TODO: Fix once BOM works
+            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
+            
+            // if this test plan is active, update old test plan to not active and engagement points to new test plan id 
+            if (data.isActive){
+                const oldTestPlanId = await client.collection('engagments').findOne({ "_id": engagementId }, {testPlanId:1});
+                const updateOldResult = await client.collection('testPlan').updateOne(
+                { "_id": oldTestPlanId }, 
+                { $set: { isActive: false}} 
+                );
+
+                const engagementResult = await client.collection('engagements').updateOne(
+                    { "_id": engagementId }, 
+                    { $set: { testPlanId: result.insertedId}} // update the active test plan id in engagement
+                    );
+            }
+            
             return result;
         }
         else {
@@ -142,7 +172,9 @@ export async function addEngagement(data) {
         const valid = await engagementSchema.isValid(data);
         if (valid && ObjectId.isValid(data.testPlanId)){
             const engagement = engagementSchema.cast(data);
-            const result = await client.collection('engagements').insertOne(engagement);
+            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
+            const id = ObjectId(data._id);
+            const result = await client.collection('engagements').insertOne({...engagement, _id:id});
             return result;
         }
         else {

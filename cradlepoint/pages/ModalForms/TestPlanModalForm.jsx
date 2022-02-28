@@ -7,18 +7,36 @@ import { borderLeft } from "@mui/system";
 import { useRouter } from 'next/router';
 import {ObjectID} from 'bson';
 import DropDown from "../../components/fields/DropDown";
+import {modalFormType} from '../../util/modalUtils';
 
 export default function TestPlanModalForm(props) {
   const router = useRouter();
-  const initialData = {
+  console.log(props.cloneData);
+
+  const initialData = (props.isClone)? 
+    {
+      _id: new ObjectID(),
+      name: (props.cloneData?.name??"") + " (copy)",
+      isActive: false,
+      version: props.cloneData?.version??"",
+      customerFeedback: props.cloneData?.customerFeedback??"",
+      description: props.cloneData?.description??"",
+      deviceConfig: props.cloneData?.deviceConfig??"",
+      summaryBOM: props.cloneData?.summaryBOM??[],
+      testCases: props.cloneData?.testCases??[]
+    }:{
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
-    isActive: props.data.isActive?props.data.isActive:"true",
-    version: props.data.version?props.data.version:"",
-    customerFeedback: props.data.customerFeedback?props.data.customerFeedback:"",
-    description: props.data.description?props.data.description:"",
-    deviceConfig: props.data.deviceConfig?props.data.deviceConfig:""
+    isActive: props.data?.isActive??false,
+    version: props.data?.version??"",
+    customerFeedback: props.data?.customerFeedback??"",
+    description: props.data?.description??"",
+    deviceConfig: props.data?.deviceConfig??"",
+    summaryBOM: [],
+    testCases: []
   }
+
+
   const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
@@ -32,29 +50,48 @@ export default function TestPlanModalForm(props) {
   async function handleSubmitData() {
     let newData = {
       ...props.data, 
-      "_id":data._id, 
+      "_id":data._id.toString(), 
       "name":data.name, 
       "isActive":data.isActive,
       "version": data.version,
       "customerFeedback": data.customerFeedback,
       "description": data.description,
       "deviceConfig": data.deviceConfig,
+      "engagementId": props.engagementId,
+      "summaryBOM": data.summaryBOM,
+      "testCases": data.testCases,
     }
+
+    const endPoint = '/api/editTestPlan';
+    const method = 'PUT';
+
+    if (props.modalFormType===modalFormType.NEW){
+      method = 'POST';
+      endPoint = props.isClone?'/api/cloneTestPlan':'/api/addNewTestPlan';
+    } 
+
     try{
-      const res = await fetch('/api/editTestPlan', {
-        method: 'PUT',
+      const d = JSON.stringify(newData);
+      const res = await fetch(endPoint, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(d)
         },
-        body: JSON.stringify(newData),
+        body: d
       })
+      console.log("RES:", res)
     } catch (err){
       console.log("Error:",err)
     }
-    props.onBack()
+    props.onClose();
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
   }
 
-  const options = ["true", "false"];
+  // for the dropdown of isActive
+  const options = [true, false];
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Test Plan Info</h2>
@@ -62,14 +99,14 @@ export default function TestPlanModalForm(props) {
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
           <div>
           <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
-          <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
-            onChange={handleChange} options={options}/>
+          {/* <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
+            onChange={handleChange} options={options}/> */}
           <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange}/>
           </div>
         <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange}/>
         </div>
         <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-        <BigTextInput label="Test Plan Description:" name='description' value={data.description} onChange={handleChange}/>
+        <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange}/>
         </div>
         </div>

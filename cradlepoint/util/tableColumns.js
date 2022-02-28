@@ -24,7 +24,7 @@ const testCaseColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
     { field: 'name', headerName: 'Name', headerClassName: 'header', flex: 1},
     { field: 'description', headerName: 'Description', headerClassName: 'header', sortable:false, flex: 2, minWidth: 200},
-    { field: 'percentPassed', headerName: 'Percent Passed', headerClassName: 'header', flex: 1},
+    // { field: 'percentPassed', headerName: 'Percent Passed', headerClassName: 'header', flex: 1},
     { field: 'topology', headerName: 'Topology', headerClassName: 'header', flex: 1},
     { field: 'config', headerName: 'Device Configs', headerClassName: 'header', flex: 1}
 ];

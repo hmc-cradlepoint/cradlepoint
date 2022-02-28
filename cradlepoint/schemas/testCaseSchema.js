@@ -6,7 +6,6 @@ export const testCaseSchema = yup.object().shape({
   description: yup.string().required(),
   config: yup.string().required(),
   topology: yup.string().required(),
-  timeEstimate: yup.number().positive().required(),
   testPlanId: yup.string().required(),
   tests: yup.array().of(
     yup.string().required()
@@ -16,6 +15,6 @@ export const testCaseSchema = yup.object().shape({
       isOptional: yup.boolean().required(),
       quantity: yup.number().positive().required(),
       deviceId: yup.string().required(),
-    })
+    }).optional()
   ).required(),
 });

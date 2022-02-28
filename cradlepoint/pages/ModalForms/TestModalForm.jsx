@@ -33,7 +33,6 @@ export default function TestModalForm(props) {
       "name":data.name, 
       "description":data.description,
       "testCaseId": props.testCaseId,
-      "results": [],
       "resultStatus": data.resultStatus
     }
 
@@ -42,6 +41,7 @@ export default function TestModalForm(props) {
     if (props.modalFormType==modalFormType.NEW){
       endPoint = '/api/addNewTest';
       method = 'POST';
+      newData["results"] = [];
     }
 
     try{
@@ -52,14 +52,18 @@ export default function TestModalForm(props) {
           'Content-Type': 'application/json',
           'Content-Length': Buffer.byteLength(d)
         },
-        body: JSON.stringify(newData),
+        body: d,
       })
     } catch (err){
       console.log("Error:",err)
     }
-    // TODO: if create new, then should navigate to the corresponding test details page
+    
     props.onClose();
-    setData(initialData);
+    // TODO: if create new, then should navigate to the corresponding test details page
+    if (props.modalFormType==modalFormType.NEW){
+      setData(initialData);
+    }
+    
   }
 
   return (
@@ -74,7 +78,6 @@ export default function TestModalForm(props) {
           setData(initialData);
           props.onBack()
         }}/>
-        {/* TODO: integrate edit api call for test*/}
         <CPButton text='Done' onClick={handleSubmitData}/>
       </Modal>
     </>
