@@ -12,7 +12,8 @@ export default async (req, res) => {
     // Separate apart the summaryBOMs
     {
       $unwind: {
-          path: '$summaryBOM'
+          path: '$summaryBOM',
+          preserveNullAndEmptyArrays: true
       }
     },
     // Lookup the devices in its table
@@ -27,7 +28,8 @@ export default async (req, res) => {
     // Change the device from an array into just an object
     {
         $unwind: {
-            path: '$summaryBOM.device'
+            path: '$summaryBOM.device',
+            preserveNullAndEmptyArrays: true
         }
     },
     // Put everything back together

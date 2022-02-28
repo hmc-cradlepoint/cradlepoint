@@ -13,6 +13,7 @@ export default async (req, res) => {
     const data = req.body;
     // Check that data is formatted correctly
     const valid = await testCaseSchema.isValid(data);
+
     // Check that all Id strings are Valid Mongo Object Ids
     const validDevices = !data.BOM.map((dev) =>ObjectId.isValid(dev.deviceId)).includes(false);
     const validTests = !data.tests.map((str) =>ObjectId.isValid(str)).includes(false);
@@ -22,10 +23,12 @@ export default async (req, res) => {
         // Set ID strings to Mongo ObjectId's
         const id = ObjectId(validData._id);
         const testPlanId = ObjectId(validData.testPlanId);
+
         const BOM = validData.BOM.map(device => {
           return {...device, deviceId: ObjectId(device.deviceId)}
         });
         const tests = validData.tests.map(testId => ObjectId(testId));
+        
         // Create the database query and replacement object
         const query = {_id: id};
         const newTestCase = {...validData , _id: id, testPlanId:testPlanId, BOM:BOM, tests:tests};

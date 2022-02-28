@@ -3,17 +3,16 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import { testCaseColumns, testCaseRows } from '../util/tableColumns';
+import { testColumns } from '../util/tableColumns';
 import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
-export default function TestCaseLibrary(props) {
-
+export default function TestLibrary(props) {
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
-    const testCaseColumnsWithActions = testCaseColumns.concat([
+    const testColumnsWithActions = testColumns.concat([
         { 
           field: 'button', 
           flex: 1,
@@ -31,13 +30,13 @@ export default function TestCaseLibrary(props) {
 
     return(
       <>
-        <CreateNewModalFlow type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow type={flowType.TEST} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
             <CPButton 
-              text="Create New Test Case"
+              text="Create New Test"
               onClick={() => setCreateNewFlow(true)}
             />
-            <PlainTable rows={props.testCasesData} columns={testCaseColumnsWithActions} className={classes.root}/>
+            <PlainTable rows={props.testsData} columns={testColumnsWithActions} className={classes.root}/>
         </PlainScreen>
       </>
     )
@@ -45,18 +44,16 @@ export default function TestCaseLibrary(props) {
 
 export async function getServerSideProps(context) {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getLibraryTestCases`);
-    const testCasesData = await res.json().then((data) => data.map((testCase => {
+    const res = await fetch(`${process.env.HOST}/api/getLibraryTests`);
+    const testsData = await res.json().then((data) => data.map((test => {
         return {
-            "_id": testCase._id,
-            "name": (testCase.name != "")?testCase.name:"N/A",
-            "description": (testCase.description != "")?testCase.description:"N/A",
-            "percentPassed":"__%",
-            "config": (testCase.config != "")?testCase.config:"N/A",
+            "_id": test._id,
+            "name": (test.name != "")?test.name:"N/A",
+            "description": (test.description != "")?test.description:"N/A",
         }
     })));
     return {
-      props: {testCasesData}, // will be passed to the page component as props
+      props: {testsData}, // will be passed to the page component as props
     }
   }
   catch(err) {

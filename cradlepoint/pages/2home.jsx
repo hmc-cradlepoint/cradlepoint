@@ -15,6 +15,9 @@ import NavDir from '../components/navDir';
 
 export default function HomeScreen(props) {
     const router = useRouter();
+    const refreshData = ( () => {
+      router.replace(router.asPath);
+  })
     const useStyles = makeStyles(styling);
     const classes = useStyles();
     
@@ -69,7 +72,7 @@ export default function HomeScreen(props) {
   
     return(
       <div >
-        <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
+        <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <PlainScreen>
         <NavDir pages={directory} />
         <h1>Home</h1>
