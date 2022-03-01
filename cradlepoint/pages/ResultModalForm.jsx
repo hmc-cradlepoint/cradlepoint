@@ -15,7 +15,7 @@ export default function ResultModalForm(props) {
       _id: props.data?._id??new ObjectID(),
       description: props.data?.description??"",
       evidence: props.data?.evidence??"",
-      testId: props.data.testId,
+      testId: props.data?.testId,
       resultStatus: props.data?.resultStatus??"Unknown"
     }
     
@@ -82,4 +82,3 @@ ResultModalForm.propTypes = {
   onBack: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,
 }
-
