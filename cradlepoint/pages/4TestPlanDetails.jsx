@@ -29,6 +29,32 @@ export default function TestPlanDetails(props) {
 
     const { directory, dispatch } = useNavContext();
 
+    const deleteAPIRoute = {
+        BOM: "/api/deleteTestCaseBOM",
+        TEST_CASE: "/api/deleteTestCase",
+    }
+
+    async function deleteData(route, resId, parentTestPlanId) {
+        let data = {
+            "_id": resId,
+            "parentTestPlanId": parentTestPlanId,
+        }
+        try {
+            const res = await fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            console.log("RES:", res)
+        } catch (err) {
+            console.log("Error:",err)
+        }
+        refreshData();
+    }
+
+
     function handleNavigation(id) {
         const nextPage = "/5TestCaseDetails?_id=" + id;
         const payload = {title: "Test Case Details", url: nextPage};
@@ -45,7 +71,7 @@ export default function TestPlanDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete"/>
+            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_CASE, params.id, props.testPlanData._id)}}/>
         </div>
         ),
         flex: 2

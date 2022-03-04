@@ -21,6 +21,32 @@ export default function EngagementDetails(props) {
 
     const { directory, dispatch } = useNavContext();
 
+    const deleteAPIRoute = {
+        BOM: "/api/deleteTestCaseBOM",
+        TEST_CASE: "/api/deleteTestPlan",
+    }
+
+    async function deleteData(route, resId, parentEngagementId) {
+        let data = {
+            "_id": resId,
+            "parentEngagementId": parentEngagementId,
+        }
+        try {
+            const res = await fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            console.log("RES:", res)
+        } catch (err) {
+            console.log("Error:",err)
+        }
+        refreshData();
+    }
+
+
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
@@ -68,7 +94,7 @@ export default function EngagementDetails(props) {
         <>
             <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
             <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
-            <CPButton text="Delete"/>
+            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
         </>
         ),
         flex: 1.5
@@ -99,7 +125,7 @@ export default function EngagementDetails(props) {
             renderCell: () => (
             <div style={{display: "flex", flexDirection: "row"}}>
                 <CPButton text="View"/>
-                <CPButton text="Delete"/>
+                <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
             </div>
             ),
             flex: 1

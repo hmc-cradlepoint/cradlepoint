@@ -20,20 +20,24 @@ export default function TestCaseDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
-    console.log("here", props.testCase._id);
 
     const useStyles = makeStyles(styling);
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
+    
+    const deleteAPIRoute = {
+        BOM: "/api/deleteTestCaseBOM",
+        TEST: "/api/deleteTest",
+    }
 
-    async function deleteTest(resId, parentTestCaseId) {
+    async function deleteData(route, resId, parentTestCaseId) {
         let data = {
             "_id": resId,
             "parentTestCaseId": parentTestCaseId,
         }
         try {
-            const res = await fetch('/api/deleteTest', {
+            const res = await fetch(route, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -44,6 +48,7 @@ export default function TestCaseDetails(props) {
         } catch (err) {
             console.log("Error:",err)
         }
+        refreshData();
     }
 
     function handleNavigation(id) {
@@ -65,7 +70,7 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {deleteTest(params.id, props.testCase._id); refreshData()}}/>
+            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST, params.id, props.testCase._id)}}/>
         </div>
         ),
         flex: 2
@@ -79,11 +84,10 @@ export default function TestCaseDetails(props) {
             headerName: 'Actions',
             headerClassName: 'header',
             align: 'center',
-            renderCell: () => {
+            renderCell: (params) => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
-                    <CPButton text="Delete"/>
+                    <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
                     </div>
                 )
             },
