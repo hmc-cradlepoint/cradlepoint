@@ -25,6 +25,31 @@ export default function TestCaseDetails(props) {
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
+    
+    const deleteAPIRoute = {
+        BOM: "/api/deleteTestCaseBOM",
+        TEST: "/api/deleteTest",
+    }
+
+    async function deleteData(route, resId, parentTestCaseId) {
+        let data = {
+            "_id": resId,
+            "parentTestCaseId": parentTestCaseId,
+        }
+        try {
+            const res = await fetch(route, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            console.log("RES:", res)
+        } catch (err) {
+            console.log("Error:",err)
+        }
+        refreshData();
+    }
 
     function handleNavigation(id) {
         const nextPage = "/6TestDetails?_id="+id;
@@ -45,7 +70,7 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete"/>
+            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST, params.id, props.testCase._id)}}/>
         </div>
         ),
         flex: 2
@@ -59,11 +84,10 @@ export default function TestCaseDetails(props) {
             headerName: 'Actions',
             headerClassName: 'header',
             align: 'center',
-            renderCell: () => {
+            renderCell: (params) => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
-                    <CPButton text="Delete"/>
+                    <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
                     </div>
                 )
             },
