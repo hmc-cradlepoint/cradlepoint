@@ -7,7 +7,8 @@ import {CheckBoxTable} from "../../components/tables/Table"
 import {LibraryBOMColumns } from "../../util/tableColumns";
 import styling from '../../styles/tableStyling';
 
-export default function SelectDevice(props) {
+export default function SelectDeviceModal(props) {
+  console.log(props)
   const useStyles = makeStyles(styling);
   
   const classes = useStyles();
@@ -23,7 +24,7 @@ export default function SelectDevice(props) {
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
-        <h2>Add new device(s) to the summary BOM</h2>
+        <h2>Add new device(s) </h2>
         <CheckBoxTable rows={props.modalData} columns={LibraryBOMColumns} className={classes.root}
                 onSelectionModelChange={(ids)=>{updateSelection(ids)}} 
         />

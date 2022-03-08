@@ -1,87 +1,116 @@
-import React from "react";
+import React, {useState} from "react";
 import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css'
 import { makeStyles } from '@mui/styles';
 import {PlainTable, CheckBoxTable} from "../../components/tables/Table"
 import Checkbox from '@mui/material/Checkbox';
-import { pink } from '@mui/material/colors';
-
 import { Field, Formik} from 'formik';
-import { BOMColumns, BOMRows, LibraryBOMColumns } from "../../util/tableColumns";
+import { LibraryBOMColumns } from "../../util/tableColumns";
+import styling from '../../styles/tableStyling';
+import { useRouter } from 'next/router'
 
-export default function SelectQuantity(props) {
-  const useStyles = makeStyles({
-    root: {
-      '& .header': {
-        backgroundColor: '#FCAC1C',
-      },
-      '& .MuiDataGrid-iconSeparator': {
-        display: 'None'
-      },
-      '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-        borderRight: `2px solid #f0f0f0`,
-      },
-
-    },
-  });
-
-const classes = useStyles();
-
-const BOMColumnsWithFields = LibraryBOMColumns.concat([
-    { 
-      field: 'quantity', 
-      flex: 1,
-      headerName: 'Quantity',
-      headerClassName: 'header',
-      align: 'center',
-      renderCell: () => {
-          return (
-              <Formik>
-                  <Field name={'codeVersion'} value={1}/>
-              </Formik>
-          )
+export default function SelectQuantityModal(props) {
+  console.log(props)
+  const useStyles = makeStyles(styling);
+  const classes = useStyles();
+  const router = useRouter();
+  // console.log(props.selectedRowData);
+  function initalizeData(){
+    let initialData = [];
+    for (let i = 0; i<props.selectedRowData.length;i++){
+      let row = props.selectedRowData[i];
+      row["quantity"] = 1;
+      row["optional"] = false;
+      initialData.push(row);
+      // console.log("initialData", initialData)
+    }
+    console.log("initializeData")
+    return initialData;
+  }
+  
+  // console.log("initialData", initialData)
+  // const initialData = [];
+  const [data, setData] = useState(initalizeData());
+  // let data = props.selectedRowData;
+  
+  console.log("data", data)
+  function handleCommit(e){
+    // TODO: need to error check that input is an integer greater than 0
+    console.log("handle commit")
+    console.log(e);
+    const array = data.map(r => {
+      if (r._id===e.id){
+        return {...r,[e.field]: e.value};
+      } else{
+        return {... r};
       }
-    },
-    { 
-        field: 'codeVersion', 
-        flex: 1,
-        headerName: 'Code Version',
-        headerClassName: 'header',
-        align: 'center',
-        renderCell: () => {
-            return (
-                <Formik>
-                    <Field name={'codeVersion'} value={1}/>
-                </Formik>
-            )
-        }
-    },
-    { 
-        field: 'optional', 
-        flex: 1,
-        headerName: 'Optional?',
-        headerClassName: 'header',
-        align: 'center',
-        renderCell: () => {
-            return (
-                <Checkbox 
-                defaultChecked
-                style={{color:'#FCAC1C'}}
-                />
-            )
-        }
-    }]);
+    })
+    setData(array);
+    console.log("new data", data)
+  }
+
+  async function handleSubmitData() {
+    for (let i =0; i<data.length; i++){
+      try{
+        // TODO: make add new device to a BOM api endpoint
+        const res = await fetch('/api/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data[i]),
+        })
+      } catch (err){
+        console.log("Error:",err)
+      }
+    }
+    
+    props.onBack();
+    
+  }
+
 
   return (
-    
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
-        <h2>Add new device(s) to the summary BOM</h2>
-        <PlainTable rows={props.selectedRowData} columns={BOMColumnsWithFields} className={classes.root} 
+        <h2>Enter quantity for each device and whether they are optional</h2>
+        {/* <PlainTable rows={props.selectedRowData} columns={BOMColumnsWithFields} className={classes.root} /> */}
+        <PlainTable rows={data} 
+        columns={LibraryBOMColumns.concat([
+          { 
+            field: 'quantity', 
+            flex: 1,
+            headerName: 'Quantity',
+            headerClassName: 'header',
+            align: 'center',
+            editable: true,
+
+          },
+          // TODO: to be implemented
+          // { 
+          //   field: 'optional', 
+          //   flex: 1,
+          //   headerName: 'Optional?',
+          //   headerClassName: 'editableHeader',
+          //   align: 'center',
+          //   renderCell: (e) => {
+          //     return (
+          //         <Checkbox 
+          //         style={{color:'#FCAC1C'}}
+          //         onChange={handleCommit}
+          //         />
+          //     )
+          //   }
+          // },
+        ])} 
+        className={classes.root} 
+        onCellEditCommit={handleCommit}
         />
+        
+        
         <CPButton text='Back' onClick={props.onBack}/>
-        <CPButton text='Add' />
+        <CPButton text='Add' onClick={handleSubmitData}/>
       </Modal>
     </>
   );

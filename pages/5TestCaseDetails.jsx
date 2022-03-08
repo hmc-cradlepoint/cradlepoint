@@ -117,6 +117,7 @@ export default function TestCaseDetails(props) {
                 <div className={styles.tableButtonRow}>
                     <h2>Bill of Materials</h2>
                     <CPButton text="Add New"
+                        // onClick={()=> {console.log("test")}}
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
@@ -169,6 +170,7 @@ export default function TestCaseDetails(props) {
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
               onBack={()=> setSelectDeviceModalOpen(false)}
+              modalData={props.libraryDevices}
               selectRows={(sRows) => setSelectedRows(sRows)}
             />
             
@@ -210,7 +212,7 @@ export async function getServerSideProps(context) {
         const tests = await (await fetch(`${process.env.HOST}/api/getTests?testCaseId=${context.query._id}`)).json()
         // TODO: getLibraryTests api
         // const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
-        
+        const libraryDevices = await(await fetch(`${process.env.HOST}/api/getAllDevices`)).json()
         if (testCase.len == 0) {
             return { notFound: true }
         }
@@ -224,7 +226,8 @@ export async function getServerSideProps(context) {
             props: {
                 testCase: testCase[0],
                 tests,
-                allTests: []
+                allTests: [],
+                libraryDevices
             },
         }
     }

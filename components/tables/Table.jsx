@@ -19,6 +19,7 @@ function PlainTable(props) {
               rowsPerPageOptions={[5]}
               onSelectionModelChange={props.onSelectionModelChange}
               getRowId = {props.getRowId}
+              onCellEditCommit = {props.onCellEditCommit}
             />
         </div>
     )
