@@ -15,24 +15,22 @@ export default function SelectQuantityModal(props) {
   const useStyles = makeStyles(styling);
   const classes = useStyles();
   const router = useRouter();
-  // console.log(props.selectedRowData);
-  function initalizeData(){
-    let initialData = [];
-    for (let i = 0; i<props.selectedRowData.length;i++){
-      let row = props.selectedRowData[i];
+  console.log("initialData", props.selectedRows);
+
+  function initializeData(){
+    let tempData = [];
+    for (let i = 0; i<props.selectedRows.length;i++){
+      let row = props.selectedRows[i];
       row["quantity"] = 1;
       row["optional"] = false;
-      initialData.push(row);
+      tempData.push(row);
       // console.log("initialData", initialData)
     }
     console.log("initializeData")
-    return initialData;
+    return tempData;
   }
   
-  // console.log("initialData", initialData)
-  // const initialData = [];
-  const [data, setData] = useState(initalizeData());
-  // let data = props.selectedRowData;
+  let data = initializeData();
   
   console.log("data", data)
   function handleCommit(e){
@@ -46,7 +44,7 @@ export default function SelectQuantityModal(props) {
         return {... r};
       }
     })
-    setData(array);
+    data = array;
     console.log("new data", data)
   }
 
@@ -75,13 +73,13 @@ export default function SelectQuantityModal(props) {
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
         <h2>Enter quantity for each device and whether they are optional</h2>
-        {/* <PlainTable rows={props.selectedRowData} columns={BOMColumnsWithFields} className={classes.root} /> */}
+        {/* <PlainTable rows={props.selectedRows} columns={BOMColumnsWithFields} className={classes.root} /> */}
         <PlainTable rows={data} 
         columns={LibraryBOMColumns.concat([
           { 
             field: 'quantity', 
             flex: 1,
-            headerName: 'Quantity',
+            headerName: 'Quantity (double-click to edit)',
             headerClassName: 'header',
             align: 'center',
             editable: true,

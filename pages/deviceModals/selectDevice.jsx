@@ -28,9 +28,9 @@ export default function SelectDeviceModal(props) {
         <CheckBoxTable rows={props.modalData} columns={LibraryBOMColumns} className={classes.root}
                 onSelectionModelChange={(ids)=>{updateSelection(ids)}} 
         />
-        <CPButton text='Cancel' onClick={props.onBack}/>
+        <CPButton text='Cancel' onClick={()=>{props.onBack();}}/>
         <CPButton text='Next' onClick={()=>{
-          props.selectRows(selectedRowData);
+          props.setSelectedRows(selectedRowData);
           props.onClickNext("select_quantity");
           }
           }/>

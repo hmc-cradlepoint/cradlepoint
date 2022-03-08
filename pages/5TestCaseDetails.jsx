@@ -160,7 +160,7 @@ export default function TestCaseDetails(props) {
         )
     }
 
-    const [selectedRows, setSelectedRows] = useState({});
+    const [selectedRows, setSelectedRows] = useState([]);
     
     return (
         <div>
@@ -171,12 +171,12 @@ export default function TestCaseDetails(props) {
               onClickNext={updateModal}
               onBack={()=> setSelectDeviceModalOpen(false)}
               modalData={props.libraryDevices}
-              selectRows={(sRows) => setSelectedRows(sRows)}
+              setSelectedRows={setSelectedRows}
             />
             
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
-              selectedRowData={selectedRows}
+              selectedRows={selectedRows}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
             />
