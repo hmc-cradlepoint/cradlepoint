@@ -180,6 +180,9 @@ export default function TestCaseDetails(props) {
               testCaseId={props.testCase._id}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
+              onClose={()=> {setSelectDeviceModalOpen(false);
+                            setSelectQuantityModalOpen(false);
+                            setSelectedRows([]);}}
             />
         
         <SplitScreen

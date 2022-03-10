@@ -11,11 +11,10 @@ import styling from '../../styles/tableStyling';
 import { useRouter } from 'next/router'
 
 export default function SelectQuantityModal(props) {
-  console.log(props)
   const useStyles = makeStyles(styling);
   const classes = useStyles();
   const router = useRouter();
-  console.log("testCaseId", props.testCaseId)
+
   function initializeData(){
     let tempData = [];
     for (let i = 0; i<props.selectedRows.length;i++){
@@ -63,7 +62,12 @@ export default function SelectQuantityModal(props) {
     } catch (err){
       console.log("Error:",err)
     }
-    // props.onBack();
+
+    props.onClose();
+    // if (props.modalFormType==modalFormType.NEW){
+    //   data = [];
+    // }
+    data = [];
     
   }
 
