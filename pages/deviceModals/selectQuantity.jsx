@@ -15,28 +15,24 @@ export default function SelectQuantityModal(props) {
   const useStyles = makeStyles(styling);
   const classes = useStyles();
   const router = useRouter();
-  console.log("initialData", props.selectedRows);
-
+  console.log("testCaseId", props.testCaseId)
   function initializeData(){
     let tempData = [];
     for (let i = 0; i<props.selectedRows.length;i++){
       let row = props.selectedRows[i];
       row["quantity"] = 1;
-      row["optional"] = false;
+      row["isOptional"] = false;
+      row["deviceId"] = row["_id"];
       tempData.push(row);
       // console.log("initialData", initialData)
     }
-    console.log("initializeData")
     return tempData;
   }
   
   let data = initializeData();
   
-  console.log("data", data)
   function handleCommit(e){
     // TODO: need to error check that input is an integer greater than 0
-    console.log("handle commit")
-    console.log(e);
     const array = data.map(r => {
       if (r._id===e.id){
         return {...r,[e.field]: e.value};
@@ -45,26 +41,29 @@ export default function SelectQuantityModal(props) {
       }
     })
     data = array;
-    console.log("new data", data)
   }
 
+  // TODO: should check for if device is already in BOM in 
   async function handleSubmitData() {
-    for (let i =0; i<data.length; i++){
-      try{
-        // TODO: make add new device to a BOM api endpoint
-        const res = await fetch('/api/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data[i]),
-        })
-      } catch (err){
-        console.log("Error:",err)
-      }
+    data = data.map(d => (({deviceId, quantity, isOptional}) => ({deviceId, quantity, isOptional}))(d));
+  
+    let newData = {
+      "devices": data,
+      "testCaseId": props.testCaseId
     }
-    
-    props.onBack();
+  
+    try{
+      const res = await fetch('/api/addDeviceToBOM', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+    } catch (err){
+      console.log("Error:",err)
+    }
+    // props.onBack();
     
   }
 

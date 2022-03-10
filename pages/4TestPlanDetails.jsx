@@ -178,7 +178,7 @@ export default function TestPlanDetails(props) {
         <SelectQuantityModal
             modalOpen={selectQuantityModalOpen} 
             onClickNext={updateModal}
-            selectedRowData={selectedRows}
+            selectedRows={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
         <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />

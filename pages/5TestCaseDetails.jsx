@@ -177,6 +177,7 @@ export default function TestCaseDetails(props) {
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
               selectedRows={selectedRows}
+              testCaseId={props.testCase._id}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
             />
