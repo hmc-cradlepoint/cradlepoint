@@ -4,6 +4,7 @@ import {testPlanSchema} from "../schemas/testPlanSchema";
 import {engagementSchema} from "../schemas/engagementSchema";
 import connectToDb from "./mongodb";
 import { resultSchema } from "../schemas/resultSchema";
+import { bomDeviceSchema } from "../schemas/bomDeviceSchema";
 const { ObjectId } = require('mongodb');
 
 export async function addResult(data) {
@@ -183,4 +184,33 @@ export async function addEngagement(data) {
     } catch (err) {
         throw err
     }
+}
+
+
+export async function addDeviceToBOM(data) {
+    try {
+        const client = await connectToDb();
+        if (ObjectId.isValid(data.testCaseId)) {
+            const testCaseId = ObjectId(data.testCaseId);
+            for (let i=0; i<data.devices.length;i++){
+                let device = data.devices[i];
+                const valid = await bomDeviceSchema.isValid(device);
+                if (valid){
+                    device.deviceId = ObjectId(device.deviceId);
+                    // Push a new device into BOM of the corresponding test case
+                    const result = await client.collection('testCases').updateOne(
+                        { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
+                        { $push: { BOM: device}} // arr will be array of objects
+                    );
+                } else{
+                    throw new Error("device not valid ");
+                }
+            }
+            return "success";
+        } else {
+            throw new Error('Test case id is invalid');
+        }
+      } catch (err) {
+        throw err;
+      }
 }

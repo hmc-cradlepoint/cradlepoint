@@ -182,7 +182,8 @@ export default function TestCaseDetails(props) {
               onBack={()=> setSelectQuantityModalOpen(false)}
               onClose={()=> {setSelectDeviceModalOpen(false);
                             setSelectQuantityModalOpen(false);
-                            setSelectedRows([]);}}
+                            setSelectedRows([]);
+                            refreshData();}}
             />
         
         <SplitScreen
