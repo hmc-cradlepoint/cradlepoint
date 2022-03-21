@@ -2,10 +2,23 @@
 // Table select 1
 // Table select multiple
 // Table display only
-import { DataGrid } from '@mui/x-data-grid';
-import { makeStyles } from '@mui/styles';
+import { DataGrid} from '@mui/x-data-grid';
+import { makeStyles, styled } from '@mui/styles';
 import React from 'react';
+import { customCheckbox } from '../../styles/tableStyling';
 
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .header': {
+    backgroundColor: '#FCAC1C',
+  },
+  '& .MuiDataGrid-iconSeparator': {
+    display: 'None'
+  },
+  '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+    borderRight: `2px solid #f0f0f0`,
+  },
+  ...customCheckbox,
+}));
 
 
 // display only
@@ -34,12 +47,12 @@ PlainTable.defaultProps = {
 function CheckBoxTable(props) {
     return(
       <div style={{ height: 400, width: '100%' }} className={props.className}>
-        <DataGrid
+        <StyledDataGrid
           rows={props.rows}
           columns={props.columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
+          checkboxSelection={true}
           onSelectionModelChange={props.onSelectionModelChange}
           getRowId = {(row) => row._id}
         />
@@ -48,5 +61,14 @@ function CheckBoxTable(props) {
 }
 
 export {PlainTable, CheckBoxTable}
+
+
+
+
+
+
+
+
+  
 
 

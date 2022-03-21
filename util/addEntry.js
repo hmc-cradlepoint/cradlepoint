@@ -186,7 +186,7 @@ export async function addEngagement(data) {
     }
 }
 
-
+// TODO: need to update  corresponding test plan's summary BOM
 export async function addDeviceToBOM(data) {
     try {
         const client = await connectToDb();
