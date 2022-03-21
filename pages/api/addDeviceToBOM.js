@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   
 
     // Assume that the device has not been added to the BOM before
-    
     try {
       const data = req.body;
       console.log("data in api", data)
@@ -23,7 +22,6 @@ export default async function handler(req, res) {
             const valid = await bomDeviceSchema.isValid(device);
             if (valid){
               device.deviceId = ObjectId(device.deviceId);
-              // console.log("device in for loop", device);
               // Push a new device into BOM of the corresponding test case
               const result = await client.collection('testCases').updateOne(
                 { "_id": testCaseId }, // query matching , refId should be "ObjectId" type

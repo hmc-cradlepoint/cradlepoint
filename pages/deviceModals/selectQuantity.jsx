@@ -9,6 +9,7 @@ import { Field, Formik} from 'formik';
 import { LibraryBOMColumns } from "../../util/tableColumns";
 import styling from '../../styles/tableStyling';
 import { useRouter } from 'next/router'
+import { render } from "react-dom";
 
 export default function SelectQuantityModal(props) {
   const useStyles = makeStyles(styling);
@@ -23,7 +24,6 @@ export default function SelectQuantityModal(props) {
       row["isOptional"] = false;
       row["deviceId"] = row["_id"];
       tempData.push(row);
-      // console.log("initialData", initialData)
     }
     return tempData;
   }
@@ -32,17 +32,18 @@ export default function SelectQuantityModal(props) {
   
   function handleCommit(e){
     // TODO: need to error check that input is an integer greater than 0
+    
     const array = data.map(r => {
-      if (r._id===e.id){
+      if (r._id==e.id){
         return {...r,[e.field]: e.value};
       } else{
         return {... r};
       }
     })
     data = array;
+    console.log(data);
   }
 
-  // TODO: should check for if device is already in BOM in 
   async function handleSubmitData() {
     data = data.map(d => (({deviceId, quantity, isOptional}) => ({deviceId, quantity, isOptional}))(d));
   
@@ -86,24 +87,25 @@ export default function SelectQuantityModal(props) {
             headerClassName: 'header',
             align: 'center',
             editable: true,
-
           },
-          // TODO: to be implemented
-          // { 
-          //   field: 'optional', 
-          //   flex: 1,
-          //   headerName: 'Optional?',
-          //   headerClassName: 'editableHeader',
-          //   align: 'center',
-          //   renderCell: (e) => {
-          //     return (
-          //         <Checkbox 
-          //         style={{color:'#FCAC1C'}}
-          //         onChange={handleCommit}
-          //         />
-          //     )
-          //   }
-          // },
+          // TODO: to be implemented (totally untested)!!!!
+          { 
+            field: 'optional', 
+            flex: 1,
+            headerName: 'Optional?',
+            headerClassName: 'header',
+            align: 'center',
+            renderCell: (e) => {
+              return (
+                  <Checkbox 
+                  style={{color:'#FCAC1C'}}
+                  onChange={() => handleCommit({"id":e.id, "field": "isOptional", "value": !e.row.isOptional})}
+                  checked={data.filter(r => (r._id==e.id))[0]?.isOptional??false}
+                  // checked={e.row.isOptional}
+                  />
+              )
+            }
+          },
         ])} 
         className={classes.root} 
         onCellEditCommit={handleCommit}
