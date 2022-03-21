@@ -8,7 +8,6 @@ import {LibraryBOMColumns } from "../../util/tableColumns";
 import styling from '../../styles/tableStyling';
 
 
-// TODO: checkbox color should be changed to orange
 export default function SelectDeviceModal(props) {
   console.log(props)
   const useStyles = makeStyles(styling);
