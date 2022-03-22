@@ -16,6 +16,7 @@ export default function SelectDeviceModal(props) {
   console.log(selectedIDs);
 
   function updateSelection(ids){
+    selectedIDs = new Set();
     ids.forEach(id => selectedIDs.add(id));
     console.log(selectedIDs);
   }
