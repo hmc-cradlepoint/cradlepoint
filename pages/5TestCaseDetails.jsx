@@ -15,6 +15,7 @@ import styling from '../styles/tableStyling';
 import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
 
+// TODO: allow for editing BOM
 export default function TestCaseDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
