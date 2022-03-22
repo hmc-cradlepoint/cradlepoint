@@ -7,12 +7,9 @@ import {CheckBoxTable} from "../../components/tables/Table"
 import {LibraryBOMColumns } from "../../util/tableColumns";
 import styling from '../../styles/tableStyling';
 
-
 export default function SelectDeviceModal(props) {
-  console.log(props)
-  const useStyles = makeStyles(styling);
-  
-  const classes = useStyles();
+  const useStyles = makeStyles({styling});
+  const classes = useStyles(props);
 
 
   let selectedIDs = new Set(props.selectedIDs)

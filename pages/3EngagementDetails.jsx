@@ -47,7 +47,7 @@ export default function EngagementDetails(props) {
     }
 
 
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const [editModalFlow, setEditModalFlow] = useState(false);

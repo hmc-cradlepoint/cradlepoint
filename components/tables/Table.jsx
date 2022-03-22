@@ -3,11 +3,11 @@
 // Table select multiple
 // Table display only
 import { DataGrid} from '@mui/x-data-grid';
-import { makeStyles, styled } from '@mui/styles';
+import { styled } from '@mui/styles';
 import React from 'react';
 import { customCheckbox } from '../../styles/tableStyling';
 
-const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+const StyledDataGrid = styled(DataGrid)(() => ({
   '& .header': {
     backgroundColor: '#FCAC1C',
   },
@@ -19,6 +19,7 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   },
   ...customCheckbox,
 }));
+
 
 
 // display only
@@ -52,7 +53,7 @@ function CheckBoxTable(props) {
           columns={props.columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection={true}
+          checkboxSelection
           onSelectionModelChange={props.onSelectionModelChange}
           getRowId = {(row) => row._id}
         />

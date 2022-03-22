@@ -24,7 +24,7 @@ export default function TestPlanDetails(props) {
 
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();

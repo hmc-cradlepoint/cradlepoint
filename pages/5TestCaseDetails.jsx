@@ -21,7 +21,7 @@ export default function TestCaseDetails(props) {
         router.replace(router.asPath);
     })
 
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
@@ -131,7 +131,6 @@ export default function TestCaseDetails(props) {
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
 
     function updateModal(modalType){
-        console.log("updateModal is called", modalType)
       switch(modalType){
         case "select_device":
             setSelectDeviceModalOpen(true)

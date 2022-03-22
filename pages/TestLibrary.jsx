@@ -9,7 +9,7 @@ import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function TestLibrary(props) {
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const testColumnsWithActions = testColumns.concat([

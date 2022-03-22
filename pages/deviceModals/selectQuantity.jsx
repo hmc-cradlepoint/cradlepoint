@@ -13,7 +13,7 @@ import { render } from "react-dom";
 
 // TODO: quantity should be casted to a number somewhere (if edited, it is now automatically a string)
 export default function SelectQuantityModal(props) {
-  const useStyles = makeStyles(styling);
+  const useStyles = makeStyles({styling});
   const classes = useStyles();
   const router = useRouter();
   const initialData = props.selectedRows;
