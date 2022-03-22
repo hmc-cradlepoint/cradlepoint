@@ -16,11 +16,13 @@ export default function SelectQuantityModal(props) {
   const useStyles = makeStyles(styling);
   const classes = useStyles();
   const router = useRouter();
+  const initialData = props.selectedRows;
 
+  console.log(props.selectedRows)
   function initializeData(){
     let tempData = [];
-    for (let i = 0; i<props.selectedRows.length;i++){
-      let row = props.selectedRows[i];
+    for (let i = 0; i<initialData.length;i++){
+      let row = initialData[i];
       row["quantity"] = 1;
       row["isOptional"] = false;
       row["deviceId"] = row["_id"];

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
-import { PlainTable, CheckBoxTable} from '../components/tables/Table';
+import { PlainTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
@@ -25,6 +25,7 @@ export default function TestCaseDetails(props) {
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
+    const [selectedIDs, setSelectedIDs] = useState(new Set());
     
     const deleteAPIRoute = {
         BOM: "/api/deleteTestCaseBOM",
@@ -128,9 +129,9 @@ export default function TestCaseDetails(props) {
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    
-    // let selectedRowData = [];
+
     function updateModal(modalType){
+        console.log("updateModal is called", modalType)
       switch(modalType){
         case "select_device":
             setSelectDeviceModalOpen(true)
@@ -160,7 +161,7 @@ export default function TestCaseDetails(props) {
         )
     }
 
-    const [selectedRows, setSelectedRows] = useState([]);
+    
     
     return (
         <div>
@@ -169,20 +170,22 @@ export default function TestCaseDetails(props) {
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
-              onBack={()=> setSelectDeviceModalOpen(false)}
+              onBack={()=> {setSelectDeviceModalOpen(false);}}
               modalData={props.libraryDevices}
-              setSelectedRows={setSelectedRows}
+              selectedIDs={selectedIDs}
+              setSelectedIDs={setSelectedIDs}
             />
             
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
-              selectedRows={selectedRows}
+              selectedRows={props.libraryDevices.filter((row) => 
+                                selectedIDs.has(row._id.toString()))}
               testCaseId={props.testCase._id}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
               onClose={()=> {setSelectDeviceModalOpen(false);
                             setSelectQuantityModalOpen(false);
-                            setSelectedRows([]);
+                            setSelectedIDs(new Set());
                             refreshData();}}
             />
         
