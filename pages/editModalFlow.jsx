@@ -44,6 +44,8 @@ export default function EditModalFlow(props) {
                                 data={props.data} 
                                 isOpen={props.modalOpen} 
                                 onBack={props.onClose} />
+      default:
+        return null
       }
   }
     return (
