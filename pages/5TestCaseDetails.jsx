@@ -27,7 +27,7 @@ export default function TestCaseDetails(props) {
 
     const { directory, dispatch } = useNavContext();
     const [selectedIDs, setSelectedIDs] = useState(new Set());
-    
+   
     const deleteAPIRoute = {
         BOM: "/api/deleteTestCaseBOM",
         TEST: "/api/deleteTest",
@@ -118,10 +118,13 @@ export default function TestCaseDetails(props) {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Bill of Materials</h2>
-                    <CPButton text="Add New"
-                        // onClick={()=> {console.log("test")}}
-                        onClick={() => {updateModal("select_device")}}
-                    />
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        <CPButton text="Add New"
+                            onClick={() => {updateModal("select_device")}}
+                        />
+                        <CPButton text="Edit" onClick={() => {
+                            updateModal("edit")}} />
+                    </div>
                 </div>
                 <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
@@ -130,13 +133,19 @@ export default function TestCaseDetails(props) {
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
+    const [bomEditMode, setBomEditMode] = useState(false);
 
-    function updateModal(modalType){
+    async function updateModal(modalType){
       switch(modalType){
         case "select_device":
             setSelectDeviceModalOpen(true)
             break;
         case "select_quantity":
+            setBomEditMode(false);
+            setSelectQuantityModalOpen(true)
+            break;
+        case "edit":
+            setBomEditMode(true);
             setSelectQuantityModalOpen(true)
             break;
       }
@@ -181,6 +190,9 @@ export default function TestCaseDetails(props) {
               selectedRows={props.libraryDevices.filter((row) => 
                                 selectedIDs.has(row._id.toString()))}
               testCaseId={props.testCase._id}
+              editData={props.testCase.BOM}
+              editMode={bomEditMode}
+              libraryDevices={props.libraryDevices}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
               onClose={()=> {setSelectDeviceModalOpen(false);

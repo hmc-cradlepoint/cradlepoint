@@ -18,26 +18,30 @@ export default function SelectQuantityModal(props) {
   const useStyles = makeStyles({styling});
   const classes = useStyles();
   const router = useRouter();
-  const initialData = props.selectedRows;
-
-  console.log(props.selectedRows)
-  function initializeData(){
-    let tempData = [];
-    for (let i = 0; i<initialData.length;i++){
-      let row = initialData[i];
-      row["quantity"] = 1;
-      row["isOptional"] = false;
-      row["deviceId"] = row["_id"];
-      tempData.push(row);
-    }
-    return tempData;
+  
+  function formatNewData(row){
+    row["quantity"] = 1;
+    row["isOptional"] = false;
+    row["deviceId"] = row["_id"];
+    return row
   }
-  
-  let data = initializeData();
-  
+
+  function formatEditData(row){
+    row["_id"] = row["deviceId"];
+    let deviceInfo =  props.libraryDevices.filter(r => (r._id==row["_id"]))[0];
+    row["deviceName"] = deviceInfo.deviceName;
+    row["deviceType"] = deviceInfo.deviceType;
+    row["codeVersion"] = deviceInfo.codeVersion;
+    row["SKU"] = deviceInfo.SKU;
+    return row
+  }
+
+
+  let data = (props.editMode)?props.editData.map(r => formatEditData(r)):
+                          props.selectedRows.map(r => formatNewData(r));
+  console.log(data);
+
   function handleCommit(e){
-    // TODO: need to error check that input is an integer greater than 0
-    
     const array = data.map(r => {
       if (r._id==e.id){
         return {...r,[e.field]: e.value};
@@ -57,9 +61,18 @@ export default function SelectQuantityModal(props) {
       "testCaseId": props.testCaseId
     }
   
+    // TODO: unimplemented endpoint
+    let endPoint = '/api/editBOM';
+    let method = 'PUT';
+
+    if (!props.editMode){
+      endPoint = '/api/addDeviceToBOM';
+      method = 'POST';
+    } 
+
     try{
-      const res = await fetch('/api/addDeviceToBOM', {
-        method: 'POST',
+      const res = await fetch(endPoint, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -70,10 +83,6 @@ export default function SelectQuantityModal(props) {
     }
 
     props.onClose();
-    // if (props.modalFormType==modalFormType.NEW){
-    //   data = [];
-    // }
-    data = [];
     
   }
 
