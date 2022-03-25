@@ -10,6 +10,8 @@ import { LibraryBOMColumns } from "../../util/tableColumns";
 import styling from '../../styles/tableStyling';
 import { useRouter } from 'next/router'
 import { render } from "react-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // TODO: quantity should be casted to a number somewhere (if edited, it is now automatically a string)
 export default function SelectQuantityModal(props) {
@@ -75,10 +77,19 @@ export default function SelectQuantityModal(props) {
     
   }
 
-
+  const notify = () => toast("Quantity must be greater than 0");
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
+        <ToastContainer position="top-center"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover/>
         <h2>Enter quantity for each device and whether they are optional</h2>
         {/* <PlainTable rows={props.selectedRows} columns={BOMColumnsWithFields} className={classes.root} /> */}
         <PlainTable rows={data} 
@@ -90,8 +101,8 @@ export default function SelectQuantityModal(props) {
             headerClassName: 'header',
             align: 'center',
             editable: true,
+            type: "number"
           },
-          // TODO: to be implemented (totally untested)!!!!
           { 
             field: 'optional', 
             flex: 1,
@@ -111,7 +122,18 @@ export default function SelectQuantityModal(props) {
           },
         ])} 
         className={classes.root} 
-        onCellEditCommit={handleCommit}
+        onCellEditCommit={(e) => {
+          console.log(e.field, e.value);
+          if (e.field==="quantity"){
+            const hasError = e.value <= 0;
+            if (hasError) { 
+              notify(); 
+            } else {
+              handleCommit(e);
+            }
+          }
+          
+        }}
         />
         
         
