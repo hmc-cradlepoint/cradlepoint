@@ -77,21 +77,21 @@ export default function SelectQuantityModal(props) {
     
   }
 
-  const notify = () => toast("Quantity must be greater than 0");
+  const notify = () => toast.error("Quantity must be at least 1", {
+                      position: "top-center",
+                      autoClose: 7000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined});
+
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
-        <ToastContainer position="top-center"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover/>
-        <h2>Enter quantity for each device and whether they are optional</h2>
-        {/* <PlainTable rows={props.selectedRows} columns={BOMColumnsWithFields} className={classes.root} /> */}
+        {/* Pop-up that warns user */}
+        <ToastContainer />
+        <h2>Enter quantity (double click on cell) and check box if optional</h2>
         <PlainTable rows={data} 
         columns={LibraryBOMColumns.concat([
           { 
@@ -101,7 +101,7 @@ export default function SelectQuantityModal(props) {
             headerClassName: 'header',
             align: 'center',
             editable: true,
-            type: "number"
+            type: "number",
           },
           { 
             field: 'optional', 
@@ -115,7 +115,6 @@ export default function SelectQuantityModal(props) {
                   style={{color:'#FCAC1C'}}
                   onChange={() => handleCommit({"id":e.id, "field": "isOptional", "value": !e.row.isOptional})}
                   checked={data.filter(r => (r._id==e.id))[0]?.isOptional??false}
-                  // checked={e.row.isOptional}
                   />
               )
             }
