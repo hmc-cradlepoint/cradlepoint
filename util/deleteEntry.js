@@ -40,7 +40,6 @@ export async function deleteTest(data) {
 }
 
 export async function deleteTestCase(data) {
-    // TODO: parent not deleting
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
@@ -49,7 +48,7 @@ export async function deleteTestCase(data) {
         // Delete result id from parent 'testPlan' field
         await client.collection('testPlan').updateOne(
             { "_id": parentId },
-            { $pull: {tests: id} }
+            { $pull: {testCases: id} }
         );
         return result;
     } catch (err) {
@@ -58,17 +57,11 @@ export async function deleteTestCase(data) {
 }
 
 export async function deleteTestPlan(data) {
-    // TODO: parent not deleting
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
-        const parentId = ObjectId(data.parentEngagementId);
+        // parent engagement does not keep track of archived test plans, so just delete from test plan collection.
         const result = await client.collection('testPlan').deleteOne({"_id": id});
-        // Delete result id from parent 'engagement' field
-        await client.collection('engagements').updateOne(
-            { "_id": parentId },
-            { $pull: {tests: id} }
-        );
         return result;
     } catch (err) {
         throw err;
