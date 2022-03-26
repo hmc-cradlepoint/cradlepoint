@@ -38,8 +38,8 @@ export default function ResultModalForm(props) {
         "testId": data.testId,
         "resultStatus": data.resultStatus,
       }
-      const endPoint = '/api/editResult';
-      const method = 'PUT';
+      let endPoint = '/api/editResult';
+      let method = 'PUT';
       if (props.modalFormType==modalFormType.NEW){
         endPoint = '/api/addNewResult';
         method = 'POST';
