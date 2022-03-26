@@ -19,18 +19,24 @@ export default function SelectQuantityModal(props) {
   const classes = useStyles();
   const router = useRouter();
   
-  function formatNewData(row){
-    row["quantity"] = 1;
-    row["isOptional"] = false;
+  function formatData(row){
     row["deviceId"] = row["_id"];
+    if (props.editMode){
+      let rowInfo = props.editData.filter((r) => r.deviceId.toString()==row.deviceId)[0];
+      row["quantity"] = rowInfo.quantity;
+      row["isOptional"] = rowInfo.isOptional;
+    } else {
+      row["quantity"] = 1;
+      row["isOptional"] = false;
+    } 
     return row
   }
+
 
   let data = [];
   if (props.selectedIDs !=undefined & props.libraryDevices !=undefined){
     let selectedRows = props.libraryDevices.filter((row) => props.selectedIDs.has(row._id.toString()));
-    console.log(selectedRows)
-    data = selectedRows.map(r => formatNewData(r));
+    data = selectedRows.map(r => formatData(r));
   }
   
   console.log("data ", data);
@@ -55,15 +61,14 @@ export default function SelectQuantityModal(props) {
       "testCaseId": props.testCaseId
     }
   
-    // TODO: unimplemented endpoint
-    let endPoint = '/api/editBOM';
+    let endPoint = '/api/editDeviceInBOM';
     let method = 'PUT';
 
     if (!props.editMode){
       endPoint = '/api/addDeviceToBOM';
       method = 'POST';
     } 
-
+    console.log(endPoint, method, newData)
     try{
       const res = await fetch(endPoint, {
         method: method,
@@ -72,10 +77,11 @@ export default function SelectQuantityModal(props) {
         },
         body: JSON.stringify(newData),
       })
+      console.log(res);
     } catch (err){
       console.log("Error:",err)
     }
-
+    
     props.onClose();
     
   }
