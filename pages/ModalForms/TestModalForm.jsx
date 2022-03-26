@@ -36,8 +36,8 @@ export default function TestModalForm(props) {
       "resultStatus": data.resultStatus
     }
 
-    const endPoint = '/api/editTest';
-    const method = 'PUT';
+    let endPoint = '/api/editTest';
+    let method = 'PUT';
     if (props.modalFormType==modalFormType.NEW){
       endPoint = '/api/addNewTest';
       method = 'POST';
