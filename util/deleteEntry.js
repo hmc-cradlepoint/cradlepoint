@@ -69,7 +69,15 @@ export async function deleteTestPlan(data) {
 }
 
 export async function deleteEngagement(data) {
-    // TODO
+    try {
+        const client = await connectToDb();
+        const id = ObjectId(data._id);
+        // delete engagement from engagements collection
+        const result = await client.collection('engagements').deleteOne({"_id": id});
+        return result;
+    } catch (err) {
+        throw err;
+    }
 }
 
 // BOMs
