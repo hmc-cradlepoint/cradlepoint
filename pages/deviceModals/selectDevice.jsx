@@ -11,15 +11,13 @@ export default function SelectDeviceModal(props) {
   const useStyles = makeStyles({styling});
   const classes = useStyles(props);
 
-
   let selectedIDs = new Set(props.selectedIDs)
-  console.log(selectedIDs);
 
   function updateSelection(ids){
     selectedIDs = new Set();
     ids.forEach(id => selectedIDs.add(id));
-    console.log(selectedIDs);
   }
+  
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>

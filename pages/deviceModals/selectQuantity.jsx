@@ -68,7 +68,7 @@ export default function SelectQuantityModal(props) {
       endPoint = '/api/addDeviceToBOM';
       method = 'POST';
     } 
-    console.log(endPoint, method, newData)
+ 
     try{
       const res = await fetch(endPoint, {
         method: method,
@@ -131,7 +131,6 @@ export default function SelectQuantityModal(props) {
         ])} 
         className={classes.root} 
         onCellEditCommit={(e) => {
-          console.log(e.field, e.value);
           if (e.field==="quantity"){
             const hasError = e.value <= 0;
             if (hasError) { 

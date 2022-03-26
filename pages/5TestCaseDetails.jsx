@@ -90,8 +90,7 @@ export default function TestCaseDetails(props) {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
                     <CPButton text="Edit" onClick={() => {updateModal("edit");
-                                                        console.log("params", params.id);
-                                                        setSelectedIDs(new Set([params.id]))
+                                                            setSelectedIDs(new Set([params.id]))
                                                         }}/>
                     <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
                     </div>
