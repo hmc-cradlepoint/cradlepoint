@@ -26,20 +26,14 @@ export default function SelectQuantityModal(props) {
     return row
   }
 
-  function formatEditData(row){
-    row["_id"] = row["deviceId"];
-    let deviceInfo =  props.libraryDevices.filter(r => (r._id==row["_id"]))[0];
-    row["deviceName"] = deviceInfo.deviceName;
-    row["deviceType"] = deviceInfo.deviceType;
-    row["codeVersion"] = deviceInfo.codeVersion;
-    row["SKU"] = deviceInfo.SKU;
-    return row
+  let data = [];
+  if (props.selectedIDs !=undefined & props.libraryDevices !=undefined){
+    let selectedRows = props.libraryDevices.filter((row) => props.selectedIDs.has(row._id.toString()));
+    console.log(selectedRows)
+    data = selectedRows.map(r => formatNewData(r));
   }
-
-
-  let data = (props.editMode)?props.editData.map(r => formatEditData(r)):
-                          props.selectedRows.map(r => formatNewData(r));
-  console.log(data);
+  
+  console.log("data ", data);
 
   function handleCommit(e){
     const array = data.map(r => {

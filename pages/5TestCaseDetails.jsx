@@ -89,6 +89,10 @@ export default function TestCaseDetails(props) {
             renderCell: (params) => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
+                    <CPButton text="Edit" onClick={() => {updateModal("edit");
+                                                        console.log("params", params.id);
+                                                        setSelectedIDs(new Set([params.id]))
+                                                        }}/>
                     <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
                     </div>
                 )
@@ -118,13 +122,9 @@ export default function TestCaseDetails(props) {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Bill of Materials</h2>
-                    <div style={{display: "flex", flexDirection: "row"}}>
-                        <CPButton text="Add New"
-                            onClick={() => {updateModal("select_device")}}
-                        />
-                        <CPButton text="Edit" onClick={() => {
-                            updateModal("edit")}} />
-                    </div>
+                    <CPButton text="Add New"
+                        onClick={() => {updateModal("select_device")}}
+                    />
                 </div>
                 <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
@@ -187,10 +187,9 @@ export default function TestCaseDetails(props) {
             
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
-              selectedRows={props.libraryDevices.filter((row) => 
-                                selectedIDs.has(row._id.toString()))}
+              selectedIDs={selectedIDs}
               testCaseId={props.testCase._id}
-              editData={props.testCase.BOM}
+            //   editData={props.testCase.BOM}
               editMode={bomEditMode}
               libraryDevices={props.libraryDevices}
               onClickNext={updateModal}
