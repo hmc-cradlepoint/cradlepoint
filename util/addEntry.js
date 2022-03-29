@@ -186,12 +186,13 @@ export async function addEngagement(data) {
     }
 }
 
-// TODO: need to update  corresponding test plan's summary BOM
+
 export async function addDeviceToBOM(data) {
     try {
         const client = await connectToDb();
-        if (ObjectId.isValid(data.testCaseId)) {
+        if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
             const testCaseId = ObjectId(data.testCaseId);
+            const testPlanId = ObjectId(data.testPlanId);
             for (let i=0; i<data.devices.length;i++){
                 let device = data.devices[i];
                 const valid = await bomDeviceSchema.isValid(device);
@@ -202,6 +203,32 @@ export async function addDeviceToBOM(data) {
                         { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
                         { $push: { BOM: device}} // arr will be array of objects
                     );
+                    
+                    // Update summaryBOM 
+                     // if deviceId already in summary BOM with same isOptional arguement
+                    let summaryBomResult = await client.collection('testPlan').updateOne(
+                       {"_id": testPlanId}, 
+                        // update the quantity if quantity recorded before is less than currently needed 
+                        {$set: {"summaryBOM.$[elem].quantity": device.quantity}},
+                        {arrayFilters: [{$and: [
+                            {"elem.deviceId" :  device.deviceId}, 
+                            {"elem.isOptional" :  device.isOptional},
+                            {"elem.quantity": {$lt: device.quantity}}]}
+                            ]
+                        }
+                    ); 
+            
+                    // if such device is not in summaryBOM, insert the device directly
+                    if (summaryBomResult.modifiedCount<1){
+                        console.log("device not in summaryBOM");
+                        summaryBomResult = await client.collection('testPlan').updateOne(
+                            { "_id": testPlanId }, 
+                            { $push: { summaryBOM: device}} 
+                        );
+                    }
+                        
+                    return summaryBomResult;
+
                 } else{
                     throw new Error("device not valid ");
                 }

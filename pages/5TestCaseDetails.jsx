@@ -187,8 +187,7 @@ export default function TestCaseDetails(props) {
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
               selectedIDs={selectedIDs}
-              testCaseId={props.testCase._id}
-              editData={props.testCase.BOM}
+              testCase={props.testCase}
               editMode={bomEditMode}
               libraryDevices={props.libraryDevices}
               onClickNext={updateModal}

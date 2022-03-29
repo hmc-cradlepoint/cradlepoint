@@ -22,7 +22,7 @@ export default function SelectQuantityModal(props) {
   function formatData(row){
     row["deviceId"] = row["_id"];
     if (props.editMode){
-      let rowInfo = props.editData.filter((r) => r.deviceId.toString()==row.deviceId)[0];
+      let rowInfo = props.testCase.BOM.filter((r) => r.deviceId.toString()==row.deviceId)[0];
       row["quantity"] = rowInfo.quantity;
       row["isOptional"] = rowInfo.isOptional;
     } else {
@@ -58,7 +58,8 @@ export default function SelectQuantityModal(props) {
   
     let newData = {
       "devices": data,
-      "testCaseId": props.testCaseId
+      "testCaseId": props.testCase._id,
+      "testPlanId": props.testCase.testPlanId
     }
   
     let endPoint = '/api/editDeviceInBOM';
