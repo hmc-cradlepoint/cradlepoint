@@ -227,7 +227,6 @@ export async function addDeviceToBOM(data) {
                         );
                     }
                         
-                    return summaryBomResult;
 
                 } else{
                     throw new Error("device not valid ");

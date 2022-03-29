@@ -28,6 +28,7 @@ export async function cloneBOM(data) {
     
 }
 
+// TODO: need to also update the summaryBOM 
 export async function cloneTestCase(data) {
 
     try {
@@ -52,6 +53,8 @@ export async function cloneTestCase(data) {
                 newBOM[i].deviceId = deviceId
             }
             
+
+
             // create new test case which starts initially with empty tests array and the new BOM
             const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests:[], BOM: newBOM});
     
