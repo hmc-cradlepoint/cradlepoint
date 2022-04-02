@@ -100,12 +100,12 @@ export default function TestCaseDetails(props) {
             },
             flex: 1
         },
-        { 
-            field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
-            valueGetter: (params) => {
-                return params.row.device.codeVersion;
-            }
-        }
+        // { 
+        //     field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+        //     valueGetter: (params) => {
+        //         return params.row.device.codeVersion;
+        //     }
+        // }
     ]);
 
 
