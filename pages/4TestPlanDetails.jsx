@@ -117,12 +117,12 @@ export default function TestPlanDetails(props) {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Summary of Bill of Materials</h2>
-                    <CPButton text="Add New"
+                    {/* <CPButton text="Add New"
                         onClick={() => {updateModal("select_device")}}
-                    />
+                    /> */}
                 </div>
                 <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
-                getRowId={(row) => row.deviceId}/>
+                getRowId={(row) => row._id}/>
             </div>
         )
     }

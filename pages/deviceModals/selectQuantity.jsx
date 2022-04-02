@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import { render } from "react-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ObjectID } from "bson";
 
 // TODO: quantity should be casted to a number somewhere (if edited, it is now automatically a string)
 export default function SelectQuantityModal(props) {
@@ -19,24 +20,32 @@ export default function SelectQuantityModal(props) {
   const classes = useStyles();
   const router = useRouter();
   
-  function formatData(row){
-    row["deviceId"] = row["_id"];
+  function formatData(id){
     if (props.editMode){
-      let rowInfo = props.testCase.BOM.filter((r) => r.deviceId.toString()==row.deviceId)[0];
-      row["quantity"] = rowInfo.quantity;
-      row["isOptional"] = rowInfo.isOptional;
-    } else {
-      row["quantity"] = 1;
-      row["isOptional"] = false;
-    } 
-    return row
+      let row = props.testCase.BOM.find((r) => r._id.toString() === id);
+      let infoRow = props.libraryDevices.find((r) => r._id === row.deviceId.toString());
+      row["deviceName"] = infoRow["deviceName"];
+      row["deviceType"] = infoRow["deviceType"];
+      row["SKU"] = infoRow["SKU"];
+      
+      return row;
+    }
+
+    let selectedRow = props.libraryDevices.find((r) => id === r._id.toString());
+    let newRow = (({deviceName, deviceType, SKU}) => ({deviceName, deviceType, SKU}))(selectedRow);
+    newRow["deviceId"] = selectedRow["_id"];
+    newRow["_id"] = ObjectID().toString();
+    newRow["quantity"] = 1;
+    newRow["isOptional"] = false;
+    
+    return newRow;
   }
+
 
 
   let data = [];
   if (props.selectedIDs !=undefined & props.libraryDevices !=undefined){
-    let selectedRows = props.libraryDevices.filter((row) => props.selectedIDs.has(row._id.toString()));
-    data = selectedRows.map(r => formatData(r));
+      data = Array.from(props.selectedIDs).map(id => formatData(id));
   }
   
   console.log("data ", data);
@@ -54,7 +63,7 @@ export default function SelectQuantityModal(props) {
   }
 
   async function handleSubmitData() {
-    data = data.map(d => (({deviceId, quantity, isOptional}) => ({deviceId, quantity, isOptional}))(d));
+    data = data.map(d => (({_id, deviceId, quantity, isOptional}) => ({_id, deviceId, quantity, isOptional}))(d));
   
     let newData = {
       "devices": data,
@@ -103,6 +112,7 @@ export default function SelectQuantityModal(props) {
         <ToastContainer />
         <h2> Double click to edit quantity and check box if optional</h2>
         <PlainTable rows={data} 
+        getRowId={(row) => row._id}
         columns={LibraryBOMColumns.concat([
           { 
             field: 'quantity', 
@@ -141,7 +151,7 @@ export default function SelectQuantityModal(props) {
             }
           }
           
-        }}
+        }} 
         />
         
         

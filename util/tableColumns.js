@@ -38,6 +38,7 @@ const testColumns = [
 
 const BOMColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
+    { field: 'deviceId', headerName: 'Device ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1, 
       valueGetter: (params) => {
         return params.row.device.deviceName;

@@ -133,7 +133,7 @@ export default function TestCaseDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row._id}/>
             </div>
         )
     }
