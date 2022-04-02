@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ObjectID } from "bson";
 
-// TODO: quantity should be casted to a number somewhere (if edited, it is now automatically a string)
+
 export default function SelectQuantityModal(props) {
   const useStyles = makeStyles({styling});
   const classes = useStyles();
