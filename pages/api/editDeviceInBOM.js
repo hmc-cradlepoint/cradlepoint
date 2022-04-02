@@ -4,7 +4,7 @@ import {bomDeviceSchema} from "../../schemas/bomDeviceSchema";
 /*
   Edits the requested test from the database
 */
-
+// TODO: does not support summaryBOM yet
 export default async (req, res) => {
   if (req.method !== 'PUT') {
     res.status(405).send({ message: 'Only PUT requests allowed' })
