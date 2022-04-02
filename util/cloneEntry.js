@@ -42,22 +42,52 @@ export async function cloneTestCase(data) {
             // newBOM is the BOM for the new test case we are creating
             var newBOM = [];
 
+            const originalTestCases = (await client.collection('testPlan').findOne({"_id": testPlanId })).testCases;
+            
             // iterates through the original test case's BOM, verify that each device id is valid,
             // convert string deviceId to ObjectId, and push to the newBOM array
             for (var i = 0; i < testCase.BOM.length; i++) {
-                const deviceId = ObjectId(testCase.BOM[i].deviceId);
-                if (!ObjectId.isValid(deviceId)) {
-                    throw new Error('Invalid Device Id')
-                }
+                let device = testCase.BOM[i];
+                // give device a new id
+                device._id = ObjectId();
+                device.deviceId = ObjectId(device.deviceId)
+                console.log(testCase.BOM[i]);
                 newBOM.push(testCase.BOM[i])
-                newBOM[i].deviceId = deviceId
+             
+                // update the summaryBOM correspondingly by find the max quantity of this device among all the test cases of the 
+                // current test plan
+                let maxQuantity = device.quantity;
+                for (let i=0; i<originalTestCases.length;i++){
+                    console.log("originalTestCase ", originalTestCases[i])
+                    let BOM = (await client.collection('testCases').findOne({"_id": originalTestCases[i] })).BOM;
+                    BOM = BOM.filter(d => (d.isOptional === device.isOptional) && d.deviceId.equals(device.deviceId));
+                    console.log(BOM)
+                    maxQuantity =  (BOM.length>0)?Math.max(BOM[0].quantity, maxQuantity):maxQuantity;
+                }
+                
+                device.quantity = maxQuantity;
+                console.log("maxQuant", device.quantity)
+                const summaryBomResult = await client.collection('testPlan').updateOne(
+                  { "_id": testPlanId,  
+                    "summaryBOM.deviceId" :  device.deviceId, 
+                    "summaryBOM.isOptional": device.isOptional
+                  }, 
+                  { $set :  {"summaryBOM.$": device}},
+                );
+                console.log(summaryBomResult);
+                if (summaryBomResult.modifiedCount<1){
+                    const summaryBomResult2 = await client.collection('testPlan').updateOne(
+                        { "_id": testPlanId}, 
+                        { $push: { summaryBOM: device}},
+                      );
+                      console.log(summaryBomResult2);
+
+                }
             }
             
-
-
             // create new test case which starts initially with empty tests array and the new BOM
             const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests:[], BOM: newBOM});
-    
+            console.log(result)
             // iterate through all the tests of the original test case
             // clone them and add them to the new test case
             for (var i = 0; i < testCase.tests.length; i++) {

@@ -15,7 +15,7 @@ export default async (req, res) => {
             preserveNullAndEmptyArrays: true
         }
     },
-    // Separate apart the summaryBOMs
+    // Separate apart the BOM
     // Lookup the devices in its table
     {
         $lookup: {
