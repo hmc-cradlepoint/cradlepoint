@@ -170,7 +170,7 @@ export async function addDeviceToBOM(data) {
         if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
             const testCaseId = ObjectId(data.testCaseId);
             const testPlanId = ObjectId(data.testPlanId);
-            // iterate through each device item that needs to be added
+            // iterate through each item that needs to be added
             for (let i=0; i<data.devices.length;i++){
                 let device = data.devices[i];
                 const valid = await bomDeviceSchema.isValid(device);
@@ -182,7 +182,7 @@ export async function addDeviceToBOM(data) {
                         { $push: { BOM: device}} 
                     );
                     
-                    // Update summaryBOM 
+                    // Update summaryBOM:  
                      // if deviceId already in summary BOM with same isOptional arguement
                     let summaryBomResult = await client.collection('testPlan').updateOne(
                        {"_id": testPlanId}, 
@@ -191,6 +191,7 @@ export async function addDeviceToBOM(data) {
                         {arrayFilters: [{$and: [
                             {"elem.deviceId" :  device.deviceId}, 
                             {"elem.isOptional" :  device.isOptional},
+                            // check if quantity recorded before is less than currently needed 
                             {"elem.quantity": {$lt: device.quantity}}]}
                             ]
                         }

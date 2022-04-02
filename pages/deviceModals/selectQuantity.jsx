@@ -21,9 +21,15 @@ export default function SelectQuantityModal(props) {
   const router = useRouter();
   
   function formatData(id){
+    // editing an existing item in the BOM
     if (props.editMode){
+      // the id variable passed in is the item _id in the BOM
+      // find the row from the current BOM; this row stores _id, deviceId, isOptional, and quantity
       let row = props.testCase.BOM.find((r) => r._id.toString() === id);
+      // find details about the specific device using deviceId from the libraryDevices; this stores deviceName
+      // deviceType, and SKU
       let infoRow = props.libraryDevices.find((r) => r._id === row.deviceId.toString());
+      // combine row and info row and return
       row["deviceName"] = infoRow["deviceName"];
       row["deviceType"] = infoRow["deviceType"];
       row["SKU"] = infoRow["SKU"];
@@ -31,10 +37,14 @@ export default function SelectQuantityModal(props) {
       return row;
     }
 
+    // if we are adding a new item to the BOM
+    // the id variable passsed in is the deviceId of the selected device
+    // find details about the specific device using deviceId from the libraryDevice
     let selectedRow = props.libraryDevices.find((r) => id === r._id.toString());
     let newRow = (({deviceName, deviceType, SKU}) => ({deviceName, deviceType, SKU}))(selectedRow);
     newRow["deviceId"] = selectedRow["_id"];
     newRow["_id"] = ObjectID().toString();
+    // initialize quantity as 1 and isOptional as false
     newRow["quantity"] = 1;
     newRow["isOptional"] = false;
     
@@ -68,6 +78,7 @@ export default function SelectQuantityModal(props) {
     let newData = {
       "devices": data,
       "testCaseId": props.testCase._id,
+      // passed in to update summaryBOM
       "testPlanId": props.testCase.testPlanId
     }
   
