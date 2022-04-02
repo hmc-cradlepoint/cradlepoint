@@ -101,13 +101,13 @@ export default function SelectQuantityModal(props) {
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
         {/* Pop-up that warns user */}
         <ToastContainer />
-        <h2>Enter quantity (double click on cell) and check box if optional</h2>
+        <h2> Double click to edit quantity and check box if optional</h2>
         <PlainTable rows={data} 
         columns={LibraryBOMColumns.concat([
           { 
             field: 'quantity', 
             flex: 1,
-            headerName: 'Quantity (double-click to edit)',
+            headerName: 'Quantity',
             headerClassName: 'header',
             align: 'center',
             editable: true,

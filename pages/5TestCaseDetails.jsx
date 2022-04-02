@@ -16,6 +16,8 @@ import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
 
 // TODO: allow for editing BOM
+// TODO: BOM can make code version editable
+// TODO: summary BOM can remove code version field
 export default function TestCaseDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
@@ -97,6 +99,12 @@ export default function TestCaseDetails(props) {
                 )
             },
             flex: 1
+        },
+        { 
+            field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+            valueGetter: (params) => {
+                return params.row.device.codeVersion;
+            }
         }
     ]);
 

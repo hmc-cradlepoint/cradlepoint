@@ -48,13 +48,13 @@ const BOMColumns = [
       valueGetter: (params) => {
         return params.row.device.deviceType;
       }},
-    { field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
-      valueGetter: (params) => {
-        return params.row.device.codeVersion;
-      }},
+    // { field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+    //   valueGetter: (params) => {
+    //     return params.row.device.codeVersion;
+    //   }},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1, 
-    valueGetter: (params) => {
-      return params.row.device.SKU;
+      valueGetter: (params) => {
+        return params.row.device.SKU;
     }}];
 
 const LibraryBOMColumns = [

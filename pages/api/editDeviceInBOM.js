@@ -13,24 +13,50 @@ export default async (req, res) => {
     const data = req.body;
     
     const client = await connectToDb();
-    if (ObjectId.isValid(data.testCaseId)) {
+    
+    if (ObjectId.isValid(data.testCaseId) && ObjectId.isValid(data.testPlanId)) {
         const testCaseId = ObjectId(data.testCaseId);
+        const testPlanId = ObjectId(data.testPlanId);
         let device = data.devices[0];
         const valid = await bomDeviceSchema.isValid(device);
         if (valid){
             device.deviceId = ObjectId(device.deviceId);
             // Update the corresponding device of the BOM
-            const result = await client.collection('testCases').updateOne(
-                { "_id": testCaseId,  "BOM.deviceId" :  device.deviceId }, // query matching , refId should be "ObjectId" type
+            const testCaseResult = await client.collection('testCases').updateOne(
+                { "_id": testCaseId,  "BOM.deviceId" :  device.deviceId, "BOM.isOptional": device.isOptional }, // query matching , refId should be "ObjectId" type
                 { $set :  {"BOM.$": device}},
             );
+
+            console.log(testCaseResult)
+
+            const testCases = (await client.collection('testPlan').findOne({"_id": testPlanId })).testCases;
+            let maxQuantity = device.quantity;
+
+            for (let i=0; i<testCases.length;i++){
+                let BOM = (await client.collection('testCases').findOne({"_id": testCases[i] })).BOM;
+                BOM = BOM.filter(d => (d.isOptional === device.isOptional) && d.deviceId.equals(device.deviceId));
+                maxQuantity =  (BOM.length>0)?Math.max(BOM[0].quantity, maxQuantity):maxQuantity;
+            }
+            
+            device.quantity = maxQuantity;
+            console.log("maxQuant", device.quantity)
+            const summaryBomResult = await client.collection('testPlan').updateOne(
+              { "_id": testPlanId,  
+                "summaryBOM.deviceId" :  device.deviceId, 
+                "summaryBOM.isOptional": device.isOptional
+              }, 
+              { $set :  {"summaryBOM.$": device}},
+            );
+
+            console.log(summaryBomResult)
+
         } else{
           res.status(422).send({message: "device not valid "});
         }
-          res.status(200).send({message: "Success!"});
-        } else {
-          res.status(422).send({message: 'Input not in right format'});
-        }
+        res.status(200).send({message: "Success!"});
+      } else {
+        res.status(422).send({message: 'Input not in right format'});
+      }
   } catch (err) {
     res.status(500).send(err);
   }
