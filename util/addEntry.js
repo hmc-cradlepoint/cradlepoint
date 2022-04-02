@@ -86,21 +86,8 @@ export async function addTestCase(data) {
             // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const testPlanId = ObjectId(data.testPlanId);
-            // Old Error Checking for mongo objectIds in the BOM
-            // for (const i in testCase.BOM) {
-            //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
-            //         throw new Error('Invalid Device Id')
-            //     }
-            // }
 
-            // Old BOM Code?
-            // const BOM = testCase.BOM.map(device => {
-            //     return {...device, deviceId: ObjectId(device.deviceId)}
-            //   });
-            // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
-            
-            // TODO: Fix this line once BOM is figured out
-            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId});
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, BOM: []});
             // Push the test plan into the test case array as well
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
@@ -128,18 +115,8 @@ export async function addTestPlan(data) {
             // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const engagementId = ObjectId(data.engagementId);
-            // TODO: uncomment / fix once BOM is figured out
-            // for (const i in testPlan.summaryBOM) {
-            //     if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
-            //         throw new Error('Invalid Device Id')
-            //     }
-            // }
-            // const SummaryBOM = testPlan.summaryBOM.map(device => {
-            //     return {...device, deviceId: ObjectId(device.deviceId)};
-            // }); 
-
-            // TODO: Fix once BOM works
-            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
+         
+            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId, summaryBOM: []});
             
             // if this test plan is active, update old test plan to not active and engagement points to new test plan id 
             if (data.isActive){
@@ -193,22 +170,23 @@ export async function addDeviceToBOM(data) {
         if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
             const testCaseId = ObjectId(data.testCaseId);
             const testPlanId = ObjectId(data.testPlanId);
+            // iterate through each device item that needs to be added
             for (let i=0; i<data.devices.length;i++){
                 let device = data.devices[i];
                 const valid = await bomDeviceSchema.isValid(device);
                 if (valid){
                     device.deviceId = ObjectId(device.deviceId);
-                    // Push a new device into BOM of the corresponding test case
+                    // Push the new device into BOM of the corresponding test case
                     const result = await client.collection('testCases').updateOne(
-                        { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
-                        { $push: { BOM: device}} // arr will be array of objects
+                        { "_id": testCaseId }, 
+                        { $push: { BOM: device}} 
                     );
                     
                     // Update summaryBOM 
                      // if deviceId already in summary BOM with same isOptional arguement
                     let summaryBomResult = await client.collection('testPlan').updateOne(
                        {"_id": testPlanId}, 
-                        // update the quantity if quantity recorded before is less than currently needed 
+                        // update the quantity only if quantity recorded before is less than currently needed 
                         {$set: {"summaryBOM.$[elem].quantity": device.quantity}},
                         {arrayFilters: [{$and: [
                             {"elem.deviceId" :  device.deviceId}, 

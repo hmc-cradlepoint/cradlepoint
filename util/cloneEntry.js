@@ -80,7 +80,6 @@ async function cloneBOM(testPlanId, oldBOM, client) {
                 { $push: { summaryBOM: device}},
               );
             console.log("summaryBomInsert", summaryBomInsert);
-
         }
     }
 
@@ -138,7 +137,6 @@ export async function cloneTestPlan(data) {
             const id = ObjectId(data._id);
             const engagementId = ObjectId(data.engagementId);
             
-
             // create new test plan which starts initially with empty test cases array and the new summary BOM
             const result = await client.collection('testPlan').insertOne({...testPlan, _id: id, engagementId: engagementId, testCases:[], summaryBOM: []});
       
@@ -186,8 +184,6 @@ export async function cloneTestPlan(data) {
                 { $set: { testPlanId: id}} 
                 );
             }
-            console.log("engagementId ", engagementId.toString())
-            console.log("testPlanId ", _id.toString())
             return result
         }
         else {
