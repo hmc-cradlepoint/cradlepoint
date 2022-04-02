@@ -1,0 +1,27 @@
+{
+   $jsonSchema: {
+      required: [ "name", "description", "results", "testCaseId", "resultStatus" ],
+      properties: {
+         name: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         description: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         results: {
+            bsonType: "array",
+            description: "must be an array and is required"
+         },
+         testCaseId: {
+            bsonType: "objectId",
+            description: "must be an objectId and is required"
+         },
+         resultStatus: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+      }
+   }
+ }
