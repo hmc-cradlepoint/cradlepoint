@@ -1,7 +1,7 @@
 MongoSh Commands (needs DBadmin permission on 'cradlepoint' to run)
 Validation currently only produces warnings, does not throw errors.
 ``` 
-\\ Use this to update a collection's validation rules
+\\ Bash command to update a collection's validation rules
 db.runCommand({
   "collMod": "device",
   "validator": "Copy Json Validation rules here",
