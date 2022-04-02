@@ -123,7 +123,7 @@ export default function TestCaseDetails(props) {
         )
     }
 
-    console.log(props.testCase.BOM)
+
     function BOM() {
         // BOM Elements component
         return (

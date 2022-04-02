@@ -4,7 +4,7 @@ import {bomDeviceSchema} from "../../schemas/bomDeviceSchema";
 /*
   Edits the requested test from the database
 */
-// TODO: does not support summaryBOM yet
+
 export default async (req, res) => {
   if (req.method !== 'PUT') {
     res.status(405).send({ message: 'Only PUT requests allowed' })
@@ -27,19 +27,20 @@ export default async (req, res) => {
                 { $set :  {"BOM.$": device}},
             );
 
-            console.log(testCaseResult)
-
+            // get all test cases belonging to the same test plan
             const testCases = (await client.collection('testPlan').findOne({"_id": testPlanId })).testCases;
-            let maxQuantity = device.quantity;
 
+            // iterate through all test cases to find the max quantity of the specific device 
+            let maxQuantity = device.quantity;
             for (let i=0; i<testCases.length;i++){
                 let BOM = (await client.collection('testCases').findOne({"_id": testCases[i] })).BOM;
                 BOM = BOM.filter(d => (d.isOptional === device.isOptional) && d.deviceId.equals(device.deviceId));
                 maxQuantity =  (BOM.length>0)?Math.max(BOM[0].quantity, maxQuantity):maxQuantity;
             }
-            
             device.quantity = maxQuantity;
             console.log("maxQuant", device.quantity)
+
+            // update the summaryBOM correspondingly
             const summaryBomResult = await client.collection('testPlan').updateOne(
               { "_id": testPlanId,  
                 "summaryBOM.deviceId" :  device.deviceId, 
