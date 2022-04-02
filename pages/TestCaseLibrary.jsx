@@ -43,10 +43,12 @@ export default function TestCaseLibrary(props) {
     )
 }
 
+import {getLibraryTestCases} from "./api/getLibraryTestCases";
+
 export async function getServerSideProps(context) {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getLibraryTestCases`);
-    const testCasesData = await res.json().then((data) => data.map((testCase => {
+    const res = await getLibraryTestCases();
+    const testCasesData = await res.map((testCase => {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
@@ -54,7 +56,7 @@ export async function getServerSideProps(context) {
             "percentPassed":"__%",
             "config": (testCase.config != "")?testCase.config:"N/A",
         }
-    })));
+    }));
     return {
       props: {testCasesData}, // will be passed to the page component as props
     }

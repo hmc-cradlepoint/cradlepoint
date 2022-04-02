@@ -154,7 +154,7 @@ export default function EngagementDetails(props) {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                <PlainTable rows={props.activeTestPlan?.summaryBOM ??[]} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -209,22 +209,29 @@ export default function EngagementDetails(props) {
     )
 }
 
+import {getTestPlansByEngagementId} from "./api/getTestPlansByEngagementId";
+import {getTestPlan} from "./api/getTestPlan";
+import {getEngagement} from "./api/getEngagement";
+// import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
+
 export async function getServerSideProps(context) {
     try {
-        const engagement = await (await fetch(`${process.env.HOST}/api/getEngagement?_id=${context.query._id}`)).json()
+        const engagement = await getEngagement(context.query._id);
         if (engagement.len == 0) {
             return { notFound: true }
         }
-        const archivedTestPlans = await (await fetch(`${process.env.HOST}/api/getTestPlansByEngagementId?engagementId=${context.query._id}`)).json();
-        const activeTestPlan = (engagement[0] && engagement[0].testPlanId)? await (await fetch(`${process.env.HOST}/api/getTestPlan?_id=${engagement[0].testPlanId}`)).json(): null
-        const allTestPlans = await (await fetch(`${process.env.HOST}/api/getLibraryTestPlans`)).json();
+        const archivedTestPlans = await getTestPlansByEngagementId(context.query._id);
+        const activeTestPlan = (engagement[0] && engagement[0].testPlanId)? await getTestPlan(engagement[0].testPlanId): []
+        const summaryBOM = activeTestPlan.length == 1 ? activeTestPlan[0]?.summaryBOM :[]
     
         return {
             props: {
                 engagement: engagement[0],
                 activeTestPlan,
                 archivedTestPlans,
-                allTestPlans,
+                // TODO: Make this more elegent
+                summaryBOM: Object.keys(summaryBOM[0]).length == 0 ? [] : summaryBOM
+                // allTestPlans,
             },
         }
     }
