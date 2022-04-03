@@ -18,7 +18,7 @@ export async function editEngagement(data) {
   }
   if (valid && validObjectIds) {
     const validData = engagementSchema.cast(data);
-    // Set ID strings to Mongo ObjectId's
+    // TypeCast ID strings to Mongo ObjectId's
     const id = ObjectId(validData._id);
     const testplanId = ObjectId(validData.testPlanId);
     // Create the database query and replacement object
@@ -37,7 +37,7 @@ export async function editEngagement(data) {
       // Mongo-Side Validation failure should occur here
       return { statusCode: 400, message: "Mongo Database Query was unable to Validate or otherwise Failed", info: QueryResult, error: err }
     }
-    // Success!
+    // Edit was Successful!
     return { statusCode: 200, message: "Success" }
   } else {
     // Schema is invalid or invalid Ids
