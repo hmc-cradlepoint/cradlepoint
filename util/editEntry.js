@@ -2,8 +2,8 @@ import { testSchema } from "../schemas/testSchema";
 import { testCaseSchema } from "../schemas/testCaseSchema";
 import { testPlanSchema } from "../schemas/testPlanSchema";
 import { engagementSchema } from "../schemas/engagementSchema";
-import connectToDb from "./mongodb";
 import { resultSchema } from "../schemas/resultSchema";
+import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
 
 
@@ -191,6 +191,54 @@ export async function editTest(data) {
     try {
       // Update the Database with new TestPlan
       var QueryResult = await db.collection("tests").replaceOne(query, newTest);
+    } catch (err) {
+      // Mongo-Side Validation failure should occur here
+      return { statusCode: 400, message: "Mongo Database Query was unable to Validate or otherwise Failed", info: QueryResult, error: err }
+    }
+    // Edit was Successful!
+    return { statusCode: 200, message: "Success" }
+  } else {
+    // Schema is invalid or invalid Ids
+    let responseText = "Validation Failed: ";
+    if (!valid && !validObjectIds) {
+      responseText += "Contains invalid MongoId and Incorrectly formatted data"
+    }
+    else if (!validObjectIds) {
+      responseText += "Contains invalid MongoId"
+    }
+    else {
+      responseText += "Incorrectly formatted data"
+    }
+    return { statusCode: 422, message: responseText }
+  }
+}
+
+export async function editResult(data) {
+  try {
+    // Check that data is formatted correctly
+    var valid = await resultSchema.isValid(data);
+    // Check that all Id strings are Valid Mongo Object Ids
+    var validObjectIds = ObjectId.isValid(data.testId) && ObjectId.isValid(data._id);
+  } catch (err) {
+    return { statusCode: 500, message: "Something went wrong with Yup Validation, check the Schema", info: valid, error: err }
+  }
+  if (valid && validObjectIds) {
+    const validData = resultSchema.cast(data);
+    // TypeCast ID strings to Mongo ObjectId's
+    const id = ObjectId(validData._id);
+    const testId = ObjectId(validData.testId);
+    // Create the database query and replacement object
+    const query = { _id: id };
+    const newResult = {...validData, _id: id, testId:testId };
+    try {
+      // Connect to the Database
+      var db = await connectToDb();
+    } catch (err) {
+      return { statusCode: 500, message: "Unable to connect to Mongo Database Server", info: db, error: err }
+    }
+    try {
+      // Update the Database with new TestPlan
+      var QueryResult = await db.collection("result").replaceOne(query, newResult);
     } catch (err) {
       // Mongo-Side Validation failure should occur here
       return { statusCode: 400, message: "Mongo Database Query was unable to Validate or otherwise Failed", info: QueryResult, error: err }
