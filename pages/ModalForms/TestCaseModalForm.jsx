@@ -53,7 +53,7 @@ export default function TestCaseModalForm(props) {
       "tests": data.tests,
     }
     
-    let endPoint = '/api/editTestCase';
+    let endPoint = '/api/edit/TestCase';
     let method = 'PUT';
    
     if (props.modalFormType===modalFormType.NEW){
