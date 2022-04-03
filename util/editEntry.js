@@ -54,3 +54,56 @@ export async function editEngagement(data) {
     return { statusCode: 422, message: responseText }
   }
 }
+
+export async function editTestPlan(data) {
+  try {
+    // Check that data is formatted correctly
+    var valid = await testPlanSchema.isValid(data);
+    // Check that all Id strings are Valid Mongo Object Ids
+    var validDevices = !data.summaryBOM.map((dev) => ObjectId.isValid(dev.deviceId)).includes(false);
+    var validTestCases = !data.testCases.map((str) => ObjectId.isValid(str)).includes(false);
+    var validObjectIds = validDevices && validTestCases && ObjectId.isValid(data.engagementId) && ObjectId.isValid(data._id);
+  } catch (err) {
+    return { statusCode: 500, message: "Something went wrong with Yup Validation, check the Schema", info: valid, error: err }
+  }
+  if (valid && validObjectIds) {
+    const validData = testPlanSchema.cast(data);
+    // TypeCast ID strings to Mongo ObjectId's
+    const id = ObjectId(validData._id);
+    const summaryBOM = validData.summaryBOM.map(device => {
+      return { ...device, deviceId: ObjectId(device.deviceId) }
+    });
+    const testCases = validData.testCases.map(testCaseId => ObjectId(testCaseId));
+    // Create the database query and replacement object
+    const query = { _id: id };
+    const newtestPlan = { ...validData, summaryBOM: summaryBOM, testCases: testCases, _id: id };
+    try {
+      // Connect to the Database
+      var db = await connectToDb();
+    } catch (err) {
+      return { statusCode: 500, message: "Unable to connect to Mongo Database Server", info: db, error: err }
+    }
+    try {
+      // Update the Database with new TestPlan
+      var QueryResult = await db.collection("testPlan").replaceOne(query, newtestPlan);
+    } catch (err) {
+      // Mongo-Side Validation failure should occur here
+      return { statusCode: 400, message: "Mongo Database Query was unable to Validate or otherwise Failed", info: QueryResult, error: err }
+    }
+    // Edit was Successful!
+    return { statusCode: 200, message: "Success" }
+  } else {
+    // Schema is invalid or invalid Ids
+    let responseText = "Validation Failed: ";
+    if (!valid && !validObjectIds) {
+      responseText += "Contains invalid MongoId and Incorrectly formatted data"
+    }
+    else if (!validObjectIds) {
+      responseText += "Contains invalid MongoId"
+    }
+    else {
+      responseText += "Incorrectly formatted data"
+    }
+    return { statusCode: 422, message: responseText }
+  }
+}
