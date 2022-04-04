@@ -21,12 +21,13 @@ export default async (req, res) => {
         const valid = await bomDeviceSchema.isValid(device);
         if (valid){
             device.deviceId = ObjectId(device.deviceId);
+            device._id = ObjectId(device._id);
             // Update the corresponding device of the BOM
             const testCaseResult = await client.collection('testCases').updateOne(
-                { "_id": testCaseId,  "BOM.deviceId" :  device.deviceId, "BOM.isOptional": device.isOptional }, // query matching , refId should be "ObjectId" type
+                { "_id": testCaseId,  "BOM._id" :  device._id }, // query matching , refId should be "ObjectId" type
                 { $set :  {"BOM.$": device}},
             );
-
+          
             // get all test cases belonging to the same test plan
             const testCases = (await client.collection('testPlan').findOne({"_id": testPlanId })).testCases;
 

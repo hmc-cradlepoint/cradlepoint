@@ -176,6 +176,7 @@ export async function addDeviceToBOM(data) {
                 const valid = await bomDeviceSchema.isValid(device);
                 if (valid){
                     device.deviceId = ObjectId(device.deviceId);
+                    device._id = ObjectId(device._id);
                     // Push the new device into BOM of the corresponding test case
                     const result = await client.collection('testCases').updateOne(
                         { "_id": testCaseId }, 
