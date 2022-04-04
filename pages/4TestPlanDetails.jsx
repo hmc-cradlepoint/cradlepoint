@@ -88,7 +88,7 @@ export default function TestPlanDetails(props) {
             renderCell: () => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
+                    {/* <CPButton text="View"/> */}
                     <CPButton text="Delete"/>
                     </div>
                 )
