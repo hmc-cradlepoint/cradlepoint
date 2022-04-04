@@ -116,21 +116,23 @@ export default function EngagementDetails(props) {
     }
     ]);
 
-    const BOMColumnsWithButton = BOMColumns.concat([
-        { 
-            field: 'button', 
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => (
-            <div style={{display: "flex", flexDirection: "row"}}>
-                <CPButton text="View"/>
-                <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
-            </div>
-            ),
-            flex: 1
-        }
-    ]);
+    // TODO: Rework buttons (delete throws error, view does nothing)
+    //       Replace "BOMColumns" with "BOMColumnsWithButton" in BOMSummary()
+    // const BOMColumnsWithButton = BOMColumns.concat([
+    //     { 
+    //         field: 'button', 
+    //         headerName: 'Actions',
+    //         headerClassName: 'header',
+    //         align: 'center',
+    //         renderCell: () => (
+    //         <div style={{display: "flex", flexDirection: "row"}}>
+    //             <CPButton text="View"/>
+    //             <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
+    //         </div>
+    //         ),
+    //         flex: 1
+    //     }
+    // ]);
 
     function testPlans() {
         // Test plans table component
@@ -150,11 +152,11 @@ export default function EngagementDetails(props) {
     }
 
     function BOMSummary() {
-        // Summary of BOM Elements component
+        // Summary of BOM component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
-                <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                <PlainTable rows={props.activeTestPlan[0]?.summaryBOM ??[]} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
+                <h2>Summary of Bill of Materials (of active test plan)</h2>
+                <PlainTable rows={props.activeTestPlan[0]?.summaryBOM ??[]} columns={BOMColumns} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
@@ -172,7 +174,7 @@ export default function EngagementDetails(props) {
         return(
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Details</h2>
-                <p><b>ID:</b> {props.engagement._id}<br/>
+                <p><b>Name:</b> {props.engagement.name}<br/> 
                 <b>Client:</b> {props.engagement.customer}<br/> 
                 <b>SFDC:</b> <a href={props.engagement.SFDC}><u style={{color: "darkblue"}}>SFDC link</u></a> <br/>
                 <b>Status:</b> {props.engagement.statusCode}<br/>

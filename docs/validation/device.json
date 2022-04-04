@@ -1,0 +1,23 @@
+{
+   $jsonSchema: {
+      required: [ "deviceName", "codeVersion", "SKU", "deviceType" ],
+      properties: {
+         deviceName: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         codeVersion: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         SKU: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         deviceType: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+      }
+   }
+ }
