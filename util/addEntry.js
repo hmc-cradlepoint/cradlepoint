@@ -164,7 +164,7 @@ export async function addEngagement(data) {
 }
 
 
-export async function addDeviceToBOM(data) {
+export async function addDevicesToBOM(data) {
     try {
         const client = await connectToDb();
         if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
