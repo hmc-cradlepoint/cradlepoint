@@ -39,7 +39,7 @@ export default function DeviceModalForm(props) {
         "deviceType": data.deviceType
       }
       try{
-        const res = await fetch('/api/addNewDevice', {
+        const res = await fetch('/api/addLibraryDevice', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
