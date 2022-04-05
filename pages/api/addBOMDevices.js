@@ -1,4 +1,4 @@
-import { addDeviceToBOM } from "../../util/addEntry";
+import { addBOMDevices } from "../../util/addEntry";
 
 export default async function handler(req, res) {
   console.log(req.method, req.body);
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
   else{
       try {
-        const response = await addDeviceToBOM(req.body)
+        const response = await addBOMDevices(req.body)
         res.status(200).send({message: response});
       } catch (err) {
         res.status(500).send(err.message);
