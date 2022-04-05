@@ -86,7 +86,7 @@ export default function SelectQuantityModal(props) {
     let method = 'PUT';
 
     if (!props.editMode){
-      endPoint = '/api/addDevicesToBOM';
+      endPoint = '/api/addBOMDevices';
       method = 'POST';
     } 
  
