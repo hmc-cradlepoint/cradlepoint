@@ -79,23 +79,24 @@ export default function TestPlanDetails(props) {
     ]);
 
 
-    const BOMColumnsWithAction = BOMColumns.concat([
-        { 
-            field: 'button', 
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => {
-                return (
-                    <div style={{display: "flex", flexDirection: "row"}}> 
-                    {/* <CPButton text="View"/> */}
-                    <CPButton text="Delete"/>
-                    </div>
-                )
-            },
-            flex: 1
-        }
-    ]);
+    // TODO: Potential rework to include TestCaseName
+    // const SummaryBOMColumns = BOMColumns.concat([
+    //     { 
+    //         field: 'button', 
+    //         headerName: 'Actions',
+    //         headerClassName: 'header',
+    //         align: 'center',
+    //         renderCell: () => {
+    //             return (
+    //                 <div style={{display: "flex", flexDirection: "row"}}> 
+    //                 <CPButton text="View"/>
+    //                 <CPButton text="Delete"/>
+    //                 </div>
+    //             )
+    //         },
+    //         flex: 1
+    //     }
+    // ]);
 
 
     function testCases() {
@@ -121,7 +122,7 @@ export default function TestPlanDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     /> */}
                 </div>
-                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
+                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumns} className={classes.root} 
                 getRowId={(row) => row._id}/>
             </div>
         )

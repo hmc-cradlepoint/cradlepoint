@@ -116,9 +116,8 @@ export default function EngagementDetails(props) {
     }
     ]);
 
-    // TODO: Rework buttons (delete throws error, view does nothing)
-    //       Replace "BOMColumns" with "BOMColumnsWithButton" in BOMSummary()
-    // const BOMColumnsWithButton = BOMColumns.concat([
+    // TODO: Potential rework to include TestCaseName
+    // const SummaryBOMColumns = BOMColumns.concat([
     //     { 
     //         field: 'button', 
     //         headerName: 'Actions',
@@ -127,7 +126,6 @@ export default function EngagementDetails(props) {
     //         renderCell: () => (
     //         <div style={{display: "flex", flexDirection: "row"}}>
     //             <CPButton text="View"/>
-    //             <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
     //         </div>
     //         ),
     //         flex: 1
