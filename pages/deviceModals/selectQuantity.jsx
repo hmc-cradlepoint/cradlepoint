@@ -116,6 +116,37 @@ export default function SelectQuantityModal(props) {
                       draggable: true,
                       progress: undefined});
 
+  const editColumns=LibraryBOMColumns.concat([
+        { 
+          field: 'quantity', 
+          flex: 1,
+          headerName: 'Quantity',
+          headerClassName: 'header',
+          align: 'center',
+          editable: true,
+          type: "number",
+        }]);
+  
+  const addColumns=editColumns.concat([
+        { 
+          field: 'optional', 
+          flex: 1,
+          headerName: 'Optional?',
+          headerClassName: 'header',
+          align: 'center',
+          renderCell: (e) => {
+            return (
+                <Checkbox 
+                style={{color:'#FCAC1C'}}
+                onChange={() => handleCommit({"id":e.id, "field": "isOptional", "value": !e.row.isOptional})}
+                checked={data.filter(r => (r._id==e.id))[0]?.isOptional??false}
+                />
+            )
+          }
+        }]);
+
+  
+
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
@@ -124,33 +155,7 @@ export default function SelectQuantityModal(props) {
         <h2> Double click to edit quantity and check box if optional</h2>
         <PlainTable rows={data} 
         getRowId={(row) => row._id}
-        columns={LibraryBOMColumns.concat([
-          { 
-            field: 'quantity', 
-            flex: 1,
-            headerName: 'Quantity',
-            headerClassName: 'header',
-            align: 'center',
-            editable: true,
-            type: "number",
-          },
-          { 
-            field: 'optional', 
-            flex: 1,
-            headerName: 'Optional?',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: (e) => {
-              return (
-                  <Checkbox 
-                  style={{color:'#FCAC1C'}}
-                  onChange={() => handleCommit({"id":e.id, "field": "isOptional", "value": !e.row.isOptional})}
-                  checked={data.filter(r => (r._id==e.id))[0]?.isOptional??false}
-                  />
-              )
-            }
-          },
-        ])} 
+        columns={props.editMode?editColumns:addColumns} 
         className={classes.root} 
         onCellEditCommit={(e) => {
           if (e.field==="quantity"){

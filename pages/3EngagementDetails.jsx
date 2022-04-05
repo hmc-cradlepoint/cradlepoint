@@ -151,6 +151,7 @@ export default function EngagementDetails(props) {
         )
     }
 
+
     function BOMSummary() {
         // Summary of BOM component
         return (
@@ -223,6 +224,10 @@ export async function getServerSideProps(context) {
         
         const allTestPlans = await (await fetch(`${process.env.HOST}/api/getLibraryTestPlans`)).json();
     
+        if (activeTestPlan!=null && !('deviceId' in activeTestPlan[0].summaryBOM[0])){
+            activeTestPlan[0].summaryBOM = [];
+        }
+
         return {
             props: {
                 engagement: engagement[0],
