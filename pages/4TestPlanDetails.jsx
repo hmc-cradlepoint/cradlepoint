@@ -207,14 +207,20 @@ export default function TestPlanDetails(props) {
     )
 }
 
+import {getTestPlan} from "./api/getTestPlan";
+import {getTestCasesByTestPlan} from "./api/getTestCasesByTestPlan";
+import {getAllDevices} from "./api/getAllDevices";
+import {getLibraryTestCases} from "./api/getLibraryTestCases";
+
+
 export async function getServerSideProps(context) {
     /* 
        Gets Data for Test Plan Details
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query._id);
-    const testPlanData = await res.json().then((data) => data[0]);
+    const res = await getTestPlan(context.query._id);
+    const testPlanData = res.length == 1 ? res[0]:[];
      // TODO: this is a "sketchy" quickfix to situation where testPlan summary BOM has no device
     // the getTestPlan query will return BOM as BOM: [{}]
     // this line replaces it to BOM: []
@@ -226,8 +232,8 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query._id);
-    const testCasesData = await res2.json().then((data) => data.map((testCase => {
+    const res2 = await getTestCasesByTestPlan(context.query._id);
+    const testCasesData = await res2.map((testCase => {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
@@ -239,10 +245,10 @@ export async function getServerSideProps(context) {
             // "testPlanId"
             // "BOM"
         }
-    })));
+    }));
 
-    const allTestCases = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases`)).json();
-    const allDevices = await (await fetch(`${process.env.HOST}/api/getAllDevices`)).json();
+    const allTestCases = await getLibraryTestCases();
+    const allDevices = await getAllDevices();
    
  
     return {

@@ -15,3 +15,12 @@ export default async (req, res) => {
   const results = await cursor.toArray();
   res.json(results);
 };
+
+export async function getResults(testId) {
+  const query = { 'testId': ObjectId(testId) };
+
+  const client = await connectToDb();
+  const cursor = client.collection("result").find(query);
+  const results = await cursor.toArray();
+  return JSON.parse(JSON.stringify(results));
+};

@@ -146,23 +146,27 @@ export default function TestDetails(props) {
     )
 }
 
+import {getTest} from "./api/getTest";
+import {getResults} from "./api/getResults";
+
+
 export async function getServerSideProps(context) {
     /* 
        Gets Data for Test Details
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res = await fetch(`${process.env.HOST}/api/getTest?_id=`+context.query._id);
-    const testData = await res.json().then((data) => data[0]);
+    const res = await getTest(context.query._id);
+    const testData = res[0];
 
     /* 
        Gets Data for Test Results
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res2 = await fetch(`${process.env.HOST}/api/getResults?testId=`+context.query._id);
+    const res2 = await getResults(context.query._id);
  
-    const resultsData = await res2.json().then((data) => data.map((result => {
+    const resultsData = res2.map((result => {
         return {
             "_id": result._id,
             "evidence": result.evidence?result.evidence:"",
@@ -174,7 +178,7 @@ export async function getServerSideProps(context) {
             // Other Fields not displayed:
             // "testId"
         }
-    })));
+    }));
     
     return {
       props: {testData, resultsData}, // will be passed to the page component as props
