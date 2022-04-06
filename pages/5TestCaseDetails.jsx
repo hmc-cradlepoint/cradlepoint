@@ -206,13 +206,14 @@ export default function TestCaseDetails(props) {
 
 import {getTestCase} from "./api/getTestCase";
 import {getTests} from "./api/getTests";
+import {getLibraryTests} from "./api/getLibraryTests";
 
 export async function getServerSideProps(context) {
     try {
         const testCase = await getTestCase(context.query._id);
         const tests = await getTests(context.query._id);
         // TODO: getLibraryTests api
-        // const allTests = await (await fetch(`${process.env.HOST}/api/getLibraryTest`)).json()
+        const allTests = await getLibraryTests();
         
         if (testCase.len == 0) {
             return { notFound: true }
@@ -227,7 +228,7 @@ export async function getServerSideProps(context) {
             props: {
                 testCase: testCase[0],
                 tests,
-                allTests: []
+                allTests
             },
         }
     }
