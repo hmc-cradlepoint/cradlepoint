@@ -212,7 +212,7 @@ export default function EngagementDetails(props) {
 import {getTestPlansByEngagementId} from "./api/getTestPlansByEngagementId";
 import {getTestPlan} from "./api/getTestPlan";
 import {getEngagement} from "./api/getEngagement";
-// import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
+import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
 
 export async function getServerSideProps(context) {
     try {
@@ -221,6 +221,7 @@ export async function getServerSideProps(context) {
             return { notFound: true }
         }
         const archivedTestPlans = await getTestPlansByEngagementId(context.query._id);
+        const allTestPlans = await getLibraryTestPlans();
         const activeTestPlan = (engagement[0] && engagement[0].testPlanId)? await getTestPlan(engagement[0].testPlanId): []
         const summaryBOM = activeTestPlan.length == 1 ? activeTestPlan[0]?.summaryBOM :[]
     
@@ -230,8 +231,8 @@ export async function getServerSideProps(context) {
                 activeTestPlan,
                 archivedTestPlans,
                 // TODO: Make this more elegent
-                summaryBOM: Object.keys(summaryBOM[0]).length == 0 ? [] : summaryBOM
-                // allTestPlans,
+                summaryBOM: Object.keys(summaryBOM[0]).length == 0 ? [] : summaryBOM,
+                allTestPlans,
             },
         }
     }
