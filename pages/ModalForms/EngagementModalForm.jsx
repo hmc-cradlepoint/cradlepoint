@@ -50,7 +50,7 @@ export default function EngagementModalForm(props) {
     let method = 'PUT';
     
     if (props.modalFormType===modalFormType.NEW){
-      endPoint = '/api/addNewEngagement';
+      endPoint = '/api/add/NewEngagement';
       method = 'POST';
     } 
 
