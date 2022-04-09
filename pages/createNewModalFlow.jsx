@@ -24,18 +24,18 @@ export default function CreateNewModalFlow(props) {
 
     function renderColumns(type){
       switch (type){
-        case "Engagement":
-          return engagementColumns.concat([{ 
-            field: 'button', 
-            flex: 1,
-            minWidth: 100,
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => (
-              <CPButton text="clone" onClick={()=>setModalType(modalType.CLONE)}/>
-            )
-          }]); 
+        // case "Engagement":
+        //   return engagementColumns.concat([{ 
+        //     field: 'button', 
+        //     flex: 1,
+        //     minWidth: 100,
+        //     headerName: 'Actions',
+        //     headerClassName: 'header',
+        //     align: 'center',
+        //     renderCell: () => (
+        //       <CPButton text="clone" onClick={()=>setModalType(modalType.CLONE)}/>
+        //     )
+        //   }]); 
         case "Test Plan":
           return testPlanColumns.concat([
           { 
@@ -66,7 +66,6 @@ export default function CreateNewModalFlow(props) {
               renderCell: (data) => (
                 <CPButton text="clone" onClick={() => {setCloneData(data.row);
                                                         setModalType(modalType.SCRATCH);
-                                                        console.log(data)
                                                         }}/>
               )
             }
@@ -80,8 +79,10 @@ export default function CreateNewModalFlow(props) {
               headerName: 'Actions',
               headerClassName: 'header',
               align: 'center',
-              renderCell: () => (
-                <CPButton text="clone" onClick={() => {setModalType(modalType.CLONE)}}/>
+              renderCell: (data) => (
+                <CPButton text="clone" onClick={() => {setCloneData(data.row);
+                                                      setModalType(modalType.SCRATCH);
+                                                      console.log("cloneData", data)}}/>
               )
             }
             ]);
@@ -160,9 +161,14 @@ export default function CreateNewModalFlow(props) {
       case flowType.TEST:
         return <TestModalForm testCaseId={props.modalData.testCase._id} 
                               modalFormType={modalFormType.NEW} 
+                              cloneData={cloneData}
+                              isClone={isClone}
                               isOpen={scratchIsOpen} 
                               onBack={() => setModalType(modalType.START)}
-                              onClose={()=> {setScratchIsOpen(false); props.onClose();}} 
+                              onClose={()=> {setScratchIsOpen(false); 
+                                              setModalType(modalType.START);   
+                                              props.onClose();
+                                              setCloneData(null);}} 
                               />
       }
   }

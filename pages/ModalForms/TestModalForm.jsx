@@ -10,12 +10,21 @@ import {modalFormType} from '../../util/modalUtils';
 
 export default function TestModalForm(props) {
   const router = useRouter();
-  const initialData = {
+
+  const initialData = (props.isClone)? 
+  {
+    _id: new ObjectID(),
+    name: (props.cloneData?.name??"") + " (copy)",
+    description: props.cloneData?.description??"",
+    resultStatus: props.data?.resultStatus??"Unknown"
+  }:{
+    // data is passed only from the edit 
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     description: props.data?.description??"",
-    resultStatus: props.data?.resultStatus??"unknown"
+    resultStatus: props.data?.resultStatus??"Unknown"
   }
+
   const [data, setData] = useState(initialData);
 
   function handleChange(evt) {
@@ -39,7 +48,7 @@ export default function TestModalForm(props) {
     let endPoint = '/api/editTest';
     let method = 'PUT';
     if (props.modalFormType==modalFormType.NEW){
-      endPoint = '/api/addNewTest';
+      endPoint = props.isClone?'/api/cloneTest':'/api/addNewTest';
       method = 'POST';
       newData["results"] = [];
     }
@@ -54,6 +63,7 @@ export default function TestModalForm(props) {
         },
         body: d,
       })
+      console.log("RES:", res)
     } catch (err){
       console.log("Error:",err)
     }
