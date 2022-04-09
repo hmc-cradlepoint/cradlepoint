@@ -23,7 +23,7 @@ export async function editEngagement(data) {
   }
 
   // Check that all Id strings are Valid Mongo Object Ids
-  var validObjectIds = ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+  const validObjectIds = ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
   if (validObjectIds) {
     // TypeCast ID strings to Mongo ObjectId's
     const id = ObjectId(validData._id);
@@ -62,9 +62,9 @@ export async function editTestPlan(data) {
     return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
   }
   // Check that all Id strings are Valid Mongo Object Ids
-  var validDevices = !data.summaryBOM.map((dev) => ObjectId.isValid(dev.deviceId)).includes(false);
-  var validTestCases = !data.testCases.map((str) => ObjectId.isValid(str)).includes(false);
-  var validObjectIds = validDevices && validTestCases && ObjectId.isValid(data.engagementId) && ObjectId.isValid(data._id);
+  const validDevices = !data.summaryBOM.map((dev) => ObjectId.isValid(dev.deviceId)).includes(false);
+  const validTestCases = !data.testCases.map((str) => ObjectId.isValid(str)).includes(false);
+  const validObjectIds = validDevices && validTestCases && ObjectId.isValid(data.engagementId) && ObjectId.isValid(data._id);
   if (validObjectIds) {
     // TypeCast ID strings to Mongo ObjectId's
     const id = ObjectId(validData._id);
@@ -107,9 +107,9 @@ export async function editTestCase(data) {
   }
 
   // Check that all Id strings are Valid Mongo Object Ids
-  var validDevices = !data.BOM.map((dev) => ObjectId.isValid(dev.deviceId)).includes(false);
-  var validTests = !data.tests.map((str) => ObjectId.isValid(str)).includes(false);
-  var validObjectIds = validDevices && validTests && ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
+  const validDevices = !data.BOM.map((dev) => ObjectId.isValid(dev.deviceId)).includes(false);
+  const validTests = !data.tests.map((str) => ObjectId.isValid(str)).includes(false);
+  const validObjectIds = validDevices && validTests && ObjectId.isValid(data.testPlanId) && ObjectId.isValid(data._id);
 
   if (validObjectIds) {
     // TypeCast ID strings to Mongo ObjectId's
@@ -155,8 +155,8 @@ export async function editTest(data) {
   }
 
   // Check that all Id strings are Valid Mongo Object Ids
-  var validResults = !data.results.map((str) => ObjectId.isValid(str)).includes(false);
-  var validObjectIds = validResults && ObjectId.isValid(data.testCaseId) && ObjectId.isValid(data._id);
+  const validResults = !data.results.map((str) => ObjectId.isValid(str)).includes(false);
+  const validObjectIds = validResults && ObjectId.isValid(data.testCaseId) && ObjectId.isValid(data._id);
 
   if (validObjectIds) {
     // TypeCast ID strings to Mongo ObjectId's
@@ -198,7 +198,7 @@ export async function editResult(data) {
   }
 
   // Check that all Id strings are Valid Mongo Object Ids
-  var validObjectIds = ObjectId.isValid(data.testId) && ObjectId.isValid(data._id);
+  const validObjectIds = ObjectId.isValid(data.testId) && ObjectId.isValid(data._id);
   if (validObjectIds) {
     // TypeCast ID strings to Mongo ObjectId's
     const id = ObjectId(validData._id);
