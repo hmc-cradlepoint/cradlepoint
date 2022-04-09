@@ -9,7 +9,7 @@ const { ObjectId } = require('mongodb');
 export async function editEngagement(data) {
   try {
     // Validate Data
-    var validData = await engagementSchema.validate(data, { abortEarly: false });
+    var validData = await engagementSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
     return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
   }
@@ -49,7 +49,7 @@ export async function editEngagement(data) {
 export async function editTestPlan(data) {
   try {
     // Validate Data
-    var validData = await testPlanSchema.validate(data, { abortEarly: false });
+    var validData = await testPlanSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
     return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
   }
@@ -93,7 +93,7 @@ export async function editTestPlan(data) {
 export async function editTestCase(data) {
   try {
     // Validate Data
-    var validData = await testCaseSchema.validate(data, { abortEarly: false });
+    var validData = await testCaseSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
     return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
   }
@@ -141,7 +141,7 @@ export async function editTestCase(data) {
 export async function editTest(data) {
   try {
     // Validate Data
-    var validData = await testSchema.validate(data, { abortEarly: false });
+    var validData = await testSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
     return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
   }
@@ -184,7 +184,7 @@ export async function editTest(data) {
 export async function editResult(data) {
   try {
     // Validate Data
-    var validData = await resultSchema.validate(data, { abortEarly: false });
+    var validData = await resultSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
     return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
   }
