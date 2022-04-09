@@ -14,3 +14,16 @@ export default async (req, res) => {
   }
 
 };
+
+export async function getLibraryTests() {
+  try {
+    const client = await connectToDb();
+    const cursor = await client.collection("testLibrary").find();
+    
+    const results = await cursor.toArray();
+    return JSON.parse(JSON.stringify(results));
+  } catch (err) {
+    throw err;
+  }
+
+};

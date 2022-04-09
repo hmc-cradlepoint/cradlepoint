@@ -7,7 +7,6 @@ import { Field, Formik} from 'formik';
 export default function DropDown(props) {
 
     function handleChange(evt) {
-      console.log(evt);
       props.onChange(evt);
     }
     

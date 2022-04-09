@@ -11,7 +11,7 @@ import styles from '../styles/EngagementDetails.module.css';
 
 
 export default function DeviceLibrary(props) {
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     // Seems like we don't need to have these device library actions, so they are removed
@@ -54,10 +54,12 @@ export default function DeviceLibrary(props) {
     )
 }
 
+import {getAllDevices} from "./api/getAllDevices";
+
 export async function getServerSideProps() {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
-    const devicesData = await res.json();
+    // const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
+    const devicesData = await getAllDevices();
     return {
       props: {devicesData}, // will be passed to the page component as props
     }
