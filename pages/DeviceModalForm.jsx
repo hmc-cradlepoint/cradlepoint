@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import { SmallTextInput, BigTextInput } from "../components/fields/Text";
 import { borderLeft } from "@mui/system";
 
-export default function ResultModalForm(props) {
+export default function DeviceModalForm(props) {
     const router = useRouter();
     const initialData = {
       deviceName: "",
@@ -39,7 +39,7 @@ export default function ResultModalForm(props) {
         "deviceType": data.deviceType
       }
       try{
-        const res = await fetch('/api/addNewDevice', {
+        const res = await fetch('/api/addLibraryDevice', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default function ResultModalForm(props) {
   );
 }
 
-ResultModalForm.propTypes = {
+DeviceModalForm.propTypes = {
   onBack: PropTypes.bool.isRequired,
   modalOpen: PropTypes.bool.isRequired,
 }

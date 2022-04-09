@@ -1,0 +1,27 @@
+{
+   $jsonSchema: {
+      required: [ "description", "evidence", "testId", "resultStatus", "createdOn" ],
+      properties: {
+         description: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         evidence: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         testId: {
+            bsonType: "objectId",
+            description: "must be an objectId and is required"
+         },
+         resultStatus: {
+            bsonType: "string",
+            description: "must be a string and is required"
+         },
+         createdOn: {
+            bsonType: "date",
+            description: "must be a date and is required"
+         },
+      }
+   }
+ }

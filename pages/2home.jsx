@@ -10,6 +10,7 @@ import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
 import NavDir from '../components/navDir';
+import {getActiveEngagements} from "./api/getActiveEngagements";
 
 // TOOD: figure out with not clearing the history when going back
 
@@ -18,7 +19,7 @@ export default function HomeScreen(props) {
     const refreshData = ( () => {
       router.replace(router.asPath);
   })
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
     
     const { directory, dispatch } = useNavContext();
@@ -107,8 +108,7 @@ export default function HomeScreen(props) {
 }
 
 export async function getServerSideProps(context) {
-  const res = await fetch(`${process.env.HOST}/api/getActiveEngagements`);
-  const data = await res.json();
+  const data = await getActiveEngagements();
   if (!data) {
     return {
       notFound: true,

@@ -24,7 +24,7 @@ export default function TestPlanDetails(props) {
 
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
@@ -79,23 +79,24 @@ export default function TestPlanDetails(props) {
     ]);
 
 
-    const BOMColumnsWithAction = BOMColumns.concat([
-        { 
-            field: 'button', 
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => {
-                return (
-                    <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
-                    <CPButton text="Delete"/>
-                    </div>
-                )
-            },
-            flex: 1
-        }
-    ]);
+    // TODO: Potential rework to include TestCaseName
+    // const SummaryBOMColumns = BOMColumns.concat([
+    //     { 
+    //         field: 'button', 
+    //         headerName: 'Actions',
+    //         headerClassName: 'header',
+    //         align: 'center',
+    //         renderCell: () => {
+    //             return (
+    //                 <div style={{display: "flex", flexDirection: "row"}}> 
+    //                 <CPButton text="View"/>
+    //                 <CPButton text="Delete"/>
+    //                 </div>
+    //             )
+    //         },
+    //         flex: 1
+    //     }
+    // ]);
 
 
     function testCases() {
@@ -117,12 +118,9 @@ export default function TestPlanDetails(props) {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Summary of Bill of Materials</h2>
-                    <CPButton text="Add New"
-                        onClick={() => {updateModal("select_device")}}
-                    />
                 </div>
-                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
-                getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumns} className={classes.root} 
+                getRowId={(row) => row._id}/>
             </div>
         )
     }
@@ -178,7 +176,7 @@ export default function TestPlanDetails(props) {
         <SelectQuantityModal
             modalOpen={selectQuantityModalOpen} 
             onClickNext={updateModal}
-            selectedRowData={selectedRows}
+            selectedRows={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
         <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
@@ -207,14 +205,20 @@ export default function TestPlanDetails(props) {
     )
 }
 
+import {getTestPlan} from "./api/getTestPlan";
+import {getTestCasesByTestPlan} from "./api/getTestCasesByTestPlan";
+import {getAllDevices} from "./api/getAllDevices";
+import {getLibraryTestCases} from "./api/getLibraryTestCases";
+
+
 export async function getServerSideProps(context) {
     /* 
        Gets Data for Test Plan Details
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res = await fetch(`${process.env.HOST}/api/getTestPlan?_id=`+context.query._id);
-    const testPlanData = await res.json().then((data) => data[0]);
+    const res = await getTestPlan(context.query._id);
+    const testPlanData = res.length == 1 ? res[0]:[];
      // TODO: this is a "sketchy" quickfix to situation where testPlan summary BOM has no device
     // the getTestPlan query will return BOM as BOM: [{}]
     // this line replaces it to BOM: []
@@ -226,8 +230,8 @@ export async function getServerSideProps(context) {
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
-    const res2 = await fetch(`${process.env.HOST}/api/getTestCasesByTestPlan?testPlanId=`+context.query._id);
-    const testCasesData = await res2.json().then((data) => data.map((testCase => {
+    const res2 = await getTestCasesByTestPlan(context.query._id);
+    const testCasesData = await res2.map((testCase => {
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
@@ -239,10 +243,10 @@ export async function getServerSideProps(context) {
             // "testPlanId"
             // "BOM"
         }
-    })));
+    }));
 
-    const allTestCases = await (await fetch(`${process.env.HOST}/api/getLibraryTestCases`)).json();
-    const allDevices = await (await fetch(`${process.env.HOST}/api/getAllDevices`)).json();
+    const allTestCases = await getLibraryTestCases();
+    const allDevices = await getAllDevices();
    
  
     return {

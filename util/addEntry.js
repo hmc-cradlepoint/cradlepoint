@@ -4,6 +4,7 @@ import {testPlanSchema} from "../schemas/testPlanSchema";
 import {engagementSchema} from "../schemas/engagementSchema";
 import connectToDb from "./mongodb";
 import { resultSchema } from "../schemas/resultSchema";
+import { bomDeviceSchema } from "../schemas/bomDeviceSchema";
 const { ObjectId } = require('mongodb');
 
 export async function addResult(data) {
@@ -85,21 +86,8 @@ export async function addTestCase(data) {
             // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const testPlanId = ObjectId(data.testPlanId);
-            // Old Error Checking for mongo objectIds in the BOM
-            // for (const i in testCase.BOM) {
-            //     if (!ObjectId.isValid(testCase.BOM[i].deviceId)) {
-            //         throw new Error('Invalid Device Id')
-            //     }
-            // }
 
-            // Old BOM Code?
-            // const BOM = testCase.BOM.map(device => {
-            //     return {...device, deviceId: ObjectId(device.deviceId)}
-            //   });
-            // const result = await client.collection('testCases').insertOne({...testCase, testPlanId: testPlanId, BOM: BOM});
-            
-            // TODO: Fix this line once BOM is figured out
-            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId});
+            const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, BOM: []});
             // Push the test plan into the test case array as well
             const testPlanResult = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
@@ -127,18 +115,8 @@ export async function addTestPlan(data) {
             // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const engagementId = ObjectId(data.engagementId);
-            // TODO: uncomment / fix once BOM is figured out
-            // for (const i in testPlan.summaryBOM) {
-            //     if (!ObjectId.isValid(testPlan.summaryBOM[i].deviceId)) {
-            //         throw new Error('Invalid Device Id')
-            //     }
-            // }
-            // const SummaryBOM = testPlan.summaryBOM.map(device => {
-            //     return {...device, deviceId: ObjectId(device.deviceId)};
-            // }); 
-
-            // TODO: Fix once BOM works
-            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId});
+         
+            const result = await client.collection('testPlan').insertOne({...testPlan,_id: id, engagementId: engagementId, summaryBOM: []});
             
             // if this test plan is active, update old test plan to not active and engagement points to new test plan id 
             if (data.isActive){
@@ -183,4 +161,62 @@ export async function addEngagement(data) {
     } catch (err) {
         throw err
     }
+}
+
+
+export async function addBOMDevices(data) {
+    try {
+        const client = await connectToDb();
+        if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
+            const testCaseId = ObjectId(data.testCaseId);
+            const testPlanId = ObjectId(data.testPlanId);
+            // iterate through each item that needs to be added
+            for (let i=0; i<data.devices.length;i++){
+                let device = data.devices[i];
+                const valid = await bomDeviceSchema.isValid(device);
+                if (valid){
+                    device.deviceId = ObjectId(device.deviceId);
+                    device._id = ObjectId(device._id);
+                    // Push the new device into BOM of the corresponding test case
+                    const result = await client.collection('testCases').updateOne(
+                        { "_id": testCaseId }, 
+                        { $push: { BOM: device}} 
+                    );
+                    
+                    // Update summaryBOM:  
+                     // if deviceId already in summary BOM with same isOptional arguement
+                    let summaryBomResult = await client.collection('testPlan').updateOne(
+                       {"_id": testPlanId}, 
+                        // update the quantity only if quantity recorded before is less than currently needed 
+                        {$set: {"summaryBOM.$[elem].quantity": device.quantity}},
+                        {arrayFilters: [{$and: [
+                            {"elem.deviceId" :  device.deviceId}, 
+                            {"elem.isOptional" :  device.isOptional},
+                            // check if quantity recorded before is less than currently needed 
+                            {"elem.quantity": {$lt: device.quantity}}]}
+                            ]
+                        }
+                    ); 
+            
+                    // if such device is not in summaryBOM, insert the device directly
+                    if (summaryBomResult.modifiedCount<1){
+                        console.log("device not in summaryBOM");
+                        summaryBomResult = await client.collection('testPlan').updateOne(
+                            { "_id": testPlanId }, 
+                            { $push: { summaryBOM: device}} 
+                        );
+                    }
+                        
+
+                } else{
+                    throw new Error("device not valid ");
+                }
+            }
+            return "success";
+        } else {
+            throw new Error('Test case id is invalid');
+        }
+      } catch (err) {
+        throw err;
+      }
 }

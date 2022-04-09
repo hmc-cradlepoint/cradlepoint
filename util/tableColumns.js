@@ -38,6 +38,7 @@ const testColumns = [
 
 const BOMColumns = [
     { field: '_id', headerName: 'id', headerClassName: 'header', flex: 1, hide: true},
+    { field: 'deviceId', headerName: 'Device ID', headerClassName: 'header', flex: 1, hide: true},
     { field: 'deviceName', headerName: 'Device Name', headerClassName: 'header', flex: 1, 
       valueGetter: (params) => {
         return params.row.device.deviceName;
@@ -48,13 +49,13 @@ const BOMColumns = [
       valueGetter: (params) => {
         return params.row.device.deviceType;
       }},
-    { field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
-      valueGetter: (params) => {
-        return params.row.device.codeVersion;
-      }},
+    // { field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+    //   valueGetter: (params) => {
+    //     return params.row.device.codeVersion;
+    //   }},
     { field: 'SKU', headerName: 'SKU', headerClassName: 'header', flex: 1, 
-    valueGetter: (params) => {
-      return params.row.device.SKU;
+      valueGetter: (params) => {
+        return params.row.device.SKU;
     }}];
 
 const LibraryBOMColumns = [

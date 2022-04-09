@@ -15,3 +15,16 @@ export default async (req, res) => {
   }
 
 };
+
+export async function getAllDevices() {
+
+  try {
+    const client = await connectToDb();
+    const cursor = client.collection("device").find();
+    const results = await cursor.toArray();
+    return JSON.parse(JSON.stringify(results));
+  } catch (err) {
+    throw err
+  }
+
+};

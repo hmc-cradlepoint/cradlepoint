@@ -9,7 +9,7 @@ import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
 export default function TestLibrary(props) {
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const testColumnsWithActions = testColumns.concat([
@@ -42,16 +42,18 @@ export default function TestLibrary(props) {
     )
 }
 
+import {getLibraryTests} from "./api/getLibraryTests";
+
 export async function getServerSideProps(context) {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getLibraryTests`);
-    const testsData = await res.json().then((data) => data.map((test => {
+    const res = await getLibraryTests();
+    const testsData = await res.map((test => {
         return {
             "_id": test._id,
             "name": (test.name != "")?test.name:"N/A",
             "description": (test.description != "")?test.description:"N/A",
         }
-    })));
+    }));
     return {
       props: {testsData}, // will be passed to the page component as props
     }
