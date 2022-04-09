@@ -9,7 +9,7 @@ module.exports = {
     BUCKET_NAME: process.env.BUCKET_NAME,
   }, 
   reactStrictMode: true,
-  webpack5: false,
+  // webpack5: false,
   async redirects() {
     return [
       {
