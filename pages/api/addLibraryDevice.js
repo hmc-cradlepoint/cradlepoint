@@ -1,4 +1,4 @@
-import {deviceSchema} from "../../schemas/deviceSchema";
+import {libraryDeviceSchema} from "../../schemas/libraryDeviceSchema";
 import connectToDb from "../../util/mongodb";
 
 export default async function handler(req, res) {
@@ -9,9 +9,9 @@ export default async function handler(req, res) {
   
     try {
       const client = await connectToDb();
-      const valid = await deviceSchema.isValid(req.body)
+      const valid = await libraryDeviceSchema.isValid(req.body)
       if (valid) {
-        const device = deviceSchema.cast(req.body);
+        const device = libraryDeviceSchema.cast(req.body);
         const response = await client.collection('device').insertOne(device);
         res.status(200).send({message: response});
       }

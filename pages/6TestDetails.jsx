@@ -24,7 +24,7 @@ export default function TestDetails(props) {
     const [resultModalOpen, setResultModalOpen] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
     
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     function handleNavigation(id) {

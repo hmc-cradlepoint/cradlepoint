@@ -10,7 +10,7 @@ import styling from '../styles/tableStyling';
 
 export default function TestCaseLibrary(props) {
 
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const testCaseColumnsWithActions = testCaseColumns.concat([

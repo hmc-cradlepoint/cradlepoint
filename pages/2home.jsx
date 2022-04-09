@@ -19,7 +19,7 @@ export default function HomeScreen(props) {
     const refreshData = ( () => {
       router.replace(router.asPath);
   })
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
     
     const { directory, dispatch } = useNavContext();

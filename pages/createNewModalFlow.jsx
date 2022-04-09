@@ -19,7 +19,7 @@ export default function CreateNewModalFlow(props) {
   const [isClone, setIsClone] = useState(false);
 
   function CloneModal() {
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     function renderColumns(type){

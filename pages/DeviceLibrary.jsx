@@ -11,7 +11,7 @@ import styles from '../styles/EngagementDetails.module.css';
 
 
 export default function DeviceLibrary(props) {
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     // Seems like we don't need to have these device library actions, so they are removed

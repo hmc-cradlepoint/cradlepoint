@@ -24,7 +24,7 @@ export default function TestPlanDetails(props) {
 
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
@@ -79,23 +79,24 @@ export default function TestPlanDetails(props) {
     ]);
 
 
-    const BOMColumnsWithAction = BOMColumns.concat([
-        { 
-            field: 'button', 
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: () => {
-                return (
-                    <div style={{display: "flex", flexDirection: "row"}}> 
-                    <CPButton text="View"/>
-                    <CPButton text="Delete"/>
-                    </div>
-                )
-            },
-            flex: 1
-        }
-    ]);
+    // TODO: Potential rework to include TestCaseName
+    // const SummaryBOMColumns = BOMColumns.concat([
+    //     { 
+    //         field: 'button', 
+    //         headerName: 'Actions',
+    //         headerClassName: 'header',
+    //         align: 'center',
+    //         renderCell: () => {
+    //             return (
+    //                 <div style={{display: "flex", flexDirection: "row"}}> 
+    //                 <CPButton text="View"/>
+    //                 <CPButton text="Delete"/>
+    //                 </div>
+    //             )
+    //         },
+    //         flex: 1
+    //     }
+    // ]);
 
 
     function testCases() {
@@ -117,12 +118,9 @@ export default function TestPlanDetails(props) {
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
                     <h2>Summary of Bill of Materials</h2>
-                    <CPButton text="Add New"
-                        onClick={() => {updateModal("select_device")}}
-                    />
                 </div>
-                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumnsWithAction} className={classes.root} 
-                getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.testPlanData.summaryBOM} columns={BOMColumns} className={classes.root} 
+                getRowId={(row) => row._id}/>
             </div>
         )
     }
@@ -178,7 +176,7 @@ export default function TestPlanDetails(props) {
         <SelectQuantityModal
             modalOpen={selectQuantityModalOpen} 
             onClickNext={updateModal}
-            selectedRowData={selectedRows}
+            selectedRows={selectedRows}
             onBack={()=> setSelectQuantityModalOpen(false)}
         />
         <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />

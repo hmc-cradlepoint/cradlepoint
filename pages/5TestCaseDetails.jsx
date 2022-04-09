@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
-import { PlainTable, CheckBoxTable} from '../components/tables/Table';
+import { PlainTable} from '../components/tables/Table';
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
 import SelectDeviceModal from './deviceModals/selectDevice';
@@ -15,17 +15,21 @@ import styling from '../styles/tableStyling';
 import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
 
+// TODO: allow for editing BOM
+// TODO: BOM can make code version editable
+// TODO: summary BOM can remove code version field
 export default function TestCaseDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
 
-    const useStyles = makeStyles(styling);
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
     const { directory, dispatch } = useNavContext();
-    
+    const [selectedIDs, setSelectedIDs] = useState(new Set());
+   
     const deleteAPIRoute = {
         BOM: "/api/deleteTestCaseBOM",
         TEST: "/api/deleteTest",
@@ -87,12 +91,21 @@ export default function TestCaseDetails(props) {
             renderCell: (params) => {
                 return (
                     <div style={{display: "flex", flexDirection: "row"}}> 
+                    <CPButton text="Edit" onClick={() => {updateModal("edit");
+                                                            setSelectedIDs(new Set([params.id]))
+                                                        }}/>
                     <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
                     </div>
                 )
             },
             flex: 1
-        }
+        },
+        // { 
+        //     field: 'codeVersion', headerName: 'Code Version', headerClassName: 'header', flex: 1, 
+        //     valueGetter: (params) => {
+        //         return params.row.device.codeVersion;
+        //     }
+        // }
     ]);
 
 
@@ -110,6 +123,7 @@ export default function TestCaseDetails(props) {
         )
     }
 
+
     function BOM() {
         // BOM Elements component
         return (
@@ -120,21 +134,26 @@ export default function TestCaseDetails(props) {
                         onClick={() => {updateModal("select_device")}}
                     />
                 </div>
-                <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.testCase.BOM} columns={BOMColumnsWithAction} className={classes.root} getRowId={(row) => row._id}/>
             </div>
         )
     }
 
     const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
     const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    
-    // let selectedRowData = [];
-    function updateModal(modalType){
+    const [bomEditMode, setBomEditMode] = useState(false);
+
+    async function updateModal(modalType){
       switch(modalType){
         case "select_device":
             setSelectDeviceModalOpen(true)
             break;
         case "select_quantity":
+            setBomEditMode(false);
+            setSelectQuantityModalOpen(true)
+            break;
+        case "edit":
+            setBomEditMode(true);
             setSelectQuantityModalOpen(true)
             break;
       }
@@ -159,7 +178,7 @@ export default function TestCaseDetails(props) {
         )
     }
 
-    const [selectedRows, setSelectedRows] = useState({});
+    
     
     return (
         <div>
@@ -168,15 +187,24 @@ export default function TestCaseDetails(props) {
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
-              onBack={()=> setSelectDeviceModalOpen(false)}
-              selectRows={(sRows) => setSelectedRows(sRows)}
+              onBack={()=> {setSelectDeviceModalOpen(false);}}
+              modalData={props.libraryDevices}
+              selectedIDs={selectedIDs}
+              setSelectedIDs={setSelectedIDs}
             />
             
             <SelectQuantityModal
               modalOpen={selectQuantityModalOpen} 
-              selectedRowData={selectedRows}
+              selectedIDs={selectedIDs}
+              testCase={props.testCase}
+              editMode={bomEditMode}
+              libraryDevices={props.libraryDevices}
               onClickNext={updateModal}
               onBack={()=> setSelectQuantityModalOpen(false)}
+              onClose={()=> {setSelectDeviceModalOpen(false);
+                            setSelectQuantityModalOpen(false);
+                            setSelectedIDs(new Set());
+                            refreshData();}}
             />
         
         <SplitScreen
@@ -212,7 +240,8 @@ export async function getServerSideProps(context) {
     try {
         const testCase = await getTestCase(context.query._id);
         const tests = await getTests(context.query._id);
-        // TODO: getLibraryTests api
+        // TODO: getAllDevices api
+        const libraryDevices = await(await fetch(`${process.env.HOST}/api/getAllDevices`)).json()
         const allTests = await getLibraryTests();
         
         if (testCase.len == 0) {
@@ -228,6 +257,7 @@ export async function getServerSideProps(context) {
             props: {
                 testCase: testCase[0],
                 tests,
+                libraryDevices,
                 allTests
             },
         }
