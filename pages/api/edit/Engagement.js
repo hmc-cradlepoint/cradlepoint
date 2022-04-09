@@ -11,6 +11,6 @@ export default async (req, res) => {
     const response = await editEngagement(req.body);
     res.status(response.statusCode).json(response);
   } catch (err) {
-    res.status(500).json({ message: "Something Unexpected Occured", error: err });
+    res.status(500).json({ message: "Something unexpected occured", errorName: err.name, errorMessage: err.message });
   }
 };
