@@ -155,7 +155,7 @@ export default function EngagementDetails(props) {
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
-                <PlainTable rows={props.summaryBOM} columns={BOMColumnsWithButton} className={classes.root} getRowId={(row) => row.deviceId}/>
+                <PlainTable rows={props.summaryBOM} columns={BOMColumns} className={classes.root} getRowId={(row) => row.deviceId}/>
             </div>
         )
     }
