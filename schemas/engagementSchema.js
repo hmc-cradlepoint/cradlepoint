@@ -9,7 +9,7 @@ export const engagementSchema = yup.object().shape({
   SE: yup.string().matches(/^\d+$/).required(),
   POC_Engineer: yup.string().matches(/^\d+$/).required(),
   statusCode: yup.number().positive().integer().required(),
-  testPlanId: yup.string().optional(),
+  testPlanId: yup.string().required(),
   createdOn: yup.date().default(function () {
     return new Date();
   }).required(),

@@ -4,7 +4,7 @@ export const testPlanSchema = yup.object().shape({
   _id: yup.string().optional(),
   name: yup.string().required(),
   description: yup.string().required(),
-  customerFeedback: yup.string().optional(),
+  customerFeedback: yup.string().required(),
   authors: yup.array().optional(),
   version: yup.string().required(),
   isActive: yup.bool().required(),
