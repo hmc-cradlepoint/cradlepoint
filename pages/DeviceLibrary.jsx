@@ -54,10 +54,12 @@ export default function DeviceLibrary(props) {
     )
 }
 
+import {getAllDevices} from "./api/getAllDevices";
+
 export async function getServerSideProps() {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
-    const devicesData = await res.json();
+    // const res = await fetch(`${process.env.HOST}/api/getAllDevices`);
+    const devicesData = await getAllDevices();
     return {
       props: {devicesData}, // will be passed to the page component as props
     }

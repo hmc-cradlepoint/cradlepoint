@@ -58,10 +58,11 @@ export default function TestPlanLibrary(props) {
     )
 }
 
+import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
+
 export async function getServerSideProps(context) {
   try {
-    const res = await fetch(`${process.env.HOST}/api/getLibraryTestPlans`);
-    const testPlansData = await res.json();
+    const testPlansData = await getLibraryTestPlans();
     return {
       props: {testPlansData}, // will be passed to the page component as props
     }

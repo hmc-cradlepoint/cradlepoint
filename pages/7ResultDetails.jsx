@@ -70,16 +70,11 @@ export default function ResultDetails(props) {
     )
 }
 
+import {getResult} from "./api/getResult";
+
 export async function getServerSideProps(context) {
-    /* 
-       Gets Data for Result Details
-       TODO: Error Check await call
-       TODO: Refactor out fetch call
-    */
-    console.log("getServerSideProps called");
-    const res = await fetch(`${process.env.HOST}/api/getResult?_id=`+context.query._id);
-    console.log("res is returned");
-    const resultData = await res.json().then((data) => data[0]);
+    const res = await getResult(context.query._id);
+    const resultData = res[0];
     
     return {
       props: {resultData}, // will be passed to the page component as props
