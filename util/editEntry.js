@@ -33,13 +33,13 @@ export async function editEngagement(data) {
     const newEngagement = { ...validData, _id: id, testPlanId: testplanId };
     try {
       // Update the Database with new Engagement
-      var QueryResult = await db.collection("engagements").replaceOne(query, newEngagement);
+      var queryResult = await db.collection("engagements").replaceOne(query, newEngagement);
     } catch (err) {
       // Mongo-Side Validation failures should occur here
-      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", info: QueryResult, errorName: err.name, error: err.message }
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
     // Edit was Successful!
-    return { statusCode: 200, message: "Success" }
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
   } else {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
@@ -77,13 +77,13 @@ export async function editTestPlan(data) {
     const newtestPlan = { ...validData, summaryBOM: summaryBOM, testCases: testCases, _id: id };
     try {
       // Update the Database with new TestPlan
-      var QueryResult = await db.collection("testPlan").replaceOne(query, newtestPlan);
+      var queryResult = await db.collection("testPlan").replaceOne(query, newtestPlan);
     } catch (err) {
       // Mongo-Side Validation failure should occur here
-      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", info: QueryResult, errorName: err.name, error: err.message }
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
     // Edit was Successful!
-    return { statusCode: 200, message: "Success" }
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
   } else {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
@@ -125,13 +125,13 @@ export async function editTestCase(data) {
     const newTestCase = { ...validData, _id: id, testPlanId: testPlanId, BOM: BOM, tests: tests };
     try {
       // Update the Database with new TestPlan
-      var QueryResult = await db.collection("testCases").replaceOne(query, newTestCase);
+      var queryResult = await db.collection("testCases").replaceOne(query, newTestCase);
     } catch (err) {
       // Mongo-Side Validation failure should occur here
-      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", info: QueryResult, errorName: err.name, error: err.message }
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
     // Edit was Successful!
-    return { statusCode: 200, message: "Success" }
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
   } else {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
@@ -168,13 +168,13 @@ export async function editTest(data) {
     const newTest = { ...validData, _id: id, testCaseId: testCaseId, results: results };
     try {
       // Update the Database with new TestPlan
-      var QueryResult = await db.collection("tests").replaceOne(query, newTest);
+      var queryResult = await db.collection("tests").replaceOne(query, newTest);
     } catch (err) {
       // Mongo-Side Validation failure should occur here
-      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", info: QueryResult, errorName: err.name, error: err.message }
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
     // Edit was Successful!
-    return { statusCode: 200, message: "Success" }
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
   } else {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
@@ -208,13 +208,13 @@ export async function editResult(data) {
     const newResult = { ...validData, _id: id, testId: testId };
     try {
       // Update the Database with new TestPlan
-      var QueryResult = await db.collection("result").replaceOne(query, newResult);
+      var queryResult = await db.collection("result").replaceOne(query, newResult);
     } catch (err) {
       // Mongo-Side Validation failure should occur here
-      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", info: QueryResult, errorName: err.name, error: err.message }
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
     // Edit was Successful!
-    return { statusCode: 200, message: "Success" }
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
   } else {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
