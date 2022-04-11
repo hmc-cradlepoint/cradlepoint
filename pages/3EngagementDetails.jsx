@@ -217,26 +217,22 @@ import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
 
 export async function getServerSideProps(context) {
     try {
-        const engagement = await getEngagement(context.query._id);
+        let engagement = await getEngagement(context.query._id);
         if (engagement.len == 0) {
+            // TODO: Display custom page for case where engagement not found
             return { notFound: true }
         }
+        engagement = engagement[0];
         const archivedTestPlans = await getTestPlansByEngagementId(context.query._id);
         const allTestPlans = await getLibraryTestPlans();
-        const activeTestPlan = (engagement[0] && engagement[0].testPlanId)? await getTestPlan(engagement[0].testPlanId): []
-        const summaryBOM = activeTestPlan.length == 1 ? activeTestPlan[0]?.summaryBOM :[]
-    
-        if (activeTestPlan!=null && !('deviceId' in activeTestPlan[0].summaryBOM[0])){
-            activeTestPlan[0].summaryBOM = [];
-        }
-
+        const activeTestPlan = (engagement.testPlanId)? await getTestPlan(engagement.testPlanId) : [];
+        const summaryBOM = (activeTestPlan[0])? activeTestPlan[0].summaryBOM : [];
         return {
             props: {
-                engagement: engagement[0],
+                engagement,
                 activeTestPlan,
                 archivedTestPlans,
-                // TODO: Make this more elegent
-                summaryBOM: Object.keys(summaryBOM[0]).length == 0 ? [] : summaryBOM,
+                summaryBOM,
                 allTestPlans,
             },
         }
