@@ -69,7 +69,7 @@ export async function editTestPlan(data) {
     // TypeCast ID strings to Mongo ObjectId's
     const id = ObjectId(validData._id);
     const summaryBOM = validData.summaryBOM.map(device => {
-      return { ...device, deviceId: ObjectId(device.deviceId) }
+      return { ...device, _id: ObjectId(device._id), deviceId: ObjectId(device.deviceId) }
     });
     const testCases = validData.testCases.map(testCaseId => ObjectId(testCaseId));
     // Create the database query and replacement object
@@ -117,7 +117,7 @@ export async function editTestCase(data) {
     const testPlanId = ObjectId(validData.testPlanId);
 
     const BOM = validData.BOM.map(device => {
-      return { ...device, deviceId: ObjectId(device.deviceId) }
+      return { ...device, _id: ObjectId(device._id), deviceId: ObjectId(device.deviceId) }
     });
     const tests = validData.tests.map(testId => ObjectId(testId));
     // Create the database query and replacement object
