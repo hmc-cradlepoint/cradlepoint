@@ -4,6 +4,8 @@
 # USER=
 # PASS=
 
+# TODO: Fix that it does not always work when each step is run concurrently,
+
 # Get Data
 devices=$(<data/devices.json)
 engagements=$(<data/engagements.json)
