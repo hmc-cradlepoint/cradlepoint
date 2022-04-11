@@ -11,7 +11,6 @@ import {modalFormType} from '../../util/modalUtils';
 
 export default function TestPlanModalForm(props) {
   const router = useRouter();
-  console.log(props.cloneData);
 
   const initialData = (props.isClone)? 
     {

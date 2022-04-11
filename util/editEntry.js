@@ -3,6 +3,7 @@ import { testCaseSchema } from "../schemas/testCaseSchema";
 import { testPlanSchema } from "../schemas/testPlanSchema";
 import { engagementSchema } from "../schemas/engagementSchema";
 import { resultSchema } from "../schemas/resultSchema";
+import { getEngagement } from "../pages/api/getEngagement";
 import connectToDb from "./mongodb";
 const { ObjectId } = require('mongodb');
 
@@ -219,4 +220,53 @@ export async function editResult(data) {
     // Invalid Ids
     return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
   }
+}
+
+export async function activateTestPlan(data) {
+  try {
+    // Connect to the Database
+    var db = await connectToDb();
+  } catch (err) {
+    console.log("Unable to connect to MongoDB")
+    return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
+  }
+
+  // Get the engagement of the testplan
+  try {
+    var engagement = await getEngagement(data.engagementId);
+    engagement = engagement[0];
+  } catch (err) {
+    return { statusCode: 500, message: "Something went wrong with getting the engagement", errorName: err.name, error: err.message }
+  }
+
+  // Check if the engagement already has an activeTestPlan
+  if (engagement.hasOwnProperty('testPlanId')) {
+    // Set the previous activeTestPlan's isActive field to false
+    try {
+      var queryResult_1 = await db.collection('testPlan').updateOne({ "_id": ObjectId(engagement.testPlanId) },
+      { $set: { "isActive": false } });
+    } catch(err) {
+      return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult_1, errorName: err.name, error: err.message };
+    }
+  }
+  // Set the new activeTestPlan's isActive field to true
+  try {
+    var queryResult_2 = await db.collection('testPlan').updateOne({ "_id": ObjectId(data.testPlanId) },
+    { $set: { "isActive": true } });
+  } catch(err) {
+    return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult_2, errorName: err.name, error: err.message };
+  }
+  
+  // Update the active test plan of the engagement
+  try {
+    var queryResult_3 = await db.collection('engagements').updateOne(
+      { "_id": ObjectId(data.engagementId) }, 
+      { $set: { testPlanId: ObjectId(data.testPlanId)}} 
+      );
+  } catch(err) {
+    return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult_3, errorName: err.name, error: err.message };
+  }
+
+  // TestPlan Activation was Successful!
+  return { statusCode: 200, message: "Success", firstQueryResult: queryResult_1, secondQueryResult: queryResult_2, thirdQueryResult: queryResult_3 };
 }

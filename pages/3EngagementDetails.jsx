@@ -42,6 +42,7 @@ export default function EngagementDetails(props) {
             console.log("RES:", res)
         } catch (err) {
             console.log("Error:",err)
+            throw err
         }
         refreshData();
     }
@@ -60,14 +61,15 @@ export default function EngagementDetails(props) {
         dispatch({type: "ADD_PAGE", payload: payload});
     }
 
-    async function setTestPlanActive(selectedTestPlanId){
+    async function setActiveTestPlan(newActiveTestPlanId){
         let data ={
             "engagementId": props.engagement._id,
-            "testPlanId": selectedTestPlanId
+            "testPlanId": newActiveTestPlanId
         }
+        console.log("data:", data);
         try{
         const d = JSON.stringify(data);
-        const res = await fetch('/api/setTestPlanActive', {
+        const res = await fetch('/api/edit/ActivateTestPlan', {
             method: 'PUT',
             headers: {
             'Content-Type': 'application/json',
@@ -77,7 +79,8 @@ export default function EngagementDetails(props) {
         })
         console.log("RES:", res)
         } catch (err){
-        console.log("Error:",err)
+            console.log("Error:",err)
+            throw err
         }
 
         refreshData();
@@ -93,7 +96,7 @@ export default function EngagementDetails(props) {
         renderCell: (params) => (
         <>
             <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
-            <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
+            <CPButton text="Set Active" onClick={() => {setActiveTestPlan(params.id) }}/>
             <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
         </>
         ),
