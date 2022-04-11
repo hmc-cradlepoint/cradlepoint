@@ -46,7 +46,7 @@ export default function EngagementModalForm(props) {
       "POC_Engineer": data.POC_Engineer}
 
    
-    let endPoint = '/api/editEngagement';
+    let endPoint = '/api/edit/Engagement';
     let method = 'PUT';
     
     if (props.modalFormType===modalFormType.NEW){
