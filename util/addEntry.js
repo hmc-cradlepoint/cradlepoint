@@ -37,7 +37,6 @@ export async function addResult(data) {
     }
 }
 
-
 export async function addTest(data) {
     try {
         const client = await connectToDb();
@@ -69,7 +68,6 @@ export async function addTest(data) {
         throw err
     }
 }
-
 
 export async function addTestCase(data) {
     try {
@@ -145,59 +143,44 @@ export async function addTestPlan(data) {
 
 export async function addEngagement(data) {
     try {
-        // Check that data is formatted correctly
-        var valid = await engagementSchema.isValid(data);
-        var d = await engagementSchema.validate(data);
+        // Validate Data
+        var validData = await engagementSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        return { statusCode: 500, message: "Something went wrong with Yup Validation, check the Schema", info: d, error: err }
+        return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
     }
 
     try {
         // Connect to the Database
         var db = await connectToDb();
     } catch (err) {
-        return { statusCode: 500, message: "Unable to connect to Mongo Database Server", info: db, error: err }
+        console.log("Unable to connect to MongoDB")
+        return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
     }
 
-    // Check that the testPlanId is either an empty string or a Valid Mongo Object Id
-    const validObjectIds = ObjectId.isValid(data.testPlanId);
-    const emptyTestPlanId = (data.testPlanId === "");
-    if (valid && (validObjectIds || emptyTestPlanId)) {
-        let engagement = engagementSchema.cast(data);
-        if (validObjectIds) {
+    let engagement = validData;
+    // Check if there is a testPlanId field
+    if (data.hasOwnProperty('testPlanId')) {
+        if (ObjectId.isValid(data.testPlanId)) {
             // TypeCast ID strings to Mongo ObjectId's
             const testplanId = ObjectId(validData.testPlanId);
             engagement = { ...engagement, testPlanId: testplanId }
+        } else {
+            // Invalid Ids
+            return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
         }
+    }
 
-        try {
-            // Update the Database with new Engagement
-            var QueryResult = await client.collection('engagements').insertOne(engagement);
-        } catch (err) {
-            // Mongo-Side Validation failure should occur here
-            return { statusCode: 400, message: "Mongo Database Query was unable to Validate or otherwise Failed", info: QueryResult, error: err }
-        }
-        // Edit was Successful!
-        return { statusCode: 200, message: "Success" }
+    try {
+        // Update the Database with new Engagement
+        var queryResult = await db.collection('engagements').insertOne(engagement);
+    } catch (err) {
+        // Mongo-Side Validation failure should occur here
+        return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
-    else {
-        console.log("Valid:", valid);
-        console.log("ObjIds:", validObjectIds);
-        // Schema is invalid or invalid Ids
-        let responseText = "Validation Failed: ";
-        if (!valid && !validObjectIds) {
-            responseText += "Contains invalid MongoId and Incorrectly formatted data"
-        }
-        else if (!validObjectIds) {
-            responseText += "Contains invalid MongoId"
-        }
-        else {
-            responseText += "Incorrectly formatted data"
-        }
-        return { statusCode: 422, message: responseText }
-    }
+    // Edit was Successful!
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
+
 }
-
 
 export async function addBOMDevices(data) {
     try {
