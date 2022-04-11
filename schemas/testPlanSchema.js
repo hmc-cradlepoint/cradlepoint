@@ -4,7 +4,7 @@ export const testPlanSchema = yup.object().shape({
   _id: yup.string().optional(),
   name: yup.string().required(),
   description: yup.string().required(),
-  customerFeedback: yup.string().optional(),
+  customerFeedback: yup.string().required(),
   authors: yup.array().optional(),
   version: yup.string().required(),
   isActive: yup.bool().required(),
@@ -15,10 +15,11 @@ export const testPlanSchema = yup.object().shape({
   ).required(),
   summaryBOM: yup.array().of(
     yup.object().shape({
+      _id: yup.string().required(),
+      deviceId: yup.string().required(),
       isOptional: yup.boolean().required(),
       quantity: yup.number().positive().required(),
-      deviceId: yup.string().required(),
-    }).optional()
+    }).required()
   ).required(),  
   createdOn: yup.date().default(function () {
     return new Date();

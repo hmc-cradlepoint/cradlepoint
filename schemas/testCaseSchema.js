@@ -12,9 +12,10 @@ export const testCaseSchema = yup.object().shape({
   ).required(),
   BOM: yup.array().of(
     yup.object().shape({
+      _id: yup.string().required(),
+      deviceId: yup.string().required(),
       isOptional: yup.boolean().required(),
       quantity: yup.number().positive().required(),
-      deviceId: yup.string().required(),
-    }).optional()
+    }).required()
   ).required(),
 });
