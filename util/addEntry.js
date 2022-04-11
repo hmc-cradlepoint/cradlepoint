@@ -106,39 +106,30 @@ export async function addTestCase(data) {
 
 export async function addTestPlan(data) {
     try {
-        const client = await connectToDb();
-        const valid = await testPlanSchema.isValid(data);
-        if (valid && ObjectId.isValid(data.engagementId)) {
-            const testPlan = testPlanSchema.cast(data);
-            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
-            const id = ObjectId(data._id);
-            const engagementId = ObjectId(data.engagementId);
-
-            const result = await client.collection('testPlan').insertOne({ ...testPlan, _id: id, engagementId: engagementId, summaryBOM: [] });
-
-            // if this test plan is active, update old test plan to not active and engagement points to new test plan id 
-            if (data.isActive) {
-                const oldTestPlanId = await client.collection('engagments').findOne({ "_id": engagementId }, { testPlanId: 1 });
-                const updateOldResult = await client.collection('testPlan').updateOne(
-                    { "_id": oldTestPlanId },
-                    { $set: { isActive: false } }
-                );
-
-                const engagementResult = await client.collection('engagements').updateOne(
-                    { "_id": engagementId },
-                    { $set: { testPlanId: result.insertedId } } // update the active test plan id in engagement
-                );
-            }
-
-            return result;
-        }
-        else {
-            throw new Error('input nor in right format')
-        }
+        // Validate Data
+        var validData = await testPlanSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        throw err
+        return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
     }
 
+    try {
+        // Connect to the Database
+        var db = await connectToDb();
+    } catch (err) {
+        console.log("Unable to connect to MongoDB")
+        return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
+    }
+    // TODO: check objIds of TestCases and _id
+    if (ObjectId.isValid(validData.engagementId)) {
+        const engagementId = ObjectId(validData.engagementId);
+        // TODO: add checks so that adding can set isActive and summaryBOM
+        const queryResult = await db.collection('testPlan').insertOne({ ...validData, engagementId: engagementId, isActive: false, summaryBOM: [] });
+        // Add was Successful!
+        return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
+    } else {
+        // Invalid Ids
+        return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
+    }
 }
 
 export async function addEngagement(data) {
@@ -159,8 +150,8 @@ export async function addEngagement(data) {
 
     let engagement = validData;
     // Check if there is a testPlanId field
-    if (data.hasOwnProperty('testPlanId')) {
-        if (ObjectId.isValid(data.testPlanId)) {
+    if (validData.hasOwnProperty('testPlanId')) {
+        if (ObjectId.isValid(validData.testPlanId)) {
             // TypeCast ID strings to Mongo ObjectId's
             const testplanId = ObjectId(validData.testPlanId);
             engagement = { ...engagement, testPlanId: testplanId }
@@ -177,7 +168,7 @@ export async function addEngagement(data) {
         // Mongo-Side Validation failure should occur here
         return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
     }
-    // Edit was Successful!
+    // Add was Successful!
     return { statusCode: 200, message: "Success", mongoQueryResult: queryResult }
 
 }

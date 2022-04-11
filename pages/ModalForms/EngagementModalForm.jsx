@@ -12,7 +12,6 @@ import { modalFormType } from '../../util/modalUtils';
 export default function EngagementModalForm(props) {
   const router = useRouter();
   const initialData = {
-    _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     customer: props.data?.customer??"",
     SFDC: props.data?.SFDC??"",
@@ -36,7 +35,6 @@ export default function EngagementModalForm(props) {
     console.log(props.modalFormType)
     let newData = {
       ...props.data, 
-      "_id":data._id.toString(), 
       "name":data.name, 
       "customer":data.customer, 
       "SFDC":data.SFDC, 
