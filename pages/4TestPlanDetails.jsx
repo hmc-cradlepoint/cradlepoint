@@ -79,7 +79,7 @@ export default function TestPlanDetails(props) {
     ]);
 
 
-    // TODO: Potential rework to include TestCaseName
+    // TODO: (optional) Add buttons / additional fields to sumamryBOM
     // const SummaryBOMColumns = BOMColumns.concat([
     //     { 
     //         field: 'button', 
@@ -90,7 +90,6 @@ export default function TestPlanDetails(props) {
     //             return (
     //                 <div style={{display: "flex", flexDirection: "row"}}> 
     //                 <CPButton text="View"/>
-    //                 <CPButton text="Delete"/>
     //                 </div>
     //             )
     //         },

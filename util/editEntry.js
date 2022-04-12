@@ -12,7 +12,7 @@ export async function editEngagement(data) {
     // Validate Data
     var validData = await engagementSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
-    return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+    return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
   }
 
   try {
@@ -52,7 +52,7 @@ export async function editTestPlan(data) {
     // Validate Data
     var validData = await testPlanSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
-    return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+    return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
   }
 
   try {
@@ -96,7 +96,7 @@ export async function editTestCase(data) {
     // Validate Data
     var validData = await testCaseSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
-    return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+    return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
   }
 
   try {
@@ -144,7 +144,7 @@ export async function editTest(data) {
     // Validate Data
     var validData = await testSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
-    return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+    return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
   }
 
   try {
@@ -187,7 +187,7 @@ export async function editResult(data) {
     // Validate Data
     var validData = await resultSchema.validate(data, { abortEarly: false, stripUnknown: true });
   } catch (err) {
-    return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+    return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
   }
 
   try {

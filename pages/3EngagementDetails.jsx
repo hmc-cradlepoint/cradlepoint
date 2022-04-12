@@ -119,7 +119,7 @@ export default function EngagementDetails(props) {
         }
     ]);
 
-    // TODO: Potential rework to include TestCaseName
+    // TODO: (optional) Add buttons / additional fields to sumamryBOM
     // const SummaryBOMColumns = BOMColumns.concat([
     //     { 
     //         field: 'button', 

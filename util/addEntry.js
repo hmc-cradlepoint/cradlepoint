@@ -109,7 +109,7 @@ export async function addTestPlan(data) {
         // Validate Data
         var validData = await testPlanSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+        return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
     }
 
     try {
@@ -137,7 +137,7 @@ export async function addEngagement(data) {
         // Validate Data
         var validData = await engagementSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        return { statusCode: 422, message: "Yup Validation Failed", error: err.message, errors: err.errors }
+        return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
     }
 
     try {

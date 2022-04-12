@@ -56,6 +56,7 @@ export default function TestPlanModalForm(props) {
       "engagementId": props.engagementId,
       "summaryBOM": data.summaryBOM,
       "testCases": data.testCases,
+      "createdOn": new Date(), // Schema provides a default val, not necessary to provide
     }
 
     let endPoint = '/api/edit/TestPlan';
@@ -76,9 +77,14 @@ export default function TestPlanModalForm(props) {
         },
         body: d
       })
-      console.log("RES:", res)
+      if (res.statusCode && res.statusCode !== 200) {
+        // TODO: Instead of throwing an error, display what went wrong
+        // console.log("RES:", res)
+        throw new Error(res.error)
+      }
     } catch (err) {
-      console.log("Error:", err)
+      // console.log("Error:", err)
+      throw err
     }
     props.onClose();
     if (props.modalFormType == modalFormType.NEW) {

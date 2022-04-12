@@ -11,7 +11,6 @@ import { modalFormType } from '../../util/modalUtils';
 
 export default function EngagementModalForm(props) {
   const router = useRouter();
-  // Sets Default values that fill modal fields when adding
   const initialData = {
     name: props.data?.name ?? "",
     description: props.data?.description ?? "",
@@ -42,7 +41,7 @@ export default function EngagementModalForm(props) {
       "SE": data.SE,
       "POC_Engineer": data.POC_Engineer,
       "statusCode": data.statusCode,
-      "createdOn": new Date(),
+      "createdOn": new Date(), // Schema provides a default val, not necessary to provide
     }
 
 
@@ -54,7 +53,6 @@ export default function EngagementModalForm(props) {
       method = 'POST';
     }
 
-    console.log(newData);
     try {
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
@@ -65,7 +63,7 @@ export default function EngagementModalForm(props) {
         },
         body: d
       })
-      if (res.statusCode !== 200){
+      if (res.statusCode && res.statusCode !== 200){
         // TODO: Instead of throwing an error, display what went wrong
         // console.log("RES:", res)
         throw new Error(res.error)
