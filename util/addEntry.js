@@ -137,14 +137,14 @@ export async function addEngagement(data) {
         // Validate Data
         var validData = await engagementSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        return { statusCode: 422, message: "Yup Validation Failed", errors: err.errors }
+        return { statusCode: 422, message: "Yup Validation Failed", error: err.message, errors: err.errors }
     }
 
     try {
         // Connect to the Database
         var db = await connectToDb();
     } catch (err) {
-        console.log("Unable to connect to MongoDB")
+        console.log("Unable to connect to MongoDB");
         return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
     }
 
@@ -157,6 +157,7 @@ export async function addEngagement(data) {
             engagement = { ...engagement, testPlanId: testplanId }
         } else {
             // Invalid Ids
+            console.log("Invalid Ids");
             return { statusCode: 422, message: "Validation Failed: Contains invalid MongoId(s)" }
         }
     }

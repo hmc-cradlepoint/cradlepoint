@@ -228,15 +228,11 @@ export async function getServerSideProps(context) {
         engagement = engagement[0];
         const archivedTestPlans = await getTestPlansByEngagementId(context.query._id);
         const allTestPlans = await getLibraryTestPlans();
-        if (true) {
-
-        };
         const activeTestPlan = (engagement.testPlanId) ? await getTestPlan(engagement.testPlanId) : [];
         let summaryBOM = (activeTestPlan[0]) ? activeTestPlan[0].summaryBOM : [];
-        
         if (engagement.testPlanId){
             // Fix issue where an empty summaryBOM is [{}] instead of []
-            if (activeTestPlan[0].summaryBOM !== [{}]) {
+            if (JSON.stringify(summaryBOM) === '[{}]') {
                 summaryBOM = [];
             };
         };

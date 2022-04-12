@@ -63,9 +63,6 @@ export default function HomeScreen(props) {
             <CPButton text="Delete" />
            </div>
           ),
-          // renderCell: (params) => (
-          //   <CPButton text="Export" onClick={() => handleNavigation(params.id)}/>
-          // )
         }
       ]);
 
