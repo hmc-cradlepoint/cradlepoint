@@ -46,12 +46,6 @@ export async function addTest(data) {
             // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
             const id = ObjectId(data._id);
             const test = testSchema.cast(data);
-            // Error Check to ensure proper format for Mongo ObjectIds
-            for (const result in test.results) {
-                if (!ObjectId.isValid(result)) {
-                    throw new Error('Invalid Result Id')
-                }
-            }
             const testCaseId = ObjectId(data.testCaseId);
             const result = await client.collection('tests').insertOne({...test, _id: id, testCaseId: testCaseId});
             // Push the test plan into the test case array as well
@@ -182,32 +176,32 @@ export async function addBOMDevices(data) {
                         { "_id": testCaseId }, 
                         { $push: { BOM: device}} 
                     );
+                    console.log(result)
                     
-                    // Update summaryBOM:  
-                     // if deviceId already in summary BOM with same isOptional arguement
-                    let summaryBomResult = await client.collection('testPlan').updateOne(
-                       {"_id": testPlanId}, 
-                        // update the quantity only if quantity recorded before is less than currently needed 
-                        {$set: {"summaryBOM.$[elem].quantity": device.quantity}},
-                        {arrayFilters: [{$and: [
-                            {"elem.deviceId" :  device.deviceId}, 
-                            {"elem.isOptional" :  device.isOptional},
-                            // check if quantity recorded before is less than currently needed 
-                            {"elem.quantity": {$lt: device.quantity}}]}
-                            ]
-                        }
-                    ); 
-            
+                    
+                    // if deviceId already in summary BOM with same isOptional arguement, update quantity
+                    const updateResult = await client.collection('testPlan').updateOne(
+                        {"_id": testPlanId, "summaryBOM": {$elemMatch:{deviceId: device.deviceId, isOptional : device.isOptional}}}, 
+                            // update the quantity only if quantity recorded before is less than currently needed 
+                            {$max: {"summaryBOM.$[elem].quantity": device.quantity}},
+                            {arrayFilters: [{$and: [
+                                {"elem.deviceId" :  device.deviceId}, 
+                                {"elem.isOptional" :  device.isOptional}
+                                    ]}
+                                ]
+                            }
+                        ); 
+                    console.log(updateResult);
+
                     // if such device is not in summaryBOM, insert the device directly
-                    if (summaryBomResult.modifiedCount<1){
+                    if (updateResult.matchedCount<1){
                         console.log("device not in summaryBOM");
-                        summaryBomResult = await client.collection('testPlan').updateOne(
+                            let summaryBomResult = await client.collection('testPlan').updateOne(
                             { "_id": testPlanId }, 
                             { $push: { summaryBOM: device}} 
                         );
+                        console.log(summaryBomResult);
                     }
-                        
-
                 } else{
                     throw new Error("device not valid ");
                 }

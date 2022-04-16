@@ -4,8 +4,8 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import CPButton from '../components/button/CPButton';
-import CreateNewModalFlow from './createNewModalFlow';
-import { flowType } from '../util/modalUtils';
+import EngagementModalForm from './ModalForms/EngagementModalForm';
+import { modalFormType } from '../util/modalUtils';
 import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
@@ -80,9 +80,6 @@ export default function HomeScreen(props) {
             <CPButton text="Delete" onClick={() => deleteData(params.id)}/>
            </div>
           ),
-          // renderCell: (params) => (
-          //   <CPButton text="Export" onClick={() => handleNavigation(params.id)}/>
-          // )
         }
       ]);
 
@@ -90,7 +87,11 @@ export default function HomeScreen(props) {
   
     return(
       <div >
-        <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
+        <EngagementModalForm  modalFormType={modalFormType.NEW} 
+                              isOpen={createNewFlow} 
+                              onBack={() => setCreateNewFlow(false)} 
+                              onClose={()=> {setCreateNewFlow(false); refreshData();}}/>
+     
         <PlainScreen>
         <NavDir pages={directory} />
         <h1>Home</h1>

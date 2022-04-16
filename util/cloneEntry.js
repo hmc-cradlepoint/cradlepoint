@@ -3,9 +3,19 @@ import {testCaseSchema} from "../schemas/testCaseSchema";
 import {testPlanSchema} from "../schemas/testPlanSchema";
 import connectToDb from "./mongodb";
 import { addTest } from "./addEntry";
+import {getTest} from "../pages/api/getTest";
 const { ObjectId } = require('mongodb');
 
-async function cloneTest(testCaseId, oldTests) {
+// TODO: could technically just delete this function and replace all the calls with addTest
+// but that might be confusing 
+export async function cloneTest(data) {
+    // Since test is the deepest layer (we don't clone the results),
+    // it is the same as just addTest
+    return await addTest(data);
+}
+
+// helper function for cloneTestCase
+async function helperCloneTest(testCaseId, oldTests) {
     // iterate through all the tests of the original test case
     // clone them and add them to the new test case
     for (var i = 0; i < oldTests.length; i++) {
@@ -18,7 +28,8 @@ async function cloneTest(testCaseId, oldTests) {
         // get test details of the corresponding test from the Test Library
         var test;
         try {
-            test = await (await fetch(`${process.env.HOST}/api/getLibraryTests?_id=${testId}`)).json()
+            // test = await (await fetch(`${process.env.HOST}/api/getLibraryTests?_id=${testId}`)).json()
+            test = await getTest(testId);
             test = test[0];
         } catch {
             throw new Error("cannot get test corresponding to id")
@@ -31,11 +42,14 @@ async function cloneTest(testCaseId, oldTests) {
         test.results = [];
         // add the test to the test case
         const testResult = await addTest(test);
+        console.log(testResult)
     }
     
     return "Cloned all tests";
 }
 
+
+// helper function
 async function cloneBOM(testPlanId, oldBOM, client) {
     // newBOM is the BOM for the new test case we are creating
     var newBOM = [];
@@ -102,7 +116,7 @@ export async function cloneTestCase(data) {
             const result = await client.collection('testCases').insertOne({...testCase, _id: id, testPlanId: testPlanId, tests:[], BOM: newBOM});
             console.log(result)
             
-            const testResult = cloneTest(id, testCase.tests);
+            const testResult = helperCloneTest(id, testCase.tests);
             console.log(testResult);
    
             // Push the test case into the test case array of its corresponding test plan

@@ -91,7 +91,7 @@ export default function TestDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
-                <p>Most Recent Result Status: {props.testData.resultStatus?? "unknown"}</p>
+                <p>Most Recent Result Status: {props.testData.resultStatus?? "Unknown"}</p>
             </div>
         )
         // TODO: add result status in test schema so it can display the result status of the latest result
