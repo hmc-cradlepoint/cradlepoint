@@ -75,7 +75,7 @@ export default function TestPlanDetails(props) {
         </div>
         ),
         flex: 2
-    }
+    },
     ]);
 
 
@@ -138,6 +138,32 @@ export default function TestPlanDetails(props) {
             break;
       }
     }
+
+    async function handleUploadDocument(filename) {
+        let newData = {
+          ...props.testPlanData, 
+          "deviceConfig": filename,
+        }
+    
+        let endPoint = '/api/editTestPlan';
+        let method = 'PUT';
+    
+        try{
+          const d = JSON.stringify(newData);
+          const res = await fetch(endPoint, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(d)
+            },
+            body: d
+          })
+          console.log("RES:", res)
+          refreshData();
+        } catch (err){
+          console.log("Error:",err)
+        }
+      }
     
     function details() {
         return (
@@ -145,7 +171,7 @@ export default function TestPlanDetails(props) {
                 <h2>Details</h2>
                 <p>Name: {props.testPlanData.name}</p>
                 <p>Active: {(props.testPlanData.isActive).toString()}</p>
-                <p>Device Config: {props.testPlanData.deviceConfig}</p>
+                <p>Device Config:</p> <UploadComponents filename  = {`device_config_${props.testPlanData._id}`} downloadLink = {props.configLink} updateDocument = {handleUploadDocument}/>
                 <p>Coverage:</p>
                 <p>Version: {props.testPlanData.version}</p>
                 <p>Date Created: {props.testPlanData.createdOn}</p>
@@ -209,6 +235,8 @@ import {getTestPlan} from "./api/getTestPlan";
 import {getTestCasesByTestPlan} from "./api/getTestCasesByTestPlan";
 import {getAllDevices} from "./api/getAllDevices";
 import {getLibraryTestCases} from "./api/getLibraryTestCases";
+import UploadComponents from '../components/UploadComponents';
+import {downloadUrl} from "./api/downloadUrl"
 
 
 export async function getServerSideProps(context) {
@@ -225,25 +253,30 @@ export async function getServerSideProps(context) {
     if (!('deviceId' in testPlanData.summaryBOM[0])){
         testPlanData.summaryBOM = [];
     }
+    const configLink = await downloadUrl(testPlanData?.deviceConfig)
+
     /* 
        Gets Data for Test Cases Table
        TODO: Error Check await call
        TODO: Refactor out fetch call
     */
     const res2 = await getTestCasesByTestPlan(context.query._id);
-    const testCasesData = await res2.map((testCase => {
+    const testCasesData = await Promise.all(res2.map(( async (testCase) => {
+        const config = await downloadUrl(testCase.config)
+        const topology = await downloadUrl(testCase.topology)
         return {
             "_id": testCase._id,
             "name": (testCase.name != "")?testCase.name:"N/A",
             "description": (testCase.description != "")?testCase.description:"N/A",
-            "config": (testCase.config != "")?testCase.config:"N/A",
-            "topology": testCase.topology,
+            "config": config,
+            "topology": topology,
             // Other Fields not displayed:
             // "percentPassed":"__%",
             // "testPlanId"
             // "BOM"
         }
-    }));
+    })));
+    console.log(testCasesData)
 
     const allTestCases = await getLibraryTestCases();
     const allDevices = await getAllDevices();
@@ -255,6 +288,7 @@ export async function getServerSideProps(context) {
           testCasesData,
           allTestCases,
           allDevices,
+          configLink
         },
     }
   }
