@@ -268,6 +268,8 @@ export async function addBOMDevices(data) {
                             console.log(summaryBomResult);
                         }
                         
+                        
+                        
                     } else{
                         // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
@@ -277,7 +279,8 @@ export async function addBOMDevices(data) {
                         );
                         console.log(summaryBomResult);
                     }
-                } else {
+
+                } else{
                     throw new Error("device not valid ");
                 }
             }
