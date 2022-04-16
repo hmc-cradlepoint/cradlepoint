@@ -22,8 +22,13 @@ export async function editEngagement(data) {
     console.log("Unable to connect to MongoDB")
     return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
   }
-  // TODO: If testplanId exists, typecast it
-  // TODO: Errorcheck id incase it does not exist
+
+  if (validData.hasOwnProperty("_id")) {
+    validData._id = ObjectId(validData._id)
+  }
+  if (validData.hasOwnProperty("testPlanId")) {
+    validData.testPlanId = ObjectId(validData.testPlanId)
+  }
   const query = { _id: validData._id };
   const newEngagement = validData;
   try {
@@ -53,16 +58,21 @@ export async function editTestPlan(data) {
     console.log("Unable to connect to MongoDB")
     return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
   }
+
   // TypeCast ID strings to Mongo ObjectId's
-  // TODO: Errorcheck id incase it does not exist
-  const id = ObjectId(validData._id);
-  const summaryBOM = validData.summaryBOM.map(device => {
+  if (validData.hasOwnProperty("_id")) {
+    validData._id = ObjectId(validData._id)
+  }
+  validData.engagementId = ObjectId(validData.engagementId);
+  validData.summaryBOM = validData.summaryBOM.map(device => {
     return { ...device, _id: ObjectId(device._id), deviceId: ObjectId(device.deviceId) }
   });
-  const testCases = validData.testCases.map(testCaseId => ObjectId(testCaseId));
+  validData.testCases = validData.testCases.map(testCaseId => ObjectId(testCaseId));
+
   // Create the database query and replacement object
   const query = { _id: id };
-  const newtestPlan = { ...validData, summaryBOM: summaryBOM, testCases: testCases, _id: id };
+  const newtestPlan = { ...validData };
+
   try {
     // Update the Database with new TestPlan
     var queryResult = await db.collection("testPlan").replaceOne(query, newtestPlan);
