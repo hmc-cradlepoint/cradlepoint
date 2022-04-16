@@ -23,17 +23,19 @@ export async function editEngagement(data) {
     return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
   }
 
+  // TypeCast ID strings to Mongo ObjectId's
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
+  } else {
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
   }
   if (validData.hasOwnProperty("testPlanId")) {
     validData.testPlanId = ObjectId(validData.testPlanId)
   }
-  const query = { _id: validData._id };
-  const newEngagement = validData;
+
   try {
     // Update the Database with new Engagement
-    var queryResult = await db.collection("engagements").replaceOne(query, newEngagement);
+    var queryResult = await db.collection("engagements").replaceOne({ _id: validData._id }, validData);
   } catch (err) {
     // Mongo-Side Validation failures should occur here
     return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
@@ -62,6 +64,8 @@ export async function editTestPlan(data) {
   // TypeCast ID strings to Mongo ObjectId's
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
+  } else {
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
   }
   validData.engagementId = ObjectId(validData.engagementId);
   validData.summaryBOM = validData.summaryBOM.map(device => {
@@ -69,13 +73,9 @@ export async function editTestPlan(data) {
   });
   validData.testCases = validData.testCases.map(testCaseId => ObjectId(testCaseId));
 
-  // Create the database query and replacement object
-  const query = { _id: id };
-  const newtestPlan = { ...validData };
-
   try {
     // Update the Database with new TestPlan
-    var queryResult = await db.collection("testPlan").replaceOne(query, newtestPlan);
+    var queryResult = await db.collection("testPlan").replaceOne({ _id: validData._id }, validData);
   } catch (err) {
     // Mongo-Side Validation failure should occur here
     return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
@@ -101,20 +101,20 @@ export async function editTestCase(data) {
   }
 
   // TypeCast ID strings to Mongo ObjectId's
-  // TODO: Errorcheck id incase it does not exist
-  const id = ObjectId(validData._id);
-  const testPlanId = ObjectId(validData.testPlanId);
-
-  const BOM = validData.BOM.map(device => {
+  if (validData.hasOwnProperty("_id")) {
+    validData._id = ObjectId(validData._id)
+  } else {
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+  }
+  validData.testPlanId = ObjectId(validData.testPlanId);
+  validData.BOM = validData.BOM.map(device => {
     return { ...device, _id: ObjectId(device._id), deviceId: ObjectId(device.deviceId) }
   });
-  const tests = validData.tests.map(testId => ObjectId(testId));
-  // Create the database query and replacement object
-  const query = { _id: id };
-  const newTestCase = { ...validData, _id: id, testPlanId: testPlanId, BOM: BOM, tests: tests };
+  validData.tests = validData.tests.map(testId => ObjectId(testId));
+
   try {
     // Update the Database with new TestPlan
-    var queryResult = await db.collection("testCases").replaceOne(query, newTestCase);
+    var queryResult = await db.collection("testCases").replaceOne({ _id: validData._id }, validData);
   } catch (err) {
     // Mongo-Side Validation failure should occur here
     return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
@@ -141,16 +141,17 @@ export async function editTest(data) {
   }
 
   // TypeCast ID strings to Mongo ObjectId's
-  // TODO: Errorcheck id incase it does not exist
-  const id = ObjectId(validData._id);
-  const testCaseId = ObjectId(validData.testCaseId);
-  const results = validData.results.map(resultId => ObjectId(resultId));
-  // Create the database query and replacement object
-  const query = { _id: id };
-  const newTest = { ...validData, _id: id, testCaseId: testCaseId, results: results };
+  if (validData.hasOwnProperty("_id")) {
+    validData._id = ObjectId(validData._id)
+  } else {
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+  }
+  validData.testCaseId = ObjectId(validData.testCaseId);
+  validData.results = validData.results.map(resultId => ObjectId(resultId));
+
   try {
     // Update the Database with new TestPlan
-    var queryResult = await db.collection("tests").replaceOne(query, newTest);
+    var queryResult = await db.collection("tests").replaceOne({ _id: validData._id }, validData);
   } catch (err) {
     // Mongo-Side Validation failure should occur here
     return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
@@ -176,15 +177,16 @@ export async function editResult(data) {
   }
 
   // TypeCast ID strings to Mongo ObjectId's
-  const id = ObjectId(validData._id);
-  // TODO: Errorcheck id incase it does not exist
-  const testId = ObjectId(validData.testId);
-  // Create the database query and replacement object
-  const query = { _id: id };
-  const newResult = { ...validData, _id: id, testId: testId };
+  if (validData.hasOwnProperty("_id")) {
+    validData._id = ObjectId(validData._id)
+  } else {
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+  }
+  validData.testId = ObjectId(validData.testId);
+
   try {
     // Update the Database with new TestPlan
-    var queryResult = await db.collection("result").replaceOne(query, newResult);
+    var queryResult = await db.collection("result").replaceOne({ _id: validData._id }, validData);
   } catch (err) {
     // Mongo-Side Validation failure should occur here
     return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
