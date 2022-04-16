@@ -4,8 +4,8 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import CPButton from '../components/button/CPButton';
-import CreateNewModalFlow from './createNewModalFlow';
-import { flowType } from '../util/modalUtils';
+import EngagementModalForm from './ModalForms/EngagementModalForm';
+import { modalFormType } from '../util/modalUtils';
 import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
@@ -48,6 +48,23 @@ export default function HomeScreen(props) {
       linkElement.click();
     }
 
+    async function deleteData(resId) {
+      let data = { "_id": resId }
+      try {
+          const res = await fetch("/api/deleteEngagement", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+          })
+          console.log("RES:", res)
+      } catch (err) {
+          console.log("Error:",err)
+      }
+      refreshData();
+    }
+
     const engagementColumnsWithActions = engagementColumns.concat([
         { 
           field: 'button', 
@@ -60,7 +77,7 @@ export default function HomeScreen(props) {
             <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Export as json" onClick={() => exportToJson(params.id)}/>
-            <CPButton text="Delete" />
+            <CPButton text="Delete" onClick={() => deleteData(params.id)}/>
            </div>
           ),
         }
@@ -70,7 +87,11 @@ export default function HomeScreen(props) {
   
     return(
       <div >
-        <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
+        <EngagementModalForm  modalFormType={modalFormType.NEW} 
+                              isOpen={createNewFlow} 
+                              onBack={() => setCreateNewFlow(false)} 
+                              onClose={()=> {setCreateNewFlow(false); refreshData();}}/>
+     
         <PlainScreen>
         <NavDir pages={directory} />
         <h1>Home</h1>

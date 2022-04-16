@@ -23,7 +23,7 @@ export default function EngagementDetails(props) {
 
     const deleteAPIRoute = {
         BOM: "/api/deleteTestCaseBOM",
-        TEST_CASE: "/api/deleteTestPlan",
+        TEST_PLAN: "/api/deleteTestPlan",
     }
 
     async function deleteData(route, resId, parentEngagementId) {

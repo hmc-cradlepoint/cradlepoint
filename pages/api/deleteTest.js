@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     }
     try {
         console.log(req.body);
-        const response = deleteTest(req.body);
+        const response = await deleteTest(req.body);
         res.status(200).send({message: response});
     } catch (err) {
         res.status(500).send(err.message);
