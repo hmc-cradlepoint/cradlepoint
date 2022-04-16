@@ -10,6 +10,7 @@ import CreateNewModalFlow from './createNewModalFlow';
 import { makeStyles } from '@mui/styles';
 import styles from '../styles/EngagementDetails.module.css';
 import styling from '../styles/tableStyling';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 
 import { BOMColumns, testCaseColumns} from '../util/tableColumns';
 import { flowType } from '../util/modalUtils';
@@ -21,6 +22,19 @@ export default function TestPlanDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    let paramId;
+    let testPlanId;
+    const getParams = (id, testPlanId) => {
+        paramId = id;
+        testPlanId = testPlanId;
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+        deleteData(deleteAPIRoute.TEST_CASE, paramId, testPlanId);
+        setDeleteModal(false);
+    }
 
     const [createNewFlow, setCreateNewFlow] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
@@ -71,7 +85,8 @@ export default function TestPlanDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_CASE, params.id, props.testPlanData._id)}}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id, props.testPlanData._id)}
         </div>
         ),
         flex: 2
@@ -181,6 +196,7 @@ export default function TestPlanDetails(props) {
         />
         <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+        <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
         <SplitScreen
             topChildren={
                 <>

@@ -14,6 +14,7 @@ import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 
 // TODO: allow for editing BOM
 // TODO: BOM can make code version editable
@@ -23,6 +24,19 @@ export default function TestCaseDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    let paramId;
+    let testCaseId;
+    const getParams = (id, testCaseId) => {
+        paramId = id;
+        testCaseId = testCaseId;
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+        deleteData(deleteAPIRoute.TEST, paramId, testCaseId);
+        setDeleteModal(false);
+    }
 
     const useStyles = makeStyles({styling});
     const classes = useStyles();
@@ -74,7 +88,8 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST, params.id, props.testCase._id)}}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id, props.testCase._id)}
         </div>
         ),
         flex: 2
@@ -184,6 +199,7 @@ export default function TestCaseDetails(props) {
         <div>
             <CreateNewModalFlow modalData={props} type={flowType.TEST} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false);refreshData();}} />
             <EditModalFlow data={props.testCase} type={flowType.TEST_CASE} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+            <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
             <SelectDeviceModal
               modalOpen={selectDeviceModalOpen} 
               onClickNext={updateModal}
