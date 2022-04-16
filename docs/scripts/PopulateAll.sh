@@ -4,8 +4,6 @@
 # USER=
 # PASS=
 
-# TODO: Fix that it does not always work when each step is run concurrently,
-
 # Get Data
 devices=$(<data/devices.json)
 engagements=$(<data/engagements.json)
@@ -15,6 +13,7 @@ testPlans=$(<data/testPlans.json)
 tests=$(<data/tests.json)
 
 # SSH to Mongo & Delete all data
+# NOTE: To define and use a var w/EOF, make sure to escape \$VARNAME
 ssh -tt clinic2021@134.173.43.35 << EOF
   mongosh -u $USER -p $PASS
   use cradlepoint
@@ -24,8 +23,6 @@ ssh -tt clinic2021@134.173.43.35 << EOF
   db.testCases.insertMany($testCases, {})
   db.testPlan.insertMany($testPlans, {})
   db.tests.insertMany($tests, {})
+  quit()
+  exit
 EOF
-
-
-
-# NOTE: To define and use a var in the above format, make sure to escape \$VARNAME
