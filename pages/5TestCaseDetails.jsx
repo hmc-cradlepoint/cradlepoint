@@ -35,11 +35,12 @@ export default function TestCaseDetails(props) {
         TEST: "/api/deleteTest",
     }
 
-    async function deleteData(route, resId, parentTestCaseId) {
+    async function deleteData(route, row) {
         let data = {
-            "_id": resId,
-            "parentTestCaseId": parentTestCaseId,
+            ...row,
+            "parentTestCaseId": props.testCase._id,
         }
+      
         try {
             const res = await fetch(route, {
             method: 'POST',
@@ -74,7 +75,7 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST, params.id, props.testCase._id)}}/>
+            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST, params.row)}}/>
         </div>
         ),
         flex: 2
@@ -94,7 +95,9 @@ export default function TestCaseDetails(props) {
                     <CPButton text="Edit" onClick={() => {updateModal("edit");
                                                             setSelectedIDs(new Set([params.id]))
                                                         }}/>
-                    <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
+                    <CPButton text="Delete" onClick={() => {
+                        deleteData(deleteAPIRoute.BOM, params.row)
+                        }}/>
                     </div>
                 )
             },

@@ -30,7 +30,6 @@ export default function TestPlanDetails(props) {
     const { directory, dispatch } = useNavContext();
 
     const deleteAPIRoute = {
-        BOM: "/api/deleteTestCaseBOM",
         TEST_CASE: "/api/deleteTestCase",
     }
 

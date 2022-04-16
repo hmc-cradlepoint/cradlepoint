@@ -1,7 +1,6 @@
 import { deleteTestCaseBOM } from "../../util/deleteEntry";
 
 export default async function handler(req, res) {
-    console.log(req?.body)
     if (req.method !== 'POST') {
       res.status(405).send({ message: 'Only POST requests allowed' })
     }

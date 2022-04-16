@@ -170,6 +170,8 @@ export async function addBOMDevices(data) {
         if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
             const testCaseId = ObjectId(data.testCaseId);
             const testPlanId = ObjectId(data.testPlanId);
+            const summaryBOM = (await client.collection('testPlan').findOne({"_id": testPlanId })).summaryBOM;
+        
             // iterate through each item that needs to be added
             for (let i=0; i<data.devices.length;i++){
                 let device = data.devices[i];
@@ -184,29 +186,34 @@ export async function addBOMDevices(data) {
                     );
                     
                     // Update summaryBOM:  
+                    // get the device in summaryBOM corresponding to this device in the test case
+                    let summaryBomDevice = summaryBOM.filter(d => (d.isOptional === device.isOptional) && d.deviceId.equals(device.deviceId));      
+                    console.log(summaryBomDevice)
                      // if deviceId already in summary BOM with same isOptional arguement
-                    let summaryBomResult = await client.collection('testPlan').updateOne(
-                       {"_id": testPlanId}, 
-                        // update the quantity only if quantity recorded before is less than currently needed 
-                        {$set: {"summaryBOM.$[elem].quantity": device.quantity}},
-                        {arrayFilters: [{$and: [
-                            {"elem.deviceId" :  device.deviceId}, 
-                            {"elem.isOptional" :  device.isOptional},
-                            // check if quantity recorded before is less than currently needed 
-                            {"elem.quantity": {$lt: device.quantity}}]}
-                            ]
+                    if (summaryBomDevice.length>0){
+                        summaryBomDevice = summaryBomDevice[0];
+                        // check if quantity recorded before is less than currently needed 
+                        if(summaryBomDevice.quantity<device.quantity){
+        
+                            let summaryBomResult = await client.collection('testPlan').updateOne(
+                                {"_id": testPlanId}, 
+                                {$set: {"summaryBOM.$[element].quantity": device.quantity}},
+                                {arrayFilters: [{"element._id" :   summaryBomDevice._id}] 
+                                }
+                            ); 
+                            console.log(summaryBomResult);
                         }
-                    ); 
-            
-                    // if such device is not in summaryBOM, insert the device directly
-                    if (summaryBomResult.modifiedCount<1){
+                        
+                        
+                        
+                    } else{
+                        // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
                         summaryBomResult = await client.collection('testPlan').updateOne(
                             { "_id": testPlanId }, 
                             { $push: { summaryBOM: device}} 
                         );
                     }
-                        
 
                 } else{
                     throw new Error("device not valid ");
