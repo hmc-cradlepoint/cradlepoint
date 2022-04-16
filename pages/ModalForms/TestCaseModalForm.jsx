@@ -86,8 +86,7 @@ export default function TestCaseModalForm(props) {
   }
 
   return (
-    <>
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+    <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Fill in New Test Case Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange}/>
@@ -96,12 +95,13 @@ export default function TestCaseModalForm(props) {
         <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange}/>
         <BigTextInput label="Config:" name='config' value={data.config} onChange={handleChange}/>
         </div>
-        <CPButton text='Back' onClick={()=>{
-          setData(initialData);
-          props.onBack();}}/>
-        {/* TODO: integrate add/edit api call for test case*/}
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{
+            setData(initialData);
+            props.onBack();}}/>
+          {/* TODO: integrate add/edit api call for test case*/}
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
-    </>
   );
 }

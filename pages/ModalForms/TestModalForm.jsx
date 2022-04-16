@@ -68,17 +68,19 @@ export default function TestModalForm(props) {
 
   return (
     <>
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Fill in Test Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput label="Name" name='name' value={data.name} onChange={handleChange}/>
         <BigTextInput label="Description" name='description' value={data.description} onChange={handleChange} />
         </div>
-        <CPButton text='Back' onClick={()=>{
-          setData(initialData);
-          props.onBack()
-        }}/>
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{
+            setData(initialData);
+            props.onBack()
+          }}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
     </>
   );

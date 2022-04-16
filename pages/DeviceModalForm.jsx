@@ -63,11 +63,13 @@ export default function DeviceModalForm(props) {
         <DropDown title="Device Type: " fieldName="deviceType" value={data.deviceType} 
             onChange={handleChange} options={options}/>
         </div>
-        <CPButton text='Back' onClick={()=>{
-          setData(initialData);
-          props.onBack()
-        }}/>
-        <CPButton text='Create' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{
+            setData(initialData);
+            props.onBack()
+          }}/>
+          <CPButton text='Create' onClick={handleSubmitData}/>
+        </div>
       </Modal>
   );
 }
