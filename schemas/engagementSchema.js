@@ -1,16 +1,20 @@
 import * as yup from 'yup';
 const { ObjectId } = require('mongodb');
 
-function objectIdTest(name) {
-  return {
+function objectIdTest(name, isOptional) {
+  return (isOptional ? {
+    name: name,
+    message: (name + " is not a valid ObjectId"),
+    test: val => val === undefined || ObjectId.isValid(val)
+  } : {
     name: name,
     message: (name + " is not a valid ObjectId"),
     test: val => ObjectId.isValid(val)
-  }
+  })
 }
 
 export const engagementSchema = yup.object().shape({
-  _id: yup.string().test(objectIdTest("_id")).optional(),
+  _id: yup.string().test(objectIdTest("_id", true)).optional(),
   name: yup.string().required(),
   description: yup.string().required(),
   customer: yup.string().required(),
@@ -18,6 +22,6 @@ export const engagementSchema = yup.object().shape({
   SE: yup.string().required(),
   POC_Engineer: yup.string().required(),
   statusCode: yup.number().positive().integer().required(),
-  testPlanId: yup.string().test(objectIdTest("testPlanId")).optional(),
+  testPlanId: yup.string().test(objectIdTest("testPlanId", true)).optional(),
   createdOn: yup.date().default(() => new Date()).required(),
 });
