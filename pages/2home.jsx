@@ -48,6 +48,23 @@ export default function HomeScreen(props) {
       linkElement.click();
     }
 
+    async function deleteData(resId) {
+      let data = { "_id": resId }
+      try {
+          const res = await fetch("/api/deleteEngagement", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+          })
+          console.log("RES:", res)
+      } catch (err) {
+          console.log("Error:",err)
+      }
+      refreshData();
+    }
+
     const engagementColumnsWithActions = engagementColumns.concat([
         { 
           field: 'button', 
@@ -60,7 +77,7 @@ export default function HomeScreen(props) {
             <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Export as json" onClick={() => exportToJson(params.id)}/>
-            <CPButton text="Delete" />
+            <CPButton text="Delete" onClick={() => deleteData(params.id)}/>
            </div>
           ),
           // renderCell: (params) => (

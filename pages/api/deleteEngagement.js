@@ -1,4 +1,4 @@
-import { deleteResult } from "../../util/deleteEntry";
+import { deleteEngagement } from "../../util/deleteEntry";
 
 export default async function handler(req, res) {
     console.log(req?.body)
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     }
     try {
         console.log(req.body);
-        const response = await deleteResult(req.body);
+        const response = await deleteEngagement(req.body);
         res.status(200).send({message: response});
     } catch (err) {
         res.status(500).send(err.message);
