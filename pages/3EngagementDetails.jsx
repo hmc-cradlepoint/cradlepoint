@@ -36,7 +36,6 @@ export default function EngagementDetails(props) {
     const { directory, dispatch } = useNavContext();
 
     const deleteAPIRoute = {
-        BOM: "/api/deleteTestCaseBOM",
         TEST_PLAN: "/api/deleteTestPlan",
     }
 
