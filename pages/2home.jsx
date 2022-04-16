@@ -63,9 +63,6 @@ export default function HomeScreen(props) {
             <CPButton text="Delete" />
            </div>
           ),
-          // renderCell: (params) => (
-          //   <CPButton text="Export" onClick={() => handleNavigation(params.id)}/>
-          // )
         }
       ]);
 
@@ -73,7 +70,6 @@ export default function HomeScreen(props) {
   
     return(
       <div >
-        {/* <CreateNewModalFlow modalData={props.data} type={flowType.ENGAGEMENT} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} /> */}
         <EngagementModalForm  modalFormType={modalFormType.NEW} 
                               isOpen={createNewFlow} 
                               onBack={() => setCreateNewFlow(false)} 

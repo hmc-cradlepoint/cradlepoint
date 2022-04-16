@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import CPButton from "../components/button/CPButton";
 import styles from '../styles/Modal.module.css';
 import {PlainTable} from '../components/tables/Table';
-import { engagementColumns, testPlanColumns, testCaseColumns, testColumns } from '../util/tableColumns';
+import { testPlanColumns, testCaseColumns, testColumns } from '../util/tableColumns';
 import { makeStyles } from '@mui/styles';
 import {flowType, modalType, modalFormType} from '../util/modalUtils';
 
@@ -24,18 +24,6 @@ export default function CreateNewModalFlow(props) {
 
     function renderColumns(type){
       switch (type){
-        // case "Engagement":
-        //   return engagementColumns.concat([{ 
-        //     field: 'button', 
-        //     flex: 1,
-        //     minWidth: 100,
-        //     headerName: 'Actions',
-        //     headerClassName: 'header',
-        //     align: 'center',
-        //     renderCell: () => (
-        //       <CPButton text="clone" onClick={()=>setModalType(modalType.CLONE)}/>
-        //     )
-        //   }]); 
         case "Test Plan":
           return testPlanColumns.concat([
           { 
@@ -105,7 +93,6 @@ export default function CreateNewModalFlow(props) {
       <Modal className={styles.Modal} isOpen={true}>
           <h2>Choose an Existing {props.type} to Clone</h2>
           <PlainTable 
-              // rows={props.modalData}
               rows={renderRows(props.type)}
               columns={renderColumns(props.type)}
               className={classes.root}/> 
