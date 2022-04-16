@@ -27,6 +27,17 @@ export async function deleteTest(data) {
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const parentId = ObjectId(data.parentTestCaseId);
+
+        // get all the child results and delete each of them
+        const results = (await client.collection('tests').findOne({"_id": id })).results;
+        for (let i=0; i<results.length;i++){
+            const deleteChild = await deleteResult({
+                "_id": results[i],
+                "parentTestId": id,
+            })
+            console.log("delete result", deleteChild);
+        }
+
         const result = await client.collection('tests').deleteOne({"_id": id});
         // Delete result id from parent 'testCases' field
         await client.collection('testCases').updateOne(
@@ -44,6 +55,17 @@ export async function deleteTestCase(data) {
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const parentId = ObjectId(data.parentTestPlanId);
+
+         // get all the child tests and delete each of them
+        const tests = (await client.collection('testCases').findOne({"_id": id })).tests;
+        for (let i=0; i<tests.length;i++){
+            const deleteChild = await deleteTest({
+                "_id": tests[i],
+                "parentTestCaseId": id,
+            })
+            console.log("delete test", deleteChild)
+        }
+
         const result = await client.collection('testCases').deleteOne({"_id": id});
         // Delete result id from parent 'testPlan' field
         await client.collection('testPlan').updateOne(
@@ -60,8 +82,20 @@ export async function deleteTestPlan(data) {
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
+
+        // get all the child test cases and delete each of them
+        const testCases = (await client.collection('testPlan').findOne({"_id": id })).testCases;
+        for (let i=0; i<testCases.length;i++){
+            const deleteChild = await deleteTestCase({
+                "_id": testCases[i],
+                "parentTestPlanId": id,
+            })
+            console.log("delete test case", deleteChild)
+        }
         // parent engagement does not keep track of archived test plans, so just delete from test plan collection.
         const result = await client.collection('testPlan').deleteOne({"_id": id});
+        
+
         return result;
     } catch (err) {
         throw err;
@@ -72,6 +106,12 @@ export async function deleteEngagement(data) {
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
+
+        const testPlanId = (await client.collection('engagements').findOne({"_id": id })).testPlanId;
+        
+        const deleteChild = await deleteTestPlan({"_id": testPlanId})
+        console.log("delete active test plan", deleteChild);
+
         // delete engagement from engagements collection
         const result = await client.collection('engagements').deleteOne({"_id": id});
         return result;
