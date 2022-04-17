@@ -39,28 +39,50 @@ export async function addResult(data) {
 
 export async function addTest(data) {
     try {
-        const client = await connectToDb();
-        const valid = await testSchema.isValid(data)
-        if (valid && ObjectId.isValid(data.testCaseId)) {
-            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
-            const id = ObjectId(data._id);
-            const test = testSchema.cast(data);
-            const testCaseId = ObjectId(data.testCaseId);
-            const result = await client.collection('tests').insertOne({ ...test, _id: id, testCaseId: testCaseId });
-            // Push the test plan into the test case array as well
-            await client.collection('testCases').updateOne(
-                { "_id": testCaseId }, // query matching , refId should be "ObjectId" type
-                { $push: { tests: ObjectId(result.insertedId) } } // arr will be array of objects
-            );
-            return result
-        }
-        else {
-            throw new Error('Data is not in right format')
-        }
-
+        // Validate Data
+        var validData = await testSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        throw err
+        return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
     }
+
+    try {
+        // Connect to the Database
+        var db = await connectToDb();
+    } catch (err) {
+        console.log("Unable to connect to MongoDB")
+        return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
+    }
+
+    // TypeCast ID strings to Mongo ObjectId's
+    if (validData.hasOwnProperty("_id")) {
+        validData._id = ObjectId(validData._id);
+    }
+    validData.testCaseId = ObjectId(validData.testCaseId);
+    validData.results = validData.results.map(resultId => ObjectId(resultId));
+
+    try {
+        // Update the Database with new TestPlan
+        var queryResult = await db.collection('tests').insertOne(validData);
+      } catch (err) {
+        // Mongo-Side Validation failure should occur here
+        return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
+    }
+
+    try {
+        // Update parent TestCase's reference to its children
+        var testCaseUpdateResult = await db.collection('testCases').updateOne(
+            { "_id": validData.testCaseId }, // query matching , refId should be "ObjectId" type
+            { $push: { tests: ObjectId(queryResult.insertedId) } } // arr will be array of objects
+        );
+        if (testCaseUpdateResult.modifiedCount != 1) {
+            throw new Error('Test was added successfully, but testCase.tests was not updated')
+        }
+    } catch(err) {
+        return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", testCaseUpdateResult: testCaseUpdateResult, errorName: err.name, error: err.message }
+    }
+    // Edit was Successful!
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult, testCaseUpdateResult: testCaseUpdateResult}
+
 }
 
 export async function addTestCase(data) {
@@ -98,7 +120,7 @@ export async function addTestCase(data) {
     }
 
     try {
-        // Push the test plan into the test case array as well
+        // Update parent TestPlan's reference to its children
         var testPlanUpdateResult = await db.collection('testPlan').updateOne(
             { "_id": validData.testPlanId }, // query matching , refId should be "ObjectId" type
             { $push: { testCases: queryResult.insertedId } } // arr will be array of objects

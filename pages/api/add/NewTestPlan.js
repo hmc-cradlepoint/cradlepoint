@@ -12,7 +12,7 @@ export default async function handler(req, res) {
       const response = await addTestPlan(req.body)
       res.status(response.statusCode).json(response);
     } catch (err) {
-      res.status(500).json({ message: "Something Unexpected Occured", error: err });
+      res.status(500).json({ message: "Something Unexpected Occured", errorName: err.name, errorMessage: err.message });
     }
   }
 }
