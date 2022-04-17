@@ -8,6 +8,7 @@ import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tabl
 import styles from '../styles/EngagementDetails.module.css';
 import EditModalFlow from './editModalFlow';
 import CreateNewModalFlow from './createNewModalFlow';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
@@ -18,6 +19,19 @@ export default function EngagementDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    let paramId;
+    let engagementId;
+    const getParams = (id, engagementId) => {
+        paramId = id;
+        engagementId = engagementId;
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+        deleteData(deleteAPIRoute.TEST_PLAN, paramId, engagementId);
+        setDeleteModal(false);
+    }    
 
     const { directory, dispatch } = useNavContext();
 
@@ -94,7 +108,8 @@ export default function EngagementDetails(props) {
         <>
             <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
             <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
-            <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id)}}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id, params.engagementId)}
         </>
         ),
         flex: 1.5
@@ -187,6 +202,7 @@ export default function EngagementDetails(props) {
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
         <CreateNewModalFlow modalData={props} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+        <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
         <SplitScreen
             topChildren={
             <div>
