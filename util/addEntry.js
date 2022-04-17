@@ -199,6 +199,8 @@ export async function addBOMDevices(data) {
                             console.log(summaryBomResult);
                         }
                         
+                        
+                        
                     } else{
                         // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
