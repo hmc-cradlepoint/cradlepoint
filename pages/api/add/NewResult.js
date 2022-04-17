@@ -1,6 +1,6 @@
-import { addTest } from "../../../util/addEntry"
+import { addResult } from "../../../util/addEntry"
 /*
-  Adds the supplied Test to the database
+  Adds the supplied Result to the database
 */
 
 export default async function handler(req, res) {
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   }
   else {
     try {
-      const response = await addTest(req.body)
+      const response = await addResult(req.body)
       res.status(response.statusCode).json(response);
     } catch (err) {
       res.status(500).json({ message: "Something Unexpected Occured", errorName: err.name, errorMessage: err.message });
