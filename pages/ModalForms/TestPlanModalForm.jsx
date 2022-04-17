@@ -93,7 +93,7 @@ export default function TestPlanModalForm(props) {
   // for the dropdown of isActive
   const options = [true, false];
   return (
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Test Plan Info</h2>
         <div style={{alignItems:borderLeft}}>
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>

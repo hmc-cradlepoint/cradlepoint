@@ -103,7 +103,7 @@ export default function CreateNewModalFlow(props) {
 
   function StartModal() {
     return (
-        <Modal className={styles.Modal} isOpen={props.modalOpen && modal === modalType.START}>
+      <Modal className={styles.content} overlayClassName={styles.overlay} isOpen={props.modalOpen && modal === modalType.START}>
           <h2>Create New {props.type}</h2>
           <CPButton text='From scratch' className="ModalButton" onClick={() => {setIsClone(false);setModalType(modalType.SCRATCH); setScratchIsOpen(true);}}/>
           <CPButton text={'From exisiting ' + props.type + ' (Clone)'} onClick={()=>{setIsClone(true);setModalType(modalType.CLONE)}}/>

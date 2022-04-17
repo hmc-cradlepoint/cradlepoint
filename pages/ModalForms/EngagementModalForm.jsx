@@ -76,7 +76,7 @@ export default function EngagementModalForm(props) {
   }
 
   return (
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Fill in Engagement Info</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -89,8 +89,10 @@ export default function EngagementModalForm(props) {
         </div>
 
         </div>
-        <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
   );
 }
