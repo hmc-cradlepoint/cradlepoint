@@ -58,7 +58,7 @@ export default function TestCaseModalForm(props) {
    
     if (props.modalFormType===modalFormType.NEW){
       method = 'POST';
-      endPoint = props.isClone?'/api/cloneTestCase':'/api/addNewTestCase';
+      endPoint = props.isClone?'/api/cloneTestCase':'/api/add/NewTestCase';
     } 
 
     console.log(newData);

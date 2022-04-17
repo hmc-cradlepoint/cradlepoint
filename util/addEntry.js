@@ -65,37 +65,52 @@ export async function addTest(data) {
 
 export async function addTestCase(data) {
     try {
-        const client = await connectToDb();
-        const valid = await testCaseSchema.isValid(data)
-        if (valid && ObjectId.isValid(data.testPlanId)) {
-            const testCase = testCaseSchema.cast(data);
-            // Error Check to ensure proper format for Mongo ObjectIds
-            for (const i in testCase.tests) {
-                if (!ObjectId.isValid(testCase.tests[i])) {
-                    throw new Error('Invalid Test Id')
-                }
-            }
-            // DYLAN: Mongo will add an _id field to new objects, not sure why this line is here
-            const id = ObjectId(data._id);
-            const testPlanId = ObjectId(data.testPlanId);
-
-            const result = await client.collection('testCases').insertOne({ ...testCase, _id: id, testPlanId: testPlanId, BOM: [] });
-            // Push the test plan into the test case array as well
-            const testPlanResult = await client.collection('testPlan').updateOne(
-                { "_id": testPlanId }, // query matching , refId should be "ObjectId" type
-                { $push: { testCases: result.insertedId } } // arr will be array of objects
-            );
-            if (testPlanResult.modifiedCount != 1) {
-                throw new Error('Test Plan not updated')
-            }
-            return result
-        }
-        else {
-            throw new Error('Input not in right format')
-        }
+        // Validate Data
+        var validData = await testCaseSchema.validate(data, { abortEarly: false, stripUnknown: true });
     } catch (err) {
-        throw err
+        return { statusCode: 422, message: "Yup Validation Failed", errorName: err.name, error: err.message, errors: err.errors }
     }
+
+    try {
+        // Connect to the Database
+        var db = await connectToDb();
+    } catch (err) {
+        console.log("Unable to connect to MongoDB")
+        return { statusCode: 500, message: "Unable to connect to MongoDB Server", errorName: err.name, error: err.message }
+    }
+
+    // TypeCast ID strings to Mongo ObjectId's
+    if (validData.hasOwnProperty("_id")) {
+        validData._id = ObjectId(validData._id);
+    }
+    validData.testPlanId = ObjectId(validData.testPlanId);
+    validData.BOM = validData.BOM.map(device => {
+        return { ...device, _id: ObjectId(device._id), deviceId: ObjectId(device.deviceId) }
+    });
+    validData.tests = validData.tests.map(testId => ObjectId(testId));
+
+    try {
+        // Update the Database with new TestPlan
+        var queryResult = await db.collection('testCases').insertOne({ ...validData, BOM: [] });
+    } catch (err) {
+        // Mongo-Side Validation failure should occur here
+        return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", mongoQueryResult: queryResult, errorName: err.name, error: err.message }
+    }
+
+    try {
+        // Push the test plan into the test case array as well
+        var testPlanUpdateResult = await db.collection('testPlan').updateOne(
+            { "_id": validData.testPlanId }, // query matching , refId should be "ObjectId" type
+            { $push: { testCases: queryResult.insertedId } } // arr will be array of objects
+        );
+        if (testPlanUpdateResult.modifiedCount != 1) {
+            throw new Error('TestCase was added successfully, but testPlan.testCases was not updated')
+        }
+    } catch(err) {
+        return { statusCode: 400, message: "MongoDB Query Failed or could not Validate", testPlanUpdateResult: testPlanUpdateResult, errorName: err.name, error: err.message }
+    }
+    // Edit was Successful!
+    return { statusCode: 200, message: "Success", mongoQueryResult: queryResult, testPlanUpdateResult: testPlanUpdateResult}
 }
 
 export async function addTestPlan(data) {
@@ -192,32 +207,35 @@ export async function addBOMDevices(data) {
                         { $push: { BOM: device } }
                     );
                     console.log(result)
-                    
-                    
+
+
                     // if deviceId already in summary BOM with same isOptional arguement, update quantity
                     const updateResult = await client.collection('testPlan').updateOne(
-                        {"_id": testPlanId, "summaryBOM": {$elemMatch:{deviceId: device.deviceId, isOptional : device.isOptional}}}, 
-                            // update the quantity only if quantity recorded before is less than currently needed 
-                            {$max: {"summaryBOM.$[elem].quantity": device.quantity}},
-                            {arrayFilters: [{$and: [
-                                {"elem.deviceId" :  device.deviceId}, 
-                                {"elem.isOptional" :  device.isOptional}
-                                    ]}
+                        { "_id": testPlanId, "summaryBOM": { $elemMatch: { deviceId: device.deviceId, isOptional: device.isOptional } } },
+                        // update the quantity only if quantity recorded before is less than currently needed 
+                        { $max: { "summaryBOM.$[elem].quantity": device.quantity } },
+                        {
+                            arrayFilters: [{
+                                $and: [
+                                    { "elem.deviceId": device.deviceId },
+                                    { "elem.isOptional": device.isOptional }
                                 ]
                             }
-                        ); 
+                            ]
+                        }
+                    );
                     console.log(updateResult);
 
                     // if such device is not in summaryBOM, insert the device directly
-                    if (updateResult.matchedCount<1){
+                    if (updateResult.matchedCount < 1) {
                         console.log("device not in summaryBOM");
-                            let summaryBomResult = await client.collection('testPlan').updateOne(
-                            { "_id": testPlanId }, 
-                            { $push: { summaryBOM: device}} 
+                        let summaryBomResult = await client.collection('testPlan').updateOne(
+                            { "_id": testPlanId },
+                            { $push: { summaryBOM: device } }
                         );
                         console.log(summaryBomResult);
                     }
-                } else{
+                } else {
                     throw new Error("device not valid ");
                 }
             }

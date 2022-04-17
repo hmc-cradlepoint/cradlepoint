@@ -27,7 +27,7 @@ export async function editEngagement(data) {
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
   } else {
-    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field" }
   }
   if (validData.hasOwnProperty("testPlanId")) {
     validData.testPlanId = ObjectId(validData.testPlanId)
@@ -65,7 +65,7 @@ export async function editTestPlan(data) {
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
   } else {
-    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field" }
   }
   validData.engagementId = ObjectId(validData.engagementId);
   validData.summaryBOM = validData.summaryBOM.map(device => {
@@ -104,7 +104,7 @@ export async function editTestCase(data) {
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
   } else {
-    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field" }
   }
   validData.testPlanId = ObjectId(validData.testPlanId);
   validData.BOM = validData.BOM.map(device => {
@@ -144,7 +144,7 @@ export async function editTest(data) {
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
   } else {
-    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field" }
   }
   validData.testCaseId = ObjectId(validData.testCaseId);
   validData.results = validData.results.map(resultId => ObjectId(resultId));
@@ -180,7 +180,7 @@ export async function editResult(data) {
   if (validData.hasOwnProperty("_id")) {
     validData._id = ObjectId(validData._id)
   } else {
-    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field"}
+    return { statusCode: 422, message: "_id field is required for edits", errorName: "ValidationError", error: "_id is a required field" }
   }
   validData.testId = ObjectId(validData.testId);
 
