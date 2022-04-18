@@ -27,7 +27,6 @@ export async function deleteResult(data) {
 
 export async function deleteTest(data) {
     try {
-     
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const parentId = ObjectId(data.parentTestCaseId);
@@ -59,12 +58,10 @@ export async function deleteTest(data) {
 
 export async function deleteTestCase(data) {
     try {
-        console.log("data in deleteTestCase", data)
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const parentId = ObjectId(data.parentTestPlanId);
         const testCaseData = (await getTestCase(id))[0];
-        console.log(testCaseData);
 
          // get all the child tests and delete each of them
         const tests = testCaseData.tests;
@@ -108,7 +105,7 @@ export async function deleteTestPlan(data) {
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const testPlanData = (await getTestPlan(id))[0];
-        console.log(testPlanData)
+    
         // get all the child test cases and delete each of them
         const testCases = testPlanData.testCases;
         for (let i=0; i<testCases.length;i++){
