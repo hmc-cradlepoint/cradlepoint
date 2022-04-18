@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { PlainTable } from "../components/tables/Table";
 import CPButton from '../components/button/CPButton';
 import EngagementModalForm from './ModalForms/EngagementModalForm';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 import { modalFormType } from '../util/modalUtils';
 import { engagementColumns } from '../util/tableColumns';
 import styling from '../styles/tableStyling';
@@ -21,6 +22,15 @@ export default function HomeScreen(props) {
   })
     const useStyles = makeStyles({styling});
     const classes = useStyles();
+
+    let paramId;
+    const getParams = (id) => {paramId = id}
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+      deleteData(paramId);
+      setDeleteModal(false);
+    }
     
     const { directory, dispatch } = useNavContext();
     
@@ -77,7 +87,8 @@ export default function HomeScreen(props) {
             <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Export as json" onClick={() => exportToJson(params.id)}/>
-            <CPButton text="Delete" onClick={() => deleteData(params.id)}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id)}
            </div>
           ),
         }
@@ -91,7 +102,7 @@ export default function HomeScreen(props) {
                               isOpen={createNewFlow} 
                               onBack={() => setCreateNewFlow(false)} 
                               onClose={()=> {setCreateNewFlow(false); refreshData();}}/>
-     
+        <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
         <PlainScreen>
         <NavDir pages={directory} />
         <h1>Home</h1>

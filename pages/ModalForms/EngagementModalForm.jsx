@@ -79,21 +79,23 @@ export default function EngagementModalForm(props) {
   }
 
   return (
-    <Modal className={styles.Modal} isOpen={props.isOpen}>
-      <h2>Fill in Engagement Info</h2>
-      <div style={{ alignItems: borderLeft }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <SmallTextInput label="Name: " name='name' value={data.name} onChange={handleChange} />
-          <SmallTextInput label='Customer: ' name='customer' value={data.customer} onChange={handleChange} />
-          <SmallTextInput label="SE: " name='SE' value={data.SE} onChange={handleChange} />
-          <SmallTextInput label='POC Eng: ' name='POC_Engineer' value={data.POC_Engineer} onChange={handleChange} />
-          <SmallTextInput label="SFDC: " name='SFDC' value={data.SFDC} onChange={handleChange} />
-          <BigTextInput label="Description: " name='description' value={data.description} onChange={handleChange} />
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
+        <h2>Fill in Engagement Info</h2>
+        <div style={{alignItems:borderLeft}}>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <SmallTextInput label="Name: " name='name' value={data.name} onChange={handleChange}/>
+          <SmallTextInput label='Customer: ' name='customer' value={data.customer} onChange={handleChange}/>
+          <SmallTextInput label="SE: " name='SE' value={data.SE} onChange={handleChange}/>
+          <SmallTextInput label='POC Eng: ' name='POC_Engineer' value={data.POC_Engineer} onChange={handleChange}/>
+          <SmallTextInput label="SFDC: " name='SFDC' value={data.SFDC} onChange={handleChange}/>
+          <BigTextInput label="Description: " name='description' value={data.description} onChange={handleChange}/>
         </div>
 
-      </div>
-      <CPButton text='Back' onClick={() => { props.onBack(); setData(initialData); }} />
-      <CPButton text='Done' onClick={handleSubmitData} />
-    </Modal>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
+      </Modal>
   );
 }

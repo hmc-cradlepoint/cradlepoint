@@ -63,17 +63,18 @@ export default function ResultModalForm(props) {
   const options = ["Pass", "Unknown", "Fail"];
   
   return (
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Add New Result to Test</h2>
         <div style={{alignItems:borderLeft}}>
-        <DropDown title="Result Status: " fieldName="resultStatus" value={data.resultStatus} 
-            onChange={handleChange} options={options}/>
-        <BigTextInput label='Detail Description:' name='description' value={data.description} onChange={handleChange}/>
-        <BigTextInput label='Evidence:' name='evidence' value={data.evidence} onChange={handleChange}/>
-
+          <DropDown title="Result Status: " fieldName="resultStatus" value={data.resultStatus} 
+              onChange={handleChange} options={options}/>
+          <BigTextInput label='Detail Description:' name='description' value={data.description} onChange={handleChange}/>
+          <BigTextInput label='Evidence:' name='evidence' value={data.evidence} onChange={handleChange}/>
         </div>
-        <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
   );
 }

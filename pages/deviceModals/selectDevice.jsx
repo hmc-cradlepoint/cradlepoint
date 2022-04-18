@@ -25,12 +25,14 @@ export default function SelectDeviceModal(props) {
         <CheckBoxTable rows={props.modalData} columns={LibraryBOMColumns} className={classes.root}
                 onSelectionModelChange={(ids)=>{updateSelection(ids)}} 
         />
-        <CPButton text='Cancel' onClick={()=>{props.onBack();}}/>
-        <CPButton text='Next' onClick={()=>{
-          props.setSelectedIDs(selectedIDs);
-          props.onClickNext("select_quantity");
-          }
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Cancel' onClick={()=>{props.onBack();}}/>
+          <CPButton text='Next' onClick={()=>{
+              props.setSelectedIDs(selectedIDs);
+              props.onClickNext("select_quantity");
+            }
           }/>
+        </div>
       </Modal>
     </>
   );

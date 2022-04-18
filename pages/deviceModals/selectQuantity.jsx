@@ -169,10 +169,10 @@ export default function SelectQuantityModal(props) {
           
         }} 
         />
-        
-        
-        <CPButton text='Back' onClick={props.onBack}/>
-        <CPButton text='Add' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={props.onBack}/>
+          <CPButton text='Add' onClick={handleSubmitData}/>
+        </div>
       </Modal>
     </>
   );

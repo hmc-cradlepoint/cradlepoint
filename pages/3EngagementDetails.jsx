@@ -8,6 +8,7 @@ import { testPlanColumns, BOMColumns, testPlanRows, BOMRows } from '../util/tabl
 import styles from '../styles/EngagementDetails.module.css';
 import EditModalFlow from './editModalFlow';
 import CreateNewModalFlow from './createNewModalFlow';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
@@ -18,6 +19,19 @@ export default function EngagementDetails(props) {
     const refreshData = (() => {
         router.replace(router.asPath);
     })
+
+    let paramId;
+    let engagementId;
+    const getParams = (id, engagementId) => {
+        paramId = id;
+        engagementId = engagementId;
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+        deleteData(deleteAPIRoute.TEST_PLAN, paramId, engagementId);
+        setDeleteModal(false);
+    }    
 
     const { directory, dispatch } = useNavContext();
 
@@ -88,20 +102,21 @@ export default function EngagementDetails(props) {
 
     //   TODO: style the active test plan
     const testPlanColWithButton = testPlanColumns.concat([
-        {
-            field: 'button',
-            headerName: 'Actions',
-            headerClassName: 'header',
-            align: 'center',
-            renderCell: (params) => (
-                <>
-                    <CPButton text="View" onClick={() => handleEditNavigation(params.id)} />
-                    <CPButton text="Set Active" onClick={() => { setActiveTestPlan(params.id) }} />
-                    <CPButton text="Delete" onClick={() => { deleteData(deleteAPIRoute.TEST_PLAN, params.id, props.engagement._id) }} />
-                </>
-            ),
-            flex: 1.5
-        }
+    { 
+        field: 'button', 
+        headerName: 'Actions',
+        headerClassName: 'header',
+        align: 'center',
+        renderCell: (params) => (
+        <>
+            <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
+            <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id, params.engagementId)}
+        </>
+        ),
+        flex: 1.5
+    }
     ]);
 
     const activeTestPlanCol = testPlanColumns.concat([
@@ -187,28 +202,29 @@ export default function EngagementDetails(props) {
     }
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-            <CreateNewModalFlow modalData={props} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => { setCreateNewFlow(false); refreshData(); }} />
-            <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => { setEditModalFlow(false); refreshData(); }} />
-            <SplitScreen
-                topChildren={
-                    <div>
-                        <NavDir pages={directory} />
-                        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                            <h1>Engagement Details</h1>
-                            <CPButton text="Edit" onClick={() => setEditModalFlow(true)} />
-                        </div>
-                    </div>
-                }
-                leftSection={details()}
-                rightSection={description()}
-                bottomChildren={
-                    <div>
-                        {testPlans()}
-                        {BOMSummary()}
-                    </div>
-                }
-            />
+        <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+        <CreateNewModalFlow modalData={props} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
+        <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
+        <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
+        <SplitScreen
+            topChildren={
+            <div>
+                <NavDir pages={directory} />
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                    <h1>Engagement Details</h1>
+                    <CPButton text="Edit" onClick={() => setEditModalFlow(true)}/>
+                </div>
+            </div>
+            }
+            leftSection={details()}
+            rightSection={description()}
+            bottomChildren={
+                <div>
+                {testPlans()}
+                {BOMSummary()}
+                </div>
+            }
+        />
         </div>
     )
 }
