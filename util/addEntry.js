@@ -273,14 +273,12 @@ export async function addBOMDevices(data) {
                     } else{
                         // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
-                            let summaryBomResult = await client.collection('testPlan').updateOne(
-                                {"_id": testPlanId}, 
-                                {$set: {"summaryBOM.$[element].quantity": device.quantity}},
-                                {arrayFilters: [{"element._id" :   summaryBomDevice._id}] 
-                                }
-                            ); 
-                            console.log(summaryBomResult);
-                        }
+                        summaryBomResult = await client.collection('testPlan').updateOne(
+                            { "_id": testPlanId }, 
+                            { $push: { summaryBOM: device}} 
+                        );
+                        console.log("added to summaryBOM", summaryBomResult);
+                    }
 
                 } else{
                     throw new Error("device not valid ");
