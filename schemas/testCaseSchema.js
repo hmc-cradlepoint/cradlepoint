@@ -1,17 +1,5 @@
 import * as yup from 'yup';
-const { ObjectId } = require('mongodb');
-
-function objectIdTest(name, isOptional) {
-  return (isOptional ? {
-    name: name,
-    message: (name + " is not a valid ObjectId"),
-    test: val => val === undefined || ObjectId.isValid(val)
-  } : {
-    name: name,
-    message: (name + " is not a valid ObjectId"),
-    test: val => ObjectId.isValid(val)
-  })
-}
+import { objectIdTest } from './objectIdTest';
 
 export const testCaseSchema = yup.object().shape({
   _id: yup.string().test(objectIdTest("_id", true)).optional(),
