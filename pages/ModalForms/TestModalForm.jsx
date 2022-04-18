@@ -48,7 +48,7 @@ export default function TestModalForm(props) {
     let endPoint = '/api/edit/Test';
     let method = 'PUT';
     if (props.modalFormType==modalFormType.NEW){
-      endPoint = props.isClone?'/api/cloneTest':'/api/addNewTest';
+      endPoint = props.isClone?'/api/cloneTest':'/api/add/NewTest';
       method = 'POST';
       newData["results"] = [];
     }
