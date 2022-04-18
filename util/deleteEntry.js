@@ -3,6 +3,8 @@ import {testCaseSchema} from "../schemas/testCaseSchema";
 import {testPlanSchema} from "../schemas/testPlanSchema";
 import {engagementSchema} from "../schemas/engagementSchema";
 import connectToDb from "./mongodb";
+import { getTestCase } from "../pages/api/getTestCase";
+import { getTestPlan } from "../pages/api/getTestPlan";
 const { ObjectId } = require('mongodb');
 
 export async function deleteResult(data) {
@@ -52,12 +54,15 @@ export async function deleteTest(data) {
 
 export async function deleteTestCase(data) {
     try {
+        console.log("data in deleteTestCase", data)
         const client = await connectToDb();
         const id = ObjectId(data._id);
         const parentId = ObjectId(data.parentTestPlanId);
+        const testCaseData = (await getTestCase(id))[0];
+        console.log(testCaseData);
 
          // get all the child tests and delete each of them
-        const tests = (await client.collection('testCases').findOne({"_id": id })).tests;
+        const tests = testCaseData.tests;
         for (let i=0; i<tests.length;i++){
             const deleteChild = await deleteTest({
                 "_id": tests[i],
@@ -66,13 +71,28 @@ export async function deleteTestCase(data) {
             console.log("delete test", deleteChild)
         }
 
-        const result = await client.collection('testCases').deleteOne({"_id": id});
-        // Delete result id from parent 'testPlan' field
-        await client.collection('testPlan').updateOne(
+        
+        // get all the BOM device and delete each of them so summaryBOM can be updated
+        const BOM = (JSON.stringify(testCaseData.BOM) === '[{}]')?[]:testCaseData.BOM;
+        for (let i=0; i<BOM.length;i++){
+            const deleteChild = await deleteTestCaseBOM({
+                ...BOM[i],
+                "parentTestCaseId": id,
+            })
+            console.log("delete device", deleteChild)
+        }
+
+        // Delete from parent 'testPlan' field
+        const testPlanUpdate = await client.collection('testPlan').updateOne(
             { "_id": parentId },
-            { $pull: {testCases: id} }
+            { $pull: {testCases: id}}
         );
-        return result;
+        console.log("delete test case id from test plan", testPlanUpdate);
+
+        const deleteTestCase = await client.collection('testCases').deleteOne({"_id": id});
+        console.log("delete test case object", deleteTestCase)
+        return deleteTestCase;
+        // return deleteTestCase;
     } catch (err) {
         throw err;
     }
@@ -82,9 +102,10 @@ export async function deleteTestPlan(data) {
     try {
         const client = await connectToDb();
         const id = ObjectId(data._id);
-
+        const testPlanData = (await getTestPlan(id))[0];
+        console.log(testPlanData)
         // get all the child test cases and delete each of them
-        const testCases = (await client.collection('testPlan').findOne({"_id": id })).testCases;
+        const testCases = testPlanData.testCases;
         for (let i=0; i<testCases.length;i++){
             const deleteChild = await deleteTestCase({
                 "_id": testCases[i],
@@ -92,9 +113,23 @@ export async function deleteTestPlan(data) {
             })
             console.log("delete test case", deleteChild)
         }
-        // parent engagement does not keep track of archived test plans, so just delete from test plan collection.
+
+        // TODO: Delete button is not added to the table for active test plan; this is a design
+        // question of whether we should allow users to delete an active test plan. If this 
+        // is allowed, we can uncomment the code below; delete otherwise.
+
+        // // if test plan is active, need to delete the pointer from parent engagement
+        // if (testPlanData.isActive){
+        //     const engagementUpdate = await client.collection('engagements').updateOne(
+        //         {"_id": ObjectId(testPlanData.engagementId)},
+        //         {$unset: {testPlanId: ""}}
+        //     );
+        //     console.log("active test plan removed from engagement", engagementUpdate);
+        // }
+
+        // delete from test plan collection
         const result = await client.collection('testPlan').deleteOne({"_id": id});
-        
+        console.log("delete test plan object", result);
 
         return result;
     } catch (err) {
@@ -129,7 +164,7 @@ export async function deleteTestCaseBOM(data) {
         const parentId = ObjectId(data.parentTestCaseId);
 
         // remove device from test case
-        await client.collection('testCases').updateOne(
+       const testCaseUpdate =  await client.collection('testCases').updateOne(
             { "_id": parentId },
             { $pull: { BOM: {_id: _id }} },
         );
@@ -147,29 +182,29 @@ export async function deleteTestCaseBOM(data) {
             BOM = BOM.filter(d => (d.isOptional === data.isOptional) && d.deviceId.equals(deviceId));
             maxQuantity =  (BOM.length>0)?Math.max(BOM[0].quantity, maxQuantity):maxQuantity;
         }
-
+    
         // get the device in summaryBOM corresponding to this device in the test case
         const summaryBomDevice = summaryBOM.filter(d => (d.isOptional === data.isOptional) && d.deviceId.equals(deviceId))[0];      
         
+        let result;
         if (maxQuantity!=0){
             // edit quantity of device in summaryBOM if not 0
             summaryBomDevice.quantity = maxQuantity;
-            const result = await client.collection('testPlan').updateOne(
+            result = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId,  
                   "summaryBOM.deviceId" :  deviceId, 
                   "summaryBOM.isOptional": data.isOptional
                 }, 
                 { $set :  {"summaryBOM.$": summaryBomDevice}},
-              );        
-           
+              );       
         } else {
              // delete device in summaryBOM if no other test cases have this device
-            const result = await client.collection('testPlan').updateOne(
+            result = await client.collection('testPlan').updateOne(
                 { "_id": testPlanId}, 
                 { $pull :  {summaryBOM: {_id: summaryBomDevice._id}}},
               );
         }
-        console.log(result);
+        console.log(result)
         return result;
     } catch (err) {
         throw err;

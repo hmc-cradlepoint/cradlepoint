@@ -90,8 +90,6 @@ export default function TestCaseDetails(props) {
             <CPButton text="Delete" onClick={() => {getParams(params.row)
                                                     setDeleteModal(true);
                                                     }}/>
-
- 423cdcc (deleteTestCaseBOM should update summary now)
         </div>
         ),
         flex: 2
