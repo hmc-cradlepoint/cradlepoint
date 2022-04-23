@@ -9,6 +9,7 @@ export default function CPButton(props) {
             variant="contained" 
             size="large"
             onClick={props.onClick}
+            href={props.href}
         >
             <div style={{padding: "10px"}}>
             {props.text}

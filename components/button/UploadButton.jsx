@@ -31,6 +31,7 @@ export default function UploadButton(props) {
       <>
         {/* <p>Upload a file</p> */}
         <input
+          style={{paddingLeft: 15}}
           onChange={uploadPhoto}
           type="file"
         //   accept="image/png, image/jpeg"

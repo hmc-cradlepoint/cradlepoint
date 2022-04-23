@@ -185,7 +185,12 @@ export default function TestPlanDetails(props) {
                 <h2>Details</h2>
                 <p>Name: {props.testPlanData.name}</p>
                 <p>Active: {(props.testPlanData.isActive).toString()}</p>
-                <p>Device Config:</p> <UploadComponents filename  = {`device_config_${props.testPlanData._id}`} downloadLink = {props.configLink} updateDocument = {handleUploadDocument}/>
+                <p>Device Config:</p> 
+                    <UploadComponents 
+                        filename = {`device_config_${props.testPlanData._id}`} 
+                        downloadLink = {props.configLink} 
+                        updateDocument = {handleUploadDocument}
+                    />
                 <p>Coverage:</p>
                 <p>Version: {props.testPlanData.version}</p>
                 <p>Date Created: {props.testPlanData.createdOn}</p>

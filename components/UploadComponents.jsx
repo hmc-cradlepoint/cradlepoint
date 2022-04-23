@@ -1,21 +1,23 @@
 import UploadButton from "./button/UploadButton";
-import {downloadUrl} from "../pages/api/downloadUrl";
+import CPButton from '../components/button/CPButton';
 
 export default function UploadComponents(props) {
   console.log(props.downloadLink)
   if (props.downloadLink != '') {
-    console.log('here')
     return (
-      <div>
-        <a href={props.downloadLink} > Link </a>
-        <UploadButton filename = {props.filename} updateDocument = {props.updateDocument}/>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <UploadButton 
+          filename = {props.filename} 
+          updateDocument = {props.updateDocument}
+        />
+        <CPButton 
+          href={props.downloadLink}
+          text="Download File"
+        />
       </div>
-
     )
   }
-  
   else {
-    console.log('there')
     return (
       <UploadButton filename = {props.filename} updateDocument = {props.updateDocument}/>
     );
