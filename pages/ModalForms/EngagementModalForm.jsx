@@ -6,22 +6,21 @@ import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router'
-import {ObjectID} from 'bson';
+import { ObjectID } from 'bson';
 import { modalFormType } from '../../util/modalUtils';
 
 export default function EngagementModalForm(props) {
   const router = useRouter();
   const initialData = {
-    _id: props.data?._id??new ObjectID(),
-    name: props.data?.name??"",
-    customer: props.data?.customer??"",
-    SFDC: props.data?.SFDC??"",
-    description: props.data?.description??"",
-    statusCode: props.data?.statusCode??1,
-    SE: props.data?.SE??"",
-    POC_Engineer: props.data?.POC_Engineer??""
+    name: props.data?.name ?? "",
+    description: props.data?.description ?? "",
+    customer: props.data?.customer ?? "",
+    SFDC: props.data?.SFDC ?? "",
+    SE: props.data?.SE ?? "",
+    POC_Engineer: props.data?.POC_Engineer ?? "",
+    statusCode: props.data?.statusCode ?? 1,
   }
-  
+
   const [data, setData] = useState(initialData)
 
   function handleChange(evt) {
@@ -33,29 +32,28 @@ export default function EngagementModalForm(props) {
   }
 
   async function handleSubmitData() {
-    console.log(props.modalFormType)
     let newData = {
-      ...props.data, 
-      "_id":data._id.toString(), 
-      "name":data.name, 
-      "customer":data.customer, 
-      "SFDC":data.SFDC, 
-      "description":data.description,
-      "statusCode": data.statusCode,
+      ...props.data,
+      "name": data.name,
+      "description": data.description,
+      "customer": data.customer,
+      "SFDC": data.SFDC,
       "SE": data.SE,
-      "POC_Engineer": data.POC_Engineer}
+      "POC_Engineer": data.POC_Engineer,
+      "statusCode": data.statusCode,
+      "createdOn": new Date(), // Schema provides a default val, not necessary to provide
+    }
 
-   
-    let endPoint = '/api/editEngagement';
+
+    let endPoint = '/api/edit/Engagement';
     let method = 'PUT';
-    
-    if (props.modalFormType===modalFormType.NEW){
-      endPoint = '/api/addNewEngagement';
-      method = 'POST';
-    } 
 
-    console.log(newData)
-    try{
+    if (props.modalFormType === modalFormType.NEW) {
+      endPoint = '/api/add/NewEngagement';
+      method = 'POST';
+    }
+
+    try {
       const d = JSON.stringify(newData);
       const res = await fetch(endPoint, {
         method: method,
@@ -65,18 +63,23 @@ export default function EngagementModalForm(props) {
         },
         body: d
       })
-      console.log("RES:", res)
-    } catch (err){
-      console.log("Error:",err)
+      if (res.statusCode && res.statusCode !== 200){
+        // TODO: Instead of throwing an error, display what went wrong
+        // console.log("RES:", res)
+        throw new Error(res.error)
+      }
+    } catch (err) {
+      // console.log("Error:", err)
+      throw err
     }
     props.onClose();
-    if (props.modalFormType==modalFormType.NEW){
+    if (props.modalFormType == modalFormType.NEW) {
       setData(initialData);
     }
   }
 
   return (
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Fill in Engagement Info</h2>
         <div style={{alignItems:borderLeft}}>
         <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -89,8 +92,10 @@ export default function EngagementModalForm(props) {
         </div>
 
         </div>
-        <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{props.onBack(); setData(initialData);}}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
   );
 }

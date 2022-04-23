@@ -12,6 +12,10 @@
 /.next/
 /out/
 
+# SH Files
+docs/scripts/DeleteAll.Sh
+docs/scripts/PopulateAll.Sh
+
 # production
 /build
 

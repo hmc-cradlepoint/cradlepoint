@@ -12,6 +12,7 @@ import EditModalFlow from './editModalFlow';
 import {flowType, modalFormType} from '../util/modalUtils';
 import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
+import DeleteModalForm from './ModalForms/DeleteModalForm';
 
 export default function TestDetails(props) {
     const { directory, dispatch } = useNavContext();
@@ -20,6 +21,20 @@ export default function TestDetails(props) {
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
+
+    let paramId;
+    let testDataId;
+    const getParams = (id, testDataId) => {
+        paramId = id;
+        testDataId = testDataId;
+    }
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const handleDelete = () => {
+        deleteResult(paramId, testDataId);
+        setDeleteModal(false);
+        refreshData();
+    }
 
     const [resultModalOpen, setResultModalOpen] = useState(false);
     const [editModalFlow, setEditModalFlow] = useState(false);
@@ -62,7 +77,8 @@ export default function TestDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {deleteResult(params.id, props.testData._id); refreshData()}}/>
+            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
+            {getParams(params.id, props.testData._id)}
         </div>
         ),
         flex: 2
@@ -91,7 +107,7 @@ export default function TestDetails(props) {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <p>Name: {props.testData.name}</p>
-                <p>Most Recent Result Status: {props.testData.resultStatus?? "unknown"}</p>
+                <p>Most Recent Result Status: {props.testData.resultStatus?? "Unknown"}</p>
             </div>
         )
         // TODO: add result status in test schema so it can display the result status of the latest result
@@ -120,6 +136,11 @@ export default function TestDetails(props) {
                 onBack={() => {
                   setResultModalOpen(false); 
                   refreshData();}}
+            />
+            <DeleteModalForm 
+                isOpen={deleteModal} 
+                onBack={() => setDeleteModal(false)} 
+                handleDelete={() => handleDelete()}
             />
 
         <SplitScreen

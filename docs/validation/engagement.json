@@ -1,6 +1,6 @@
 {
    $jsonSchema: {
-      required: [ "name", "statusCode", "description", "SE", "POC_Engineer", "customer", "SFDC", "testPlanId", "createdOn" ],
+      required: [ "name", "statusCode", "description", "SE", "POC_Engineer", "customer", "SFDC", "createdOn" ],
       properties: {
          name: {
             bsonType: "string",
@@ -33,7 +33,7 @@
          },
          testPlanId: {
             bsonType: "objectId",
-            description: "must be an objectId and is required"
+            description: "must be an objectId and is optional"
          },
          createdOn: {
             bsonType: "date",

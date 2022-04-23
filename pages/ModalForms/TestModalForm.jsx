@@ -10,12 +10,21 @@ import {modalFormType} from '../../util/modalUtils';
 
 export default function TestModalForm(props) {
   const router = useRouter();
-  const initialData = {
+
+  const initialData = (props.isClone)? 
+  {
+    _id: new ObjectID(),
+    name: (props.cloneData?.name??"") + " (copy)",
+    description: props.cloneData?.description??"",
+    resultStatus: props.data?.resultStatus??"Unknown"
+  }:{
+    // data is passed only from the edit 
     _id: props.data?._id??new ObjectID(),
     name: props.data?.name??"",
     description: props.data?.description??"",
-    resultStatus: props.data?.resultStatus??"unknown"
+    resultStatus: props.data?.resultStatus??"Unknown"
   }
+
   const [data, setData] = useState(initialData);
 
   function handleChange(evt) {
@@ -36,10 +45,10 @@ export default function TestModalForm(props) {
       "resultStatus": data.resultStatus
     }
 
-    let endPoint = '/api/editTest';
+    let endPoint = '/api/edit/Test';
     let method = 'PUT';
     if (props.modalFormType==modalFormType.NEW){
-      endPoint = '/api/addNewTest';
+      endPoint = props.isClone?'/api/cloneTest':'/api/add/NewTest';
       method = 'POST';
       newData["results"] = [];
     }
@@ -54,6 +63,7 @@ export default function TestModalForm(props) {
         },
         body: d,
       })
+      console.log("RES:", res)
     } catch (err){
       console.log("Error:",err)
     }
@@ -68,17 +78,19 @@ export default function TestModalForm(props) {
 
   return (
     <>
-      <Modal className={styles.Modal} isOpen={props.isOpen}>
+      <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Fill in Test Info</h2>
         <div style={{alignItems:borderLeft}}>
         <SmallTextInput label="Name" name='name' value={data.name} onChange={handleChange}/>
         <BigTextInput label="Description" name='description' value={data.description} onChange={handleChange} />
         </div>
-        <CPButton text='Back' onClick={()=>{
-          setData(initialData);
-          props.onBack()
-        }}/>
-        <CPButton text='Done' onClick={handleSubmitData}/>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          <CPButton text='Back' onClick={()=>{
+            setData(initialData);
+            props.onBack()
+          }}/>
+          <CPButton text='Done' onClick={handleSubmitData}/>
+        </div>
       </Modal>
     </>
   );

@@ -17,9 +17,16 @@
         ],
         "summaryBOM": [
             {
+                "_id": ObjectId("6247e5efa595b615c2d0ac53"),
                 "isOptional": false,
-                "quantity": 1,
-                "deviceId": ObjectId("617251a399915be1b771acb6")
+                "quantity": 4,
+                "deviceId": ObjectId("61f5859d938920434df9044b")
+            },
+            {
+                "_id": ObjectId("624874ee629364fb092abb77"),
+                "isOptional": false,
+                "quantity": 4,
+                "deviceId": ObjectId("61f58566938920434df9044a")
             }
         ],
         "createdOn": Date("2021-10-21T07:00:00.000Z")
@@ -42,14 +49,16 @@
         ],
         "summaryBOM": [
             {
+                "_id": ObjectId("624875bb629364fb092abb8c"),
                 "isOptional": false,
                 "quantity": 1,
-                "deviceId": ObjectId("61ac5bb5d32cd5c89f9014c7")
+                "deviceId": ObjectId("61f5859d938920434df9044b")
             },
             {
-                "isOptional": true,
-                "quantity": 1,
-                "deviceId": ObjectId("61f86a3b9602a56382ad3b47")
+                "_id": ObjectId("624875bb629364fb092abb8d"),
+                "isOptional": false,
+                "quantity": 2,
+                "deviceId": ObjectId("61f58566938920434df9044a")
             }
         ],
         "createdOn": Date("2021-10-21T07:00:00.000Z")

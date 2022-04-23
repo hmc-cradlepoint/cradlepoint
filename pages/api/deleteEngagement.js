@@ -1,15 +1,15 @@
-import {addTest} from "../../util/addEntry"
+import { deleteEngagement } from "../../util/deleteEntry";
 
 export default async function handler(req, res) {
+    console.log(req?.body)
     if (req.method !== 'POST') {
       res.status(405).send({ message: 'Only POST requests allowed' })
     }
-    else {
-      try {
-        const response = await addTest(req.body)
+    try {
+        console.log(req.body);
+        const response = await deleteEngagement(req.body);
         res.status(200).send({message: response});
-      } catch (err) {
+    } catch (err) {
         res.status(500).send(err.message);
-      }
     }
-}
+  }
