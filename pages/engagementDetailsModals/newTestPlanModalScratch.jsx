@@ -5,7 +5,6 @@ import styles from '../../styles/Modal.module.css';
 import { SmallTextInput, BigTextInput } from "../../components/fields/Text";
 import { borderLeft } from "@mui/system";
 import PropTypes from 'prop-types';
-import UploadComponents from "../../components/UploadComponents";
 
 export default function NewTestPlanModalScratch(props) {
     return (
