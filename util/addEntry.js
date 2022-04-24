@@ -234,7 +234,7 @@ export async function addBOMDevices(data) {
             const testCaseId = ObjectId(data.testCaseId);
             const testPlanId = ObjectId(data.testPlanId);
             const summaryBOM = (await client.collection('testPlan').findOne({"_id": testPlanId })).summaryBOM;
-        
+
             // iterate through each item that needs to be added
             for (let i = 0; i < data.devices.length; i++) {
                 let device = data.devices[i];
@@ -273,7 +273,7 @@ export async function addBOMDevices(data) {
                     } else{
                         // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
-                        summaryBomResult = await client.collection('testPlan').updateOne(
+                        const summaryBomResult = await client.collection('testPlan').updateOne(
                             { "_id": testPlanId }, 
                             { $push: { summaryBOM: device}} 
                         );
