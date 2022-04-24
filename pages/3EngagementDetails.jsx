@@ -36,7 +36,6 @@ export default function EngagementDetails(props) {
     const { directory, dispatch } = useNavContext();
 
     const deleteAPIRoute = {
-        BOM: "/api/deleteTestCaseBOM",
         TEST_PLAN: "/api/deleteTestPlan",
     }
 
@@ -110,7 +109,7 @@ export default function EngagementDetails(props) {
         renderCell: (params) => (
         <>
             <CPButton text="View" onClick={() => handleEditNavigation(params.id)}/>
-            <CPButton text="Set Active" onClick={() => {setTestPlanActive(params.id) }}/>
+            <CPButton text="Set Active" onClick={() => {setActiveTestPlan(params.id) }}/>
             <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
             {getParams(params.id, params.engagementId)}
         </>

@@ -233,6 +233,8 @@ export async function addBOMDevices(data) {
         if (ObjectId.isValid(data.testCaseId) & ObjectId.isValid(data.testPlanId)) {
             const testCaseId = ObjectId(data.testCaseId);
             const testPlanId = ObjectId(data.testPlanId);
+            const summaryBOM = (await client.collection('testPlan').findOne({"_id": testPlanId })).summaryBOM;
+
             // iterate through each item that needs to be added
             for (let i = 0; i < data.devices.length; i++) {
                 let device = data.devices[i];
@@ -246,35 +248,39 @@ export async function addBOMDevices(data) {
                         { $push: { BOM: device } }
                     );
                     console.log(result)
-
-
-                    // if deviceId already in summary BOM with same isOptional arguement, update quantity
-                    const updateResult = await client.collection('testPlan').updateOne(
-                        { "_id": testPlanId, "summaryBOM": { $elemMatch: { deviceId: device.deviceId, isOptional: device.isOptional } } },
-                        // update the quantity only if quantity recorded before is less than currently needed 
-                        { $max: { "summaryBOM.$[elem].quantity": device.quantity } },
-                        {
-                            arrayFilters: [{
-                                $and: [
-                                    { "elem.deviceId": device.deviceId },
-                                    { "elem.isOptional": device.isOptional }
-                                ]
-                            }
-                            ]
+                    
+                    // Update summaryBOM:  
+                    // get the device in summaryBOM corresponding to this device in the test case
+                    let summaryBomDevice = summaryBOM.filter(d => (d.isOptional === device.isOptional) && d.deviceId.equals(device.deviceId));      
+                    console.log(summaryBomDevice)
+                     // if deviceId already in summary BOM with same isOptional arguement
+                    if (summaryBomDevice.length>0){
+                        summaryBomDevice = summaryBomDevice[0];
+                        // check if quantity recorded before is less than currently needed 
+                        if(summaryBomDevice.quantity<device.quantity){
+        
+                            let summaryBomResult = await client.collection('testPlan').updateOne(
+                                {"_id": testPlanId}, 
+                                {$set: {"summaryBOM.$[element].quantity": device.quantity}},
+                                {arrayFilters: [{"element._id" :   summaryBomDevice._id}] 
+                                }
+                            ); 
+                            console.log(summaryBomResult);
                         }
-                    );
-                    console.log(updateResult);
-
-                    // if such device is not in summaryBOM, insert the device directly
-                    if (updateResult.matchedCount < 1) {
+                        
+                        
+                        
+                    } else{
+                        // if such device is not in summaryBOM, insert the device directly
                         console.log("device not in summaryBOM");
-                        let summaryBomResult = await client.collection('testPlan').updateOne(
-                            { "_id": testPlanId },
-                            { $push: { summaryBOM: device } }
+                        const summaryBomResult = await client.collection('testPlan').updateOne(
+                            { "_id": testPlanId }, 
+                            { $push: { summaryBOM: device}} 
                         );
-                        console.log(summaryBomResult);
+                        console.log("added to summaryBOM", summaryBomResult);
                     }
-                } else {
+
+                } else{
                     throw new Error("device not valid ");
                 }
             }

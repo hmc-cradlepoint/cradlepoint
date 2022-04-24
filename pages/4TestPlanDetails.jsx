@@ -24,15 +24,13 @@ export default function TestPlanDetails(props) {
     })
 
     let paramId;
-    let testPlanId;
-    const getParams = (id, testPlanId) => {
+    const getParams = (id) => {
         paramId = id;
-        testPlanId = testPlanId;
     }
 
     const [deleteModal, setDeleteModal] = useState(false);
     const handleDelete = () => {
-        deleteData(deleteAPIRoute.TEST_CASE, paramId, testPlanId);
+        deleteData(deleteAPIRoute.TEST_CASE, paramId);
         setDeleteModal(false);
     }
 
@@ -44,15 +42,15 @@ export default function TestPlanDetails(props) {
     const { directory, dispatch } = useNavContext();
 
     const deleteAPIRoute = {
-        BOM: "/api/deleteTestCaseBOM",
         TEST_CASE: "/api/deleteTestCase",
     }
 
-    async function deleteData(route, resId, parentTestPlanId) {
+    async function deleteData(route, resId) {
         let data = {
             "_id": resId,
-            "parentTestPlanId": parentTestPlanId,
+            "parentTestPlanId": props.testPlanData._id,
         }
+
         try {
             const res = await fetch(route, {
             method: 'POST',
@@ -86,7 +84,7 @@ export default function TestPlanDetails(props) {
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
             <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
-            {getParams(params.id, props.testPlanData._id)}
+            {getParams(params.id)}
         </div>
         ),
         flex: 2

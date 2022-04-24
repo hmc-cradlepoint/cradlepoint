@@ -25,16 +25,23 @@ export default function TestCaseDetails(props) {
         router.replace(router.asPath);
     })
 
-    let paramId;
-    let testCaseId;
-    const getParams = (id, testCaseId) => {
-        paramId = id;
-        testCaseId = testCaseId;
+    // For delete purposes
+    let paramTest, paramBom;
+
+    const getTestParams = (row) => {
+        paramTest = row;
+    }
+
+    const getBomParams = (row) => {
+        paramBom = row;
     }
 
     const [deleteModal, setDeleteModal] = useState(false);
+    // for delete purpose, should hold a list of 2 elements [apiRoute, selectedRow]
+    const [routeParam, setRouteParam] = useState();
+
     const handleDelete = () => {
-        deleteData(deleteAPIRoute.TEST, paramId, testCaseId);
+        deleteData(routeParam);
         setDeleteModal(false);
     }
 
@@ -49,11 +56,13 @@ export default function TestCaseDetails(props) {
         TEST: "/api/deleteTest",
     }
 
-    async function deleteData(route, resId, parentTestCaseId) {
+    async function deleteData(routeParam) {
         let data = {
-            "_id": resId,
-            "parentTestCaseId": parentTestCaseId,
+            ...routeParam[1],
+            "parentTestCaseId": props.testCase._id,
         }
+      
+        const route = routeParam[0];
         try {
             const res = await fetch(route, {
             method: 'POST',
@@ -88,8 +97,9 @@ export default function TestCaseDetails(props) {
         renderCell: (params) => (
         <div style={{display: "flex", flexDirection: "row"}}>
             <CPButton text="View" onClick={() => handleNavigation(params.id)}/>
-            <CPButton text="Delete" onClick={() => {setDeleteModal(true)}}/>
-            {getParams(params.id, props.testCase._id)}
+            <CPButton text="Delete" onClick={() => {setRouteParam([deleteAPIRoute.TEST, paramTest]);
+                                                    setDeleteModal(true);}}/>
+            {getTestParams(params.row)}
         </div>
         ),
         flex: 2
@@ -109,7 +119,9 @@ export default function TestCaseDetails(props) {
                     <CPButton text="Edit" onClick={() => {updateModal("edit");
                                                             setSelectedIDs(new Set([params.id]))
                                                         }}/>
-                    <CPButton text="Delete" onClick={() => {deleteData(deleteAPIRoute.BOM, params.id, props.testCase._id)}}/>
+                    <CPButton text="Delete" onClick={() => {setRouteParam([deleteAPIRoute.BOM, paramBom]);
+                                                            setDeleteModal(true);}}/>
+                        {getBomParams(params.row)}
                     </div>
                 )
             },
