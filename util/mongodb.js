@@ -13,12 +13,12 @@ if (!process.env.MONGODB_URI) {
 
 async function connectToDb() {
   if (client) {
-    return client.db("cradlepoint");
+    return client.db(process.env.MONGODB_DB);
   }
   else {
     client = new MongoClient(uri, options);
     client = await client.connect();
-    return client.db("cradlepoint");
+    return client.db(process.env.MONGODB_DB);
   }
 }
 
