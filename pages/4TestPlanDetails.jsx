@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import SplitScreen from '../components/baseScreen/SplitScreen';
 import { PlainTable } from '../components/tables/Table';
 import CPButton from '../components/button/CPButton';
-import SelectDeviceModal from './deviceModals/selectDevice';
-import SelectQuantityModal from './deviceModals/selectQuantity';
 import EditModalFlow from './editModalFlow';
 import CreateNewModalFlow from './createNewModalFlow';
 import { makeStyles } from '@mui/styles';
@@ -17,12 +15,33 @@ import { flowType } from '../util/modalUtils';
 import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
 
+/**
+ * 
+ * @param {*} props passed in from getServerSideProps() function on the bottom of this document, see this function for details
+ * @returns Test Plan Details Page as a div, along with modals that are default to invisible
+ */
 export default function TestPlanDetails(props) {
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
 
+    // Navigation
+    const { directory, dispatch } = useNavContext();
+    function handleNavigation(id) {
+        const nextPage = "/5TestCaseDetails?_id=" + id;
+        const payload = {title: "Test Case Details", url: nextPage};
+        router.push(nextPage);
+        dispatch({type: "ADD_PAGE", payload: payload});
+    }
+
+    // Styling
+    const useStyles = makeStyles({styling});
+    const classes = useStyles();
+
+    
+    // Delete: variables and functions used
+    // ----------------------------------------------
     let paramId;
     const getParams = (id) => {
         paramId = id;
@@ -30,21 +49,16 @@ export default function TestPlanDetails(props) {
 
     const [deleteModal, setDeleteModal] = useState(false);
     const handleDelete = () => {
-        deleteData(deleteAPIRoute.TEST_CASE, paramId);
+        deleteData("/api/deleteTestCase", paramId);
         setDeleteModal(false);
     }
 
-    const [createNewFlow, setCreateNewFlow] = useState(false);
-    const [editModalFlow, setEditModalFlow] = useState(false);
-    const useStyles = makeStyles({styling});
-    const classes = useStyles();
-
-    const { directory, dispatch } = useNavContext();
-
-    const deleteAPIRoute = {
-        TEST_CASE: "/api/deleteTestCase",
-    }
-
+    /**
+     * 
+     * @param {*} route the api route to delete a test case
+     * @param {*} resId the id of the test case to be deleted
+     * calls deleteTestCase api
+     */
     async function deleteData(route, resId) {
         let data = {
             "_id": resId,
@@ -65,15 +79,14 @@ export default function TestPlanDetails(props) {
         }
         refreshData();
     }
+    // ----------------------------------------------
 
-
-    function handleNavigation(id) {
-        const nextPage = "/5TestCaseDetails?_id=" + id;
-        const payload = {title: "Test Case Details", url: nextPage};
-        router.push(nextPage);
-        dispatch({type: "ADD_PAGE", payload: payload});
-    }
-
+    // controls edit test plan modal flows
+    const [editModalFlow, setEditModalFlow] = useState(false);
+    // controls create new test case modal flows
+    const [createNewFlow, setCreateNewFlow] = useState(false);
+  
+    // Test case table columns
     const testCaseColumnsWithActions = testCaseColumns.concat([
     { 
         field: 'button', 
@@ -91,28 +104,11 @@ export default function TestPlanDetails(props) {
     }
     ]);
 
-
-    // TODO: (optional) Add buttons / additional fields to sumamryBOM
-    // const SummaryBOMColumns = BOMColumns.concat([
-    //     { 
-    //         field: 'button', 
-    //         headerName: 'Actions',
-    //         headerClassName: 'header',
-    //         align: 'center',
-    //         renderCell: () => {
-    //             return (
-    //                 <div style={{display: "flex", flexDirection: "row"}}> 
-    //                 <CPButton text="View"/>
-    //                 </div>
-    //             )
-    //         },
-    //         flex: 1
-    //     }
-    // ]);
-
-
+    // Child components for the page
+    /**
+     * @returns a div containing the test case tables and add new button
+     */
     function testCases() {
-        // Test case table component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
@@ -124,8 +120,11 @@ export default function TestPlanDetails(props) {
         )
     }
 
+     /**
+     * 
+     * @returns a div containing the summary BOM table of the current test plan
+     */
     function BOMSummary() {
-        // Summary of BOM Elements component
         return (
             <div className={styles.tableContainer} style={{paddingTop: 50}}>
                 <div className={styles.tableButtonRow}>
@@ -137,20 +136,23 @@ export default function TestPlanDetails(props) {
         )
     }
 
-    const [selectDeviceModalOpen, setSelectDeviceModalOpen] = useState(false);
-    const [selectQuantityModalOpen, setSelectQuantityModalOpen] = useState(false);
-    const [selectedRows, setSelectedRows] = useState({});
-    function updateModal(modalType) {
-      switch(modalType){
-        case "select_device":
-            setSelectDeviceModalOpen(true)
-            break;
-        case "select_quantity":
-            setSelectQuantityModalOpen(true)
-            break;
-      }
+     /**
+     * 
+     * @returns a div dispalying a description of the engagement
+     */
+      function description() {
+        return (
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <h2>Detailed Description</h2>
+                <p>{props.testPlanData.description}</p>
+            </div>
+        )
     }
-    
+
+    /**
+     * 
+     * @returns a div displaying all the fields of a test plan
+     */
     function details() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
@@ -167,33 +169,14 @@ export default function TestPlanDetails(props) {
         )
     }
 
-    function description() {
-        return (
-            <div style={{display: "flex", flexDirection: "column"}}>
-                <h2>Detailed Description</h2>
-                <p>{props.testPlanData.description}</p>
-            </div>
-        )
-    }
-
+   
     return (
         <>
-        <SelectDeviceModal
-            modalOpen={selectDeviceModalOpen} 
-            onClickNext={updateModal}
-            onBack={()=> setSelectDeviceModalOpen(false)}
-            modalData={props.allDevices}
-            selectRows={(sRows) => setSelectedRows(sRows)}
-        />
-        <SelectQuantityModal
-            modalOpen={selectQuantityModalOpen} 
-            onClickNext={updateModal}
-            selectedRows={selectedRows}
-            onBack={()=> setSelectQuantityModalOpen(false)}
-        />
+        {/* Pop-up Modals */}
         <CreateNewModalFlow modalData={props} type={flowType.TEST_CASE} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.testPlanData} type={flowType.TEST_PLAN} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
+        {/* The actual page */}
         <SplitScreen
             topChildren={
                 <>
@@ -220,7 +203,6 @@ export default function TestPlanDetails(props) {
 
 import {getTestPlan} from "./api/getTestPlan";
 import {getTestCasesByTestPlan} from "./api/getTestCasesByTestPlan";
-import {getAllDevices} from "./api/getAllDevices";
 import {getLibraryTestCases} from "./api/getLibraryTestCases";
 
 
@@ -259,15 +241,12 @@ export async function getServerSideProps(context) {
     }));
 
     const allTestCases = await getLibraryTestCases();
-    const allDevices = await getAllDevices();
    
- 
     return {
       props: {
-          testPlanData, 
-          testCasesData,
-          allTestCases,
-          allDevices,
+          testPlanData, // the specific test plan and all its fields
+          testCasesData, // the test cases that belong to the test plan
+          allTestCases, // library test cases for the create new test case modal
         },
     }
   }
