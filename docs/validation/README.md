@@ -1,4 +1,4 @@
-MongoSh Commands (needs DBadmin permission on 'cradlepoint' to run)
+MongoSh Commands (requires the user to have DBadmin permission on the 'cradlepoint' database to run)
 Validation currently only produces warnings, does not throw errors.
 ``` 
 \\ Bash command to update a collection's validation rules
