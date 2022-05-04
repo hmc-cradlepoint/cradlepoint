@@ -15,11 +15,32 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ObjectID } from "bson";
 
 
+/**
+ * 
+ * @param {*} props 
+ *    - modalOpen: boolean of whether modal is visible
+ *    - onBack: close modal without submitting
+ *    - onClose: close modal and submit data by calling api
+ *    - testCase: the parent test case of the BOM that the user is adding to/editing 
+ *    - editMode: boolean of whether modal is in edit or create new modal flow
+ *    - selectedIDs: keep track of the ids of the devices that are selected 
+ *    - libraryDevices: library devices
+ * @returns 
+ */
 export default function SelectQuantityModal(props) {
+  const router = useRouter();
+
+  // Styling
   const useStyles = makeStyles({styling});
   const classes = useStyles();
-  const router = useRouter();
-  
+
+  /**
+   * format an id to a BOM device entry (see bomDeviceSchema)
+   * @param {*} id  
+   *    - If modal in EDIT mode: id is the _id of device entry in the current BOM
+   *    - If model in create new flow: id is the id of the device in the library
+   * @returns a formatted BOM device entry 
+   */
   function formatData(id){
     // editing an existing item in the BOM
     if (props.editMode){
@@ -51,15 +72,17 @@ export default function SelectQuantityModal(props) {
     return newRow;
   }
 
-
-
+  // data holds a list of BOM device entries
   let data = [];
   if (props.selectedIDs !=undefined & props.libraryDevices !=undefined){
       data = Array.from(props.selectedIDs).map(id => formatData(id));
   }
   
-  console.log("data ", data);
-
+  /**
+   * Updates data variable whenever user commit on a change they made
+   * @param {*} e onCommit event
+   * 
+   */
   function handleCommit(e){
     const array = data.map(r => {
       if (r._id==e.id){
@@ -72,6 +95,9 @@ export default function SelectQuantityModal(props) {
     console.log(data);
   }
 
+  /**
+   * calls the api to either edit or add devices to BOM
+   */
   async function handleSubmitData() {
     data = data.map(d => (({_id, deviceId, quantity, isOptional}) => ({_id, deviceId, quantity, isOptional}))(d));
   
@@ -107,6 +133,7 @@ export default function SelectQuantityModal(props) {
     
   }
 
+  // if user enters a quantity less than 1, this will pop-up with a warning
   const notify = () => toast.error("Quantity must be at least 1", {
                       position: "top-center",
                       autoClose: 7000,
@@ -116,6 +143,7 @@ export default function SelectQuantityModal(props) {
                       draggable: true,
                       progress: undefined});
 
+  // Columns to the table if user is editing
   const editColumns=LibraryBOMColumns.concat([
         { 
           field: 'quantity', 
@@ -127,6 +155,8 @@ export default function SelectQuantityModal(props) {
           type: "number",
         }]);
   
+  // Columns to the table if user is adding. User has the additional action of selecting 
+  // whether the entry they are adding to the BOM is optional
   const addColumns=editColumns.concat([
         { 
           field: 'optional', 
@@ -146,28 +176,27 @@ export default function SelectQuantityModal(props) {
         }]);
 
   
-
   return (
     <>
       <Modal className={styles.Modal} isOpen={props.modalOpen}>
         {/* Pop-up that warns user */}
         <ToastContainer />
         <h2> Double click to edit quantity and check box if optional</h2>
+        {/* Table that shows all the selected devices and allow users to edit quantity (and isOptional for create new) */}
         <PlainTable rows={data} 
-        getRowId={(row) => row._id}
-        columns={props.editMode?editColumns:addColumns} 
-        className={classes.root} 
-        onCellEditCommit={(e) => {
-          if (e.field==="quantity"){
-            const hasError = e.value <= 0;
-            if (hasError) { 
-              notify(); 
-            } else {
-              handleCommit(e);
+          getRowId={(row) => row._id}
+          columns={props.editMode?editColumns:addColumns} 
+          className={classes.root} 
+          onCellEditCommit={(e) => {
+            if (e.field==="quantity"){
+              const hasError = e.value <= 0;
+              if (hasError) { 
+                notify(); 
+              } else {
+                handleCommit(e);
+              }
             }
-          }
-          
-        }} 
+          }} 
         />
         <div style={{display: 'flex', flexDirection: 'row'}}>
           <CPButton text='Back' onClick={props.onBack}/>
