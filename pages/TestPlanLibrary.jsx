@@ -3,9 +3,10 @@ import PlainScreen from "../components/baseScreen/PlainScreen";
 import { PlainTable } from "../components/tables/Table";
 import { makeStyles } from '@mui/styles';
 import CPButton from '../components/button/CPButton';
-import { testPlanColumns, testPlanRows } from '../util/tableColumns';
+import { testPlanColumns } from '../util/tableColumns';
 import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
+import styling from '../styles/tableStyling';
 
  {/* TODO: create new modal flow for libraries are not working yet. Add test plan to library api is not yet implemented */}
 export default function TestPlanLibrary(props) {
