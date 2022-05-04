@@ -39,8 +39,10 @@ export default function EngagementDetails(props) {
     const classes = useStyles();
 
     // Delete: variables and functions used
+    // ----------------------------------------------
     let paramId; // stores id of test plan that needs to be deleted
     let engagementId; // stores id of parent engagement
+    // function called in Test plan table
     const getParams = (id, engagementId) => {
         paramId = id;
         engagementId = engagementId;
@@ -48,7 +50,7 @@ export default function EngagementDetails(props) {
 
     const [deleteModal, setDeleteModal] = useState(false);
     
-    // helper passed into the deleteModal
+    // helper passed into the deleteModal to call delete api
     const handleDelete = () => {
         deleteData("/api/deleteTestPlan", paramId, engagementId);
         setDeleteModal(false);
@@ -82,7 +84,8 @@ export default function EngagementDetails(props) {
         }
         refreshData();
     }
- 
+    // ----------------------------------------------
+
 
     // controls edit engagement modal flow
     const [editModalFlow, setEditModalFlow] = useState(false);
@@ -153,8 +156,12 @@ export default function EngagementDetails(props) {
             flex: 1
         }
     ]);
-   
+    
+
+
+    
     // Child components for the page
+    // ----------------------------------------------
     /**
      * @returns a div containing the test plan tables and add new button
      */
@@ -202,7 +209,7 @@ export default function EngagementDetails(props) {
 
     /**
      * 
-     * @returns a div displaying all the fields of an Engagement
+     * @returns a div displaying all the text fields of an Engagement
      */
     function details() {
         return (
@@ -217,6 +224,9 @@ export default function EngagementDetails(props) {
             </div>
         )
     }
+    // ----------------------------------------------
+
+
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>

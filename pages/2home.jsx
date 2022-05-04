@@ -147,8 +147,13 @@ export default function HomeScreen(props) {
     )
 }
 
-
+/**
+ * 
+ * @param {*} context 
+ * @returns retrives all the necessary props to load the page
+ */
 export async function getServerSideProps(context) {
+  // get all the active engagements
   const data = await getActiveEngagements();
   if (!data) {
     return {

@@ -105,6 +105,7 @@ export default function TestPlanDetails(props) {
     ]);
 
     // Child components for the page
+    // ----------------------------------------------
     /**
      * @returns a div containing the test case tables and add new button
      */
@@ -168,7 +169,7 @@ export default function TestPlanDetails(props) {
             </div>
         )
     }
-
+    // ----------------------------------------------
    
     return (
         <>
