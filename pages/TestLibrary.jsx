@@ -8,10 +8,13 @@ import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
 import styling from '../styles/tableStyling';
 
+ {/* TODO: create new modal flow for libraries are not working yet. Add test to library api is not yet implemented */}
 export default function TestLibrary(props) {
+    // Styling
     const useStyles = makeStyles({styling});
     const classes = useStyles();
 
+    // Test table columns
     const testColumnsWithActions = testColumns.concat([
         { 
           field: 'button', 
@@ -26,6 +29,7 @@ export default function TestLibrary(props) {
         }
       ]);
       
+    // controls create new modal flow
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     return(
@@ -43,7 +47,11 @@ export default function TestLibrary(props) {
 }
 
 import {getLibraryTests} from "./api/getLibraryTests";
-
+/**
+ * 
+ * @param {*} context 
+ * @returns props that includes all library tests
+ */
 export async function getServerSideProps(context) {
   try {
     const res = await getLibraryTests();

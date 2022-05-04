@@ -7,26 +7,13 @@ import { testPlanColumns, testPlanRows } from '../util/tableColumns';
 import CreateNewModalFlow from './createNewModalFlow';
 import { flowType } from '../util/modalUtils';
 
-// TODO: adjust scaling and font of the page
+ {/* TODO: create new modal flow for libraries are not working yet. Add test plan to library api is not yet implemented */}
 export default function TestPlanLibrary(props) {
-    // TODO: have a consistent style for all the pages (delete later)
-    const useStyles = makeStyles({
-      root: {
-        '& .header': {
-          backgroundColor: '#FCAC1C',
-        },
-        '& .MuiDataGrid-iconSeparator': {
-          display: 'None'
-        },
-        '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-          borderRight: `2px solid #f0f0f0`,
-        },
-
-      },
-    });
-    
+    // Styling
+    const useStyles = makeStyles({styling});
     const classes = useStyles();
 
+    // Test plan table columns
     const testPlanColumnsWithActions = testPlanColumns.concat([
         { 
           field: 'button', 
@@ -41,10 +28,12 @@ export default function TestPlanLibrary(props) {
         }
       ]);
 
+    // controls create new modal flow
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
     return(
       <>
+         {/* TODO: create new modal flow for libraries are not working yet */}
         <CreateNewModalFlow type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => setCreateNewFlow(false)} />
         <PlainScreen>
             <CPButton 
@@ -59,9 +48,14 @@ export default function TestPlanLibrary(props) {
 }
 
 import {getLibraryTestPlans} from "./api/getLibraryTestPlans";
-
+/**
+ * 
+ * @param {*} context 
+ * @returns props that includes all library test plans
+ */
 export async function getServerSideProps(context) {
   try {
+    // get the library test plans
     const testPlansData = await getLibraryTestPlans();
     return {
       props: {testPlansData}, // will be passed to the page component as props
