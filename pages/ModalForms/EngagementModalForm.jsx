@@ -17,7 +17,7 @@ import { modalFormType } from '../../util/modalUtils';
  *      - isOpen: whether the model is visible
  *      - onBack: close modal without submitting
  *      - [ONLY for edit flow] data: original data of a test plan 
- * @returns div of Engagement modal
+ * @returns Engagement modal
  */
 export default function EngagementModalForm(props) {
   const router = useRouter();

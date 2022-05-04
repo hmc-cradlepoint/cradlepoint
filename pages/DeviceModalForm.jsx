@@ -9,6 +9,13 @@ import { useRouter } from 'next/router'
 import { SmallTextInput, BigTextInput } from "../components/fields/Text";
 import { borderLeft } from "@mui/system";
 
+/**
+ * 
+ * @param {*} props 
+ *      - onBack: called when user wants to close modal without submitting form
+ *      - isOpen: whether the model is visible
+ * @returns div of Engagement modal
+ */
 export default function DeviceModalForm(props) {
     const router = useRouter();
     const initialData = {
@@ -17,9 +24,14 @@ export default function DeviceModalForm(props) {
       SKU: "",
       deviceType: "Software",
     }
+
+    // state variable to keep track of all the fields
     const [data, setData] = useState(initialData);
-    const options = ["Software", "Hardware"];
     
+    /**
+     * calls whenever user make changes to the fields to update the data variable
+     * @param {*} evt onChange event
+     */
     function handleChange(evt) {
       const value = evt.target.value;
       setData({
@@ -29,8 +41,9 @@ export default function DeviceModalForm(props) {
       console.log(data)
     }
 
-
-  
+    /**
+     * triggers by onClick of the Done button and calls the corresponding api 
+     */
     async function handleSubmitData() {
       let newData = {
         "deviceName":data.deviceName, 
@@ -53,16 +66,21 @@ export default function DeviceModalForm(props) {
       
     }
 
+  // Optionals for the device type drop down  
+  const options = ["Software", "Hardware"];
   return (
       <Modal className={styles.Modal} isOpen={props.isOpen}>
         <h2>Add New Device to Library</h2>
+        {/* Fields */}
         <div style={{alignItems:borderLeft}}>
-        <SmallTextInput label="Device Name:" name='deviceName' value={data.deviceName} onChange={handleChange}/>
-        <SmallTextInput label="Code Version:" name='codeVersion' value={data.codeVersion} onChange={handleChange} />
-        <SmallTextInput label="SKU:" name='SKU' value={data.SKU} onChange={handleChange} />
-        <DropDown title="Device Type: " fieldName="deviceType" value={data.deviceType} 
-            onChange={handleChange} options={options}/>
+          <SmallTextInput label="Device Name:" name='deviceName' value={data.deviceName} onChange={handleChange}/>
+          <SmallTextInput label="Code Version:" name='codeVersion' value={data.codeVersion} onChange={handleChange} />
+          <SmallTextInput label="SKU:" name='SKU' value={data.SKU} onChange={handleChange} />
+          <DropDown title="Device Type: " fieldName="deviceType" value={data.deviceType} 
+              onChange={handleChange} options={options}/>
         </div>
+
+        {/* Buttons */}
         <div style={{display: 'flex', flexDirection: 'row'}}>
           <CPButton text='Back' onClick={()=>{
             setData(initialData);
@@ -74,8 +92,4 @@ export default function DeviceModalForm(props) {
   );
 }
 
-DeviceModalForm.propTypes = {
-  onBack: PropTypes.bool.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
-}
 
