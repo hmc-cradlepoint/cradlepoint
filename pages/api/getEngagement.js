@@ -23,6 +23,7 @@ export default async (req, res) => {
 export async function getEngagement(_id) {
   if ( ObjectId.isValid(_id) ) {
     const client = await connectToDb();
+    // This allows us to automatically get details about the users
     const cursor = await client.collection("engagements").aggregate([
         { $match: { "_id": ObjectId(_id) } },
         { $lookup:
