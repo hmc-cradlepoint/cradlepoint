@@ -11,34 +11,20 @@ import styles from '../styles/EngagementDetails.module.css';
 
 
 export default function DeviceLibrary(props) {
+    // Styling
     const useStyles = makeStyles({styling});
     const classes = useStyles();
 
-    // Seems like we don't need to have these device library actions, so they are removed
-    //
-    // const LibraryBOMColumnsWithActions = LibraryBOMColumns.concat([
-    //     { 
-    //       field: 'button', 
-    //       flex: 1,
-    //       minWidth: 100,
-    //       headerName: 'Actions',
-    //       headerClassName: 'header',
-    //       align: 'center',
-    //       renderCell: () => (
-    //         <CPButton text="DETAILS"/>
-    //       )
-    //     }
-    //   ]);
-
-
+    // controls create new modal flow
     const [deviceModalOpen, setDeviceModalOpen] = useState(false);
 
     return(
         <div>
-              <DeviceModalForm
-                isOpen={deviceModalOpen}
-                onBack={()=> setDeviceModalOpen(false)}
-              ></DeviceModalForm>
+            <DeviceModalForm
+              isOpen={deviceModalOpen}
+              onBack={()=> setDeviceModalOpen(false)}
+            ></DeviceModalForm>
+            
             <PlainScreen>
               <div className={styles.tableContainer} style={{paddingTop: 50}}>
                   <div className={styles.tableButtonRow}>
@@ -55,7 +41,11 @@ export default function DeviceLibrary(props) {
 }
 
 import {getAllDevices} from "./api/getAllDevices";
-
+/**
+ * 
+ * @param {*} context 
+ * @returns props that includes all library devices
+ */
 export async function getServerSideProps() {
   try {
     // const res = await fetch(`${process.env.HOST}/api/getAllDevices`);

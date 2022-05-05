@@ -14,31 +14,56 @@ import styling from '../styles/tableStyling';
 import { useNavContext } from '../context/AppWrapper';
 import NavDir from '../components/navDir';
 
+/**
+ * 
+ * @param {*} props passed in from getServerSideProps() function on the bottom of this document, see this function for details
+ * @returns Engagement Details Page as a div, along with modals that are default to invisible
+ */
 export default function EngagementDetails(props) {
     const router = useRouter();
     const refreshData = (() => {
         router.replace(router.asPath);
     })
 
-    let paramId;
-    let engagementId;
+    // navigation
+    const { directory, dispatch } = useNavContext();
+    function handleEditNavigation(id) {
+        const nextPage = "/4TestPlanDetails?_id=" + id;
+        const payload = { title: "Test Plan Details", url: nextPage };
+        router.push(nextPage);
+        dispatch({ type: "ADD_PAGE", payload: payload });
+    }
+
+    // styling
+    const useStyles = makeStyles({ styling });
+    const classes = useStyles();
+
+    // Delete: variables and functions used
+    // ----------------------------------------------
+    let paramId; // stores id of test plan that needs to be deleted
+    let engagementId; // stores id of parent engagement
+    // function called in Test plan table
     const getParams = (id, engagementId) => {
         paramId = id;
         engagementId = engagementId;
     }
 
     const [deleteModal, setDeleteModal] = useState(false);
+    
+    // helper passed into the deleteModal to call delete api
     const handleDelete = () => {
-        deleteData(deleteAPIRoute.TEST_PLAN, paramId, engagementId);
+        deleteData("/api/deleteTestPlan", paramId, engagementId);
         setDeleteModal(false);
     }    
 
-    const { directory, dispatch } = useNavContext();
-
-    const deleteAPIRoute = {
-        TEST_PLAN: "/api/deleteTestPlan",
-    }
-
+    /**
+     * 
+     * @param {*} route the api route to delete a test plan
+     * @param {*} resId the id of the test plan to be deleted
+     * @param {*} parentEngagementId the id of the parent engagement
+     * 
+     * calls deleteTestPlan api
+     */
     async function deleteData(route, resId, parentEngagementId) {
         let data = {
             "_id": resId,
@@ -59,27 +84,25 @@ export default function EngagementDetails(props) {
         }
         refreshData();
     }
+    // ----------------------------------------------
 
 
-    const useStyles = makeStyles({ styling });
-    const classes = useStyles();
-
+    // controls edit engagement modal flow
     const [editModalFlow, setEditModalFlow] = useState(false);
+    // controls create new test plan modal flows
     const [createNewFlow, setCreateNewFlow] = useState(false);
 
-    function handleEditNavigation(id) {
-        const nextPage = "/4TestPlanDetails?_id=" + id;
-        const payload = { title: "Test Plan Details", url: nextPage };
-        router.push(nextPage);
-        dispatch({ type: "ADD_PAGE", payload: payload });
-    }
-
+    /**
+     * sets an archived test plan to active
+     * @param {*} newActiveTestPlanId id of test plan that needs to be set active
+     * calls ActivateTestPlan api
+     */
     async function setActiveTestPlan(newActiveTestPlanId) {
         let data = {
             "engagementId": props.engagement._id,
             "testPlanId": newActiveTestPlanId
         }
-        console.log("data:", data);
+      
         try {
             const d = JSON.stringify(data);
             const res = await fetch('/api/edit/ActivateTestPlan', {
@@ -99,7 +122,7 @@ export default function EngagementDetails(props) {
         refreshData();
     }
 
-    //   TODO: style the active test plan
+    //  Test Plan table columns
     const testPlanColWithButton = testPlanColumns.concat([
     { 
         field: 'button', 
@@ -118,6 +141,7 @@ export default function EngagementDetails(props) {
     }
     ]);
 
+    // Active Test Plan table columns
     const activeTestPlanCol = testPlanColumns.concat([
         {
             field: 'button',
@@ -132,25 +156,16 @@ export default function EngagementDetails(props) {
             flex: 1
         }
     ]);
+    
 
-    // TODO: (optional) Add buttons / additional fields to sumamryBOM
-    // const SummaryBOMColumns = BOMColumns.concat([
-    //     { 
-    //         field: 'button', 
-    //         headerName: 'Actions',
-    //         headerClassName: 'header',
-    //         align: 'center',
-    //         renderCell: () => (
-    //         <div style={{display: "flex", flexDirection: "row"}}>
-    //             <CPButton text="View"/>
-    //         </div>
-    //         ),
-    //         flex: 1
-    //     }
-    // ]);
 
+    
+    // Child components for the page
+    // ----------------------------------------------
+    /**
+     * @returns a div containing the test plan tables and add new button
+     */
     function testPlans() {
-        // Test plans table component
         return (
             <div className={styles.tableContainer} style={{ paddingTop: 50 }}>
                 <div className={styles.tableButtonRow}>
@@ -166,9 +181,11 @@ export default function EngagementDetails(props) {
         )
     }
 
-
+    /**
+     * 
+     * @returns a div containing the summary BOM table of the active test plan
+     */
     function BOMSummary() {
-        // Summary of BOM component
         return (
             <div className={styles.tableContainer} style={{ paddingTop: 50 }}>
                 <h2>Summary of Bill of Materials Elements (of active test plan)</h2>
@@ -177,6 +194,10 @@ export default function EngagementDetails(props) {
         )
     }
 
+    /**
+     * 
+     * @returns a div dispalying a description of the engagement
+     */
     function description() {
         return (
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -186,6 +207,10 @@ export default function EngagementDetails(props) {
         )
     }
 
+    /**
+     * 
+     * @returns a div displaying all the text fields of an Engagement
+     */
     function details() {
         return (
             <div style={{ display: "flex", flexDirection: "column" }}>
@@ -199,12 +224,18 @@ export default function EngagementDetails(props) {
             </div>
         )
     }
+    // ----------------------------------------------
+
+
 
     return (
         <div style={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+        {/* Pop-up modals that are controlled by state variables */}
         <CreateNewModalFlow modalData={props} type={flowType.TEST_PLAN} modalOpen={createNewFlow} onClose={() => {setCreateNewFlow(false); refreshData();}} />
         <EditModalFlow data={props.engagement} type={flowType.ENGAGEMENT} modalOpen={editModalFlow} onClose={() => {setEditModalFlow(false); refreshData();}} />
         <DeleteModalForm isOpen={deleteModal} onBack={() => setDeleteModal(false)} handleDelete={() => handleDelete()}/>
+        
+        {/* The actual screen */}
         <SplitScreen
             topChildren={
             <div>
@@ -232,8 +263,13 @@ import { getTestPlansByEngagementId } from "./api/getTestPlansByEngagementId";
 import { getTestPlan } from "./api/getTestPlan";
 import { getEngagement } from "./api/getEngagement";
 import { getLibraryTestPlans } from "./api/getLibraryTestPlans";
-
+/**
+ * 
+ * @param {*} context 
+ * @returns retrives all the necessary props to load the page
+ */
 export async function getServerSideProps(context) {
+    // get details of a specific engagment
     try {
         let engagement = await getEngagement(context.query._id);
         if (engagement.len == 0) {
@@ -241,23 +277,28 @@ export async function getServerSideProps(context) {
             return { notFound: true }
         }
         engagement = engagement[0];
+
+        // get all the test plans and summaryBOM of that engagement
         const archivedTestPlans = await getTestPlansByEngagementId(context.query._id);
         const allTestPlans = await getLibraryTestPlans();
         const activeTestPlan = (engagement.testPlanId) ? await getTestPlan(engagement.testPlanId) : [];
         let summaryBOM = (activeTestPlan[0]) ? activeTestPlan[0].summaryBOM : [];
+
+        // if engagement contains a test plan with an empty summary BOM, set summaryBOM to an empty list
         if (engagement.testPlanId){
             // Fix issue where an empty summaryBOM is [{}] instead of []
             if (JSON.stringify(summaryBOM) === '[{}]') {
                 summaryBOM = [];
             };
         };
+
         return {
             props: {
-                engagement,
-                activeTestPlan,
-                archivedTestPlans,
-                summaryBOM,
-                allTestPlans,
+                engagement, // the specific engagement and all its fields
+                activeTestPlan, // the active test plan
+                archivedTestPlans, // the archived test plans
+                summaryBOM, // the summaryBOM of the active test plan
+                allTestPlans, // library test plans, needed for modal to add new test plan 
             },
         }
     }

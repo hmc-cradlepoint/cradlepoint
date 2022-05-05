@@ -14,34 +14,19 @@ import NavDir from '../components/navDir';
 import { useNavContext } from '../context/AppWrapper';
 import DeleteModalForm from './ModalForms/DeleteModalForm';
 
+/**
+ * 
+ * @param {*} props passed in from getServerSideProps() function on the bottom of this document, see this function for details
+ * @returns Test Details Page as a div, along with modals that are default to invisible
+ */
 export default function TestDetails(props) {
-    const { directory, dispatch } = useNavContext();
-
     const router = useRouter();
     const refreshData = ( () => {
         router.replace(router.asPath);
     })
 
-    let paramId;
-    let testDataId;
-    const getParams = (id, testDataId) => {
-        paramId = id;
-        testDataId = testDataId;
-    }
-
-    const [deleteModal, setDeleteModal] = useState(false);
-    const handleDelete = () => {
-        deleteResult(paramId, testDataId);
-        setDeleteModal(false);
-        refreshData();
-    }
-
-    const [resultModalOpen, setResultModalOpen] = useState(false);
-    const [editModalFlow, setEditModalFlow] = useState(false);
-    
-    const useStyles = makeStyles({styling});
-    const classes = useStyles();
-
+    // navigation
+    const { directory, dispatch } = useNavContext();
     function handleNavigation(id) {
         const nextPage = "/7ResultDetails?_id="+id;
         const payload = {title: "Result Details", url: nextPage};
@@ -49,6 +34,40 @@ export default function TestDetails(props) {
         dispatch({type: "ADD_PAGE", payload: payload});
     }
 
+    // styling
+    const useStyles = makeStyles({styling});
+    const classes = useStyles();
+
+
+
+    // Delete: variables and functions used
+    // ----------------------------------------------
+    let resId; // stores id of result that needs to be deleted
+    let parentTestId; // stores id of parent test
+    
+    // function called in result table
+    const getParams = (id, testDataId) => {
+        resId = id;
+        parentTestId = testDataId;
+    }
+
+    // state variable to control delete modal visibility
+    const [deleteModal, setDeleteModal] = useState(false);
+    
+    // helper passed into the deleteModal to call delete api
+    const handleDelete = () => {
+        deleteResult(resId, parentTestId);
+        setDeleteModal(false);
+        refreshData();
+    }
+
+    /**
+     * 
+     * @param {*} resId the id of the result to be deleted
+     * @param {*} parentTestid the id of the parent test
+     * 
+     * calls deleteResult api
+     */
     async function deleteResult(resId, parentTestId) {
         let data = {
             "_id": resId,
@@ -67,7 +86,16 @@ export default function TestDetails(props) {
             console.log("Error:",err)
         }
     }
+    // ----------------------------------------------
 
+
+    // controls edit test modal flow
+    const [editModalFlow, setEditModalFlow] = useState(false);
+    // controls create new result modal flows
+    const [resultModalOpen, setResultModalOpen] = useState(false);
+    
+
+    // Result table columns
     const resultWithActions = resultColumns.concat([
     { 
         field: 'button', 
@@ -86,6 +114,11 @@ export default function TestDetails(props) {
     ]);
 
 
+    // Child components for the page
+    // ----------------------------------------------
+    /**
+     * @returns a div containing the results tables and add new button
+     */
     function results() {
         // Test table component
         return (
@@ -101,18 +134,11 @@ export default function TestDetails(props) {
         )
     }
 
-
-    
-    function details() {
-        return (
-            <div style={{display: "flex", flexDirection: "column"}}>
-                <p>Name: {props.testData.name}</p>
-                <p>Most Recent Result Status: {props.testData.resultStatus?? "Unknown"}</p>
-            </div>
-        )
-        // TODO: add result status in test schema so it can display the result status of the latest result
-    }
-    function description() {
+    /**
+     * 
+     * @returns a div dispalying a description of the test
+     */
+       function description() {
         return (
             <div style={{display: "flex", flexDirection: "column"}}>
                 <h2>Detailed Description</h2>
@@ -121,8 +147,25 @@ export default function TestDetails(props) {
         )
     }
 
+    /**
+     * 
+     * @returns a div displaying all the text fields of a test
+     */
+    function details() {
+        return (
+            <div style={{display: "flex", flexDirection: "column"}}>
+                <p>Name: {props.testData.name}</p>
+                <p>Most Recent Result Status: {props.testData.resultStatus?? "Unknown"}</p>
+            </div>
+        )
+    }
+    // ----------------------------------------------
+  
+
+    
     return (
         <div>
+            {/* Pop-up modals that are controlled by state variables */}
             <EditModalFlow 
                 data={props.testData} 
                 type={flowType.TEST} 
@@ -143,6 +186,7 @@ export default function TestDetails(props) {
                 handleDelete={() => handleDelete()}
             />
 
+        {/* The actual screen */}
         <SplitScreen
             topChildren={
                 <>
@@ -169,8 +213,11 @@ export default function TestDetails(props) {
 
 import {getTest} from "./api/getTest";
 import {getResults} from "./api/getResults";
-
-
+/**
+ * 
+ * @param {*} context 
+ * @returns retrives all the necessary props to load the page
+ */
 export async function getServerSideProps(context) {
     /* 
        Gets Data for Test Details

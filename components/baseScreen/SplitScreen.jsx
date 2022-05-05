@@ -3,6 +3,13 @@ import styles from '../../styles/SplitScreen.module.css';
 import PropTypes from 'prop-types';
 import MenuBar from './MenuBar';
 
+/**
+ * for screens in the form of dividing into 3 sections vertically as top, middle, and bottom
+ * then, the mid section is divided into left and right subsection with equal lengths
+ * @param {*} props topChildren, leftSection, rightSection, bottomChildren
+ * content of each section
+ * @returns the entire screen
+ */
 export default function SplitScreen(props) {
     return (
         <div style={{flexDirection: "column",flex:1}}>

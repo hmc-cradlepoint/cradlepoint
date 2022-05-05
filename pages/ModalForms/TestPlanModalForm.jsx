@@ -9,9 +9,25 @@ import { ObjectID } from 'bson';
 import DropDown from "../../components/fields/DropDown";
 import { modalFormType } from '../../util/modalUtils';
 
+/**
+ * 
+ * @param {*} props 
+ *      - modalFormType: what kind of flow this should be (edit or create new)
+ *      - onClose: called when user is done with the modal
+ *      - isOpen: whether the model is visible
+ *      - onBack: close modal without submitting
+ *      - [ONLY for create new flow] engagementId: the parent engagement id 
+ *      - [ONLY for create new flow] cloneData: data of the test plan we want to clone if cloning, else null if add from scratch
+ *      - [ONLY for create new flow] isClone: boolean of whether we are cloning a test plan
+ *      - [ONLY for edit flow] data: original data of a test plan 
+ * @returns div of Test Plan modal
+ */
+
+// TODO: does not handle adding library test case yet
 export default function TestPlanModalForm(props) {
   const router = useRouter();
 
+  // initial data is different depending on whether we are cloning or not
   const initialData = (props.isClone) ?
     {
       name: (props.cloneData?.name ?? "") + " (copy)",
@@ -34,8 +50,13 @@ export default function TestPlanModalForm(props) {
     }
 
 
+  // state variable to keep track of the fields
   const [data, setData] = useState(initialData)
 
+  /**
+   * calls whenever user make changes to the fields to update the data variable
+   * @param {*} evt onChange event
+   */
   function handleChange(evt) {
     const value = evt.target.value;
     setData({
@@ -44,6 +65,9 @@ export default function TestPlanModalForm(props) {
     });
   }
 
+  /**
+   * triggers by onClick of the Done button and calls the corresponding api 
+   */
   async function handleSubmitData() {
     let newData = {
       ...props.data,
@@ -59,6 +83,7 @@ export default function TestPlanModalForm(props) {
       "createdOn": new Date(), // Schema provides a default val, not necessary to provide
     }
 
+    // Calls corresponding api depending on modalFormType and whether we are cloning
     let endPoint = '/api/edit/TestPlan';
     let method = 'PUT';
 
@@ -92,33 +117,34 @@ export default function TestPlanModalForm(props) {
     }
   }
 
-  // for the dropdown of isActive
-  const options = [true, false];
   return (
       <Modal className={styles.content} isOpen={props.isOpen} overlayClassName={styles.overlay}>
         <h2>Test Plan Info</h2>
+        {/* Fields */}
         <div style={{alignItems:borderLeft}}>
           <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-          <div>
-            <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange} />
-            {/* <DropDown title="Active: " fieldName="isActive" value={data.isActive} 
-            onChange={handleChange} options={options}/> */}
-            <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange} />
+            <div>
+              <SmallTextInput label="Name:" name='name' value={data.name} onChange={handleChange} />
+              <SmallTextInput label="Version:" name='version' value={data.version} onChange={handleChange} />
+            </div>
+
+            <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange} />
           </div>
-          <BigTextInput label="Customer Feedback:" name='customerFeedback' value={data.customerFeedback} onChange={handleChange} />
+          
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange} />
+            <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange} />
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-          <BigTextInput label="Description:" name='description' value={data.description} onChange={handleChange} />
-          <BigTextInput label="Device Config:" name='deviceConfig' value={data.deviceConfig} onChange={handleChange} />
+        
+        {/* Buttons */}
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <CPButton text='Back' onClick={() => {
+            setData(initialData);
+            props.onBack();
+          }} />
+          <CPButton text='Done' onClick={handleSubmitData} />
         </div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <CPButton text='Back' onClick={() => {
-          setData(initialData);
-          props.onBack();
-        }} />
-        <CPButton text='Done' onClick={handleSubmitData} />
-      </div>
-    </Modal>
+      </Modal>
   );
 }

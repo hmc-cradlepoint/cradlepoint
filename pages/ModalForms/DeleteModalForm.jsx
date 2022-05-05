@@ -3,6 +3,14 @@ import Modal from 'react-modal';
 import CPButton from "../../components/button/CPButton";
 import styles from '../../styles/Modal.module.css'
 
+/**
+ * 
+ * @param {*} props 
+ *      - isOpen: boolean of whether modal is open
+ *      - onBack: close modal without submitting
+ *      - handleDete: calls api to delete
+ * @returns 
+ */
 export default function DeleteModalForm(props) {
   return (
     //   update modal style when modal PR is approved and merged
