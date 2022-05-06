@@ -1,0 +1,781 @@
+{
+	"info": {
+		"_postman_id": "0ae7f54e-f8a9-4701-8bb2-11465449c1d5",
+		"name": "Cradlepoint Endpoint Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "addAPIs",
+			"item": [
+				{
+					"name": "addNewEngagement",
+					"item": [
+						{
+							"name": "Test200WithTestPlan",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test Add Engagement with TestPlanId\",\r\n    \"description\": \"Test Add Engagement with TestPlanId\",\r\n    \"customer\": \"Blank\",\r\n    \"SFDC\": \"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380\",\r\n    \"SE\": \"Blank\",\r\n    \"POC_Engineer\": \"Blank\",\r\n    \"statusCode\": 1,\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"createdOn\": \"2021-11-20T15:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/add/NewEngagement",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewEngagement"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test200NoTestPlan",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test Add Engagement without TestPlanId\",\r\n    \"description\": \"Test Add Engagement without TestPlanId\",\r\n    \"customer\": \"Blank\",\r\n    \"SFDC\": \"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380\",\r\n    \"SE\": \"Blank\",\r\n    \"POC_Engineer\": \"Blank\",\r\n    \"statusCode\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/add/NewEngagement",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewEngagement"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test Add Engagement without TestPlanId\",\r\n    \"description\": \"Test Add Engagement without TestPlanId\",\r\n    \"customer\": \"Blank\",\r\n    \"SFDC\": \"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380\",\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"createdOn\": \"2021-11-20T15:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/add/NewEngagement",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewEngagement"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "addNewTestPlan",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test add new TestPlan\",\r\n    \"description\": \"Blank\",\r\n    \"version\": \"Blank\",\r\n    \"deviceConfig\": \"Blank\",\r\n    \"customerFeedback\": \"Blank\",\r\n    \"testCases\": [],\r\n    \"authors\": [\r\n        \"John Doe\"\r\n    ],\r\n    \"isActive\": false,\r\n    \"engagementId\": \"617246a299915be1b771aca0\",\r\n    \"summaryBOM\": [],\r\n    \"createdOn\": \"2021-10-21T07:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/add/NewTestPlan",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewTestPlan"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "addNewTestCase",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test add new TestCase\",\r\n    \"description\": \"Blank\",\r\n    \"config\": \"Blank\",\r\n    \"topology\": \"Blank\",\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"tests\": [],\r\n    \"BOM\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/add/NewTestCase",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewTestCase"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "addNewTest",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Test add new Test\",\r\n    \"description\": \"Blank\",\r\n    \"resultStatus\": \"Blank\",\r\n    \"testCaseId\": \"619003fec01efe48e4b3fe0d\",\r\n    \"results\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/add/NewTest",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewTest"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "addNewResult",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Test add new Result\",\r\n    \"evidence\": \"Blank\",\r\n    \"resultStatus\": \"Unknown\",\r\n    \"testId\": \"62030ca5399a9fbc6eb3250f\",\r\n    \"createdOn\": \"2022-02-01T01:20:59.112Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/add/NewResult",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"add",
+										"NewResult"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "editAPIs",
+			"item": [
+				{
+					"name": "editEngagement",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"617246a299915be1b771aca0\",\r\n    \"name\": \"Engagement 1\",\r\n    \"description\": \"This is the first engagement\",\r\n    \"customer\": \"Big Finance\",\r\n    \"SFDC\": \"https://cradlepoint.lightning.force.com/lightning/r/Opportunity/006380\",\r\n    \"SE\": \"1234\",\r\n    \"POC_Engineer\": \"2345\",\r\n    \"statusCode\": 1,\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"createdOn\": \"2021-11-20T15:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Engagement",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Engagement"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"617246a299915be1b771aca0\",\r\n    \"testPlanId\": \"\",\r\n    \"statusCode\": 1,\r\n    \"createdOn\": \"2021-11-20T15:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Engagement",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Engagement"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "editTestPlan",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"61724e5599915be1b771acb2\",\r\n    \"name\": \"BGP + LTE Test Plan\",\r\n    \"description\": \"No Description Yet.\",\r\n    \"customerFeedback\": \"No Feedback Yet.\",\r\n    \"authors\": [\r\n        \"John Doe\"\r\n    ],\r\n    \"version\": \"1234\",\r\n    \"isActive\": true,\r\n    \"deviceConfig\": \"???\",\r\n    \"engagementId\": \"617246a299915be1b771aca0\",\r\n    \"testCases\": [\r\n            \"619003fec01efe48e4b3fe0d\",\r\n            \"61b6f8dc8e4c9b518de0080b\"\r\n    ],\r\n    \"summaryBOM\": [\r\n        {\r\n            \"_id\": \"6247e5efa595b615c2d0ac53\",\r\n            \"isOptional\": false,\r\n            \"quantity\": 4,\r\n            \"deviceId\": \"61f5859d938920434df9044b\"\r\n        },\r\n        {\r\n            \"_id\": \"624874ee629364fb092abb77\",\r\n            \"isOptional\": false,\r\n            \"quantity\": 4,\r\n            \"deviceId\": \"61f58566938920434df9044a\"\r\n        }\r\n    ],\r\n    \"createdOn\": \"2021-10-21T07:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/TestPlan",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"TestPlan"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"61724e5599915be1b771acb2\",\r\n    \"name\": \"BGP + LTE Test Plan\",\r\n    \"description\": \"No Description Yet.\",\r\n    \"customerFeedback\": \"No Feedback Yet.\",\r\n    \"authors\": [\r\n        \"John Doe\"\r\n    ],\r\n    \"deviceConfig\": \"???\",\r\n    \"engagementId\": \"\",\r\n    \"testCases\": [\r\n            \"619003fec01efe48e4b3fe0d\",\r\n            \"61b6f8dc8e4c9b518de0080b\"\r\n    ],\r\n    \"summaryBOM\": [\r\n        {\r\n            \"_id\": \"6247e5efa595b615c2d0ac53\",\r\n            \"isOptional\": false,\r\n            \"quantity\": 4,\r\n            \"deviceId\": \"\"\r\n        },\r\n        {\r\n            \"_id\": \"624874ee629364fb092abb77\",\r\n            \"isOptional\": false,\r\n            \"deviceId\": \"61f58566938920434df9044a\"\r\n        }\r\n    ],\r\n    \"createdOn\": \"2021-10-21T07:00:00.000Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/TestPlan",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"TestPlan"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "editTestCase",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"619003fec01efe48e4b3fe0d\",\r\n    \"name\": \"BGP redundancy\",\r\n    \"description\": \"Test route convergence when peer fails\",\r\n    \"config\": \"[{'system': {'system_id': 'BGP Router'}}, []]\",\r\n    \"topology\": \"Link / PDF / Image\",\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"tests\": [\r\n            \"62030ca5399a9fbc6eb3250f\"\r\n    ],\r\n    \"BOM\": [\r\n        {\r\n            \"_id\": \"6247e5efa595b615c2d0ac53\",\r\n            \"isOptional\": false,\r\n            \"quantity\": 4,\r\n            \"deviceId\": \"61f5859d938920434df9044b\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/TestCase",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"TestCase"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"777\",\r\n    \"name\": \"BGP redundancy\",\r\n    \"description\": \"Test route convergence when peer fails\",\r\n    \"testPlanId\": \"61724e5599915be1b771acb2\",\r\n    \"tests\": [\r\n            \"62030ca5399a9fbc6eb3250f\"\r\n    ],\r\n    \"BOM\": [\r\n        {\r\n            \"_id\": \"6247e5efa595b615c2d0ac53\",\r\n            \"quantity\": 4,\r\n            \"deviceId\": \"61f5859d938920434df9044b\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/TestCase",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"TestCase"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "editTest",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"62030ca5399a9fbc6eb3250f\",\r\n    \"name\": \"BGP Failure\",\r\n    \"description\": \"Disable BGP Peer\",\r\n    \"resultStatus\": \"Unknown\",\r\n    \"testCaseId\": \"619003fec01efe48e4b3fe0d\",\r\n    \"results\": [\r\n        \"61f88ad332ebbaba0d9d8efd\"\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Test",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Test"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"62030ca5399a9fbc6eb3250f\",\r\n    \"name\": \"BGP Failure\",\r\n    \"results\": \"61f88ad332ebbaba0d9d8efd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Test",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Test"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "editResult",
+					"item": [
+						{
+							"name": "Test200",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"61f88ad332ebbaba0d9d8efd\",\r\n    \"description\": \"BGP Default Route Convergence Time\",\r\n    \"evidence\": \"236 seconds (String or File)\",\r\n    \"resultStatus\": \"Pass\",\r\n    \"testId\": \"62030ca5399a9fbc6eb3250f\",\r\n    \"createdOn\": \"2022-02-01T01:20:59.112Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Result",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Result"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test422",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"61f88ad332ebbaba0d9d8efd\",\r\n    \"resultStatus\": \"Pass\",\r\n    \"testId\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/Result",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"Result"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "activateTestPlan",
+					"item": [
+						{
+							"name": "Test200-0",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"engagementId\": \"\",\r\n    \"testPlanId\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/ActivateTestPlan",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"ActivateTestPlan"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test200-1",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"engagementId\": \"\",\r\n    \"testPlanId\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/edit/ActivateTestPlan",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"edit",
+										"ActivateTestPlan"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "getAPIs",
+			"item": [
+				{
+					"name": "localhost:3000/api/getTestPlan",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/getTestPlan?testPlanId=6172500699915be1b771acb3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getTestPlan"
+							],
+							"query": [
+								{
+									"key": "testPlanId",
+									"value": "6172500699915be1b771acb3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/getTestCase",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"_id\": \"6192e77bb769d28dff5942c9\", \r\n  \"details\": \"test post details\",\r\n  \"name\": \"test name\",\r\n  \"results\": [\"\"],\r\n  \"testCaseId\": \"618ff52599912cea5510f06b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/getTestCases?testPlanId=618ff52599912cea5510f06b",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getTestCases"
+							],
+							"query": [
+								{
+									"key": "testPlanId",
+									"value": "618ff52599912cea5510f06b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/getDevice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/getTestCases?testPlanId=618ff52599912cea5510f06b",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getTestCases"
+							],
+							"query": [
+								{
+									"key": "testPlanId",
+									"value": "618ff52599912cea5510f06b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/api/getTestCasesByTestPlan",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/getTestCasesByTestPlan?testPlanId=61724e5599915be1b771acb2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"getTestCasesByTestPlan"
+							],
+							"query": [
+								{
+									"key": "testPlanId",
+									"value": "61724e5599915be1b771acb2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
